@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>歴史探偵事件簿・壱 本能寺の変 | 戦国時代マスター</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+  :root{
+    --sumi:#171310;        /* 陣幕の黒 */
+    --sumi2:#241d17;
+    --kin:#d4a94e;         /* 金 */
+    --hi:#c43a2a;          /* 緋色 */
+    --kinari:#f2e8d5;      /* 生成り */
+    --kinari2:#e6d8bc;
+    --hai:#9a9184;
+    --line:rgba(212,169,78,.35);
+    --ok:#4e8c5a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:var(--sumi);
+    background-image:
+      radial-gradient(900px 500px at 85% -5%, rgba(212,169,78,.09), transparent 60%),
+      radial-gradient(700px 500px at -5% 105%, rgba(196,58,42,.08), transparent 60%);
+    color:var(--kinari);
+    font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+    line-height:1.8;font-size:15px;
+  }
+  #root{max-width:760px;margin:0 auto;min-height:100%;padding:0 16px 72px}
+  .mincho{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 2px;border-bottom:1px solid var(--line);margin-bottom:18px}
+  .topbar .brand{font-size:13px;letter-spacing:.3em;color:var(--kin)}
+  .backlink{background:none;border:none;color:var(--hai);font-size:13px;cursor:pointer;padding:6px 0;letter-spacing:.1em;font-family:inherit}
+  .backlink:before{content:"← "}
+
+  .btn{display:inline-block;border:1px solid var(--line);background:var(--sumi2);color:var(--kinari);
+    padding:12px 18px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:15px;letter-spacing:.06em;
+    transition:transform .08s ease}
+  .btn:active{transform:scale(.98)}
+  .btn.primary{background:var(--hi);border-color:transparent;color:#fff;font-weight:700}
+  .btn.gold{background:transparent;border-color:var(--kin);color:var(--kin)}
+  .btn.small{padding:7px 12px;font-size:13px}
+  .btn.block{display:block;width:100%;text-align:center}
+  .btn:disabled{opacity:.4;cursor:default}
+  .eyebrow{font-size:11px;letter-spacing:.4em;color:var(--kin);margin-bottom:8px}
+  .note{font-size:12.5px;color:var(--hai)}
+  .hr{border:none;border-top:1px solid var(--line);margin:20px 0}
+
+  /* 表紙 */
+  .cover{padding-top:7vh;text-align:center}
+  .cover .case-no{font-size:11px;letter-spacing:.5em;color:var(--hai)}
+  .title-wrap{position:relative;display:inline-block;margin:24px auto 8px}
+  .v-title{writing-mode:vertical-rl;font-size:42px;font-weight:800;letter-spacing:.16em;line-height:1.5;
+    height:320px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  .v-sub{writing-mode:vertical-rl;font-size:13px;letter-spacing:.4em;color:var(--kin);height:280px;
+    display:inline-block;margin-right:24px;vertical-align:top;padding-top:10px}
+  .stamp{position:absolute;right:-56px;top:-4px;width:72px;height:72px;border:3px solid var(--hi);border-radius:50%;
+    color:var(--hi);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;
+    transform:rotate(12deg);opacity:.92;letter-spacing:.05em}
+  .cover .lead{max-width:480px;margin:18px auto 30px;color:var(--hai);font-size:13.5px}
+  .cover .menu{display:flex;flex-direction:column;gap:12px;max-width:340px;margin:0 auto}
+
+  /* 紙 */
+  .paper{background:var(--kinari);color:#2b2317;border-radius:4px;padding:22px 20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);position:relative;overflow:hidden;margin-bottom:14px}
+  .paper:before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(120,90,40,.045) 0 2px, transparent 2px 5px)}
+  .paper h3{font-size:17px;margin-bottom:10px;letter-spacing:.08em}
+  .paper .meta{font-size:12px;color:#8a7a58;letter-spacing:.2em;margin-bottom:6px}
+  .paper p{margin-bottom:10px}
+  .paper ul{padding-left:1.2em;margin-bottom:10px}
+  .paper li{margin-bottom:6px}
+  .paper .secret-stamp{position:absolute;top:10px;right:12px;border:2px solid var(--hi);color:var(--hi);
+    font-weight:800;font-size:13px;letter-spacing:.2em;padding:3px 8px;transform:rotate(8deg);opacity:.85}
+
+  /* テストに出る枠 */
+  .test-box{border:2px solid var(--hi);border-radius:6px;padding:12px 14px;margin:12px 0;background:rgba(196,58,42,.06)}
+  .test-box .tb-label{display:inline-block;background:var(--hi);color:#fff;font-size:11px;font-weight:700;
+    letter-spacing:.2em;padding:2px 10px;border-radius:3px;margin-bottom:6px}
+  .test-box .goro{font-size:13px;color:#8a4a2a;margin-top:6px}
+  .test-box .goro:before{content:"♪ おぼえ方 "; font-weight:700}
+
+  /* 容疑者カード */
+  .char-grid{display:grid;grid-template-columns:1fr;gap:12px}
+  .char-card{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:8px;
+    padding:14px;background:var(--sumi2);cursor:pointer;transition:border-color .15s;text-align:left;width:100%;font-family:inherit;color:var(--kinari)}
+  .char-card:hover{border-color:var(--kin)}
+  .char-card.done{border-color:var(--ok)}
+  .char-mon{flex:0 0 52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:22px;font-weight:800;border:1px solid var(--line)}
+  .char-card .nm{font-size:17px;font-weight:700;letter-spacing:.08em}
+  .char-card .rl{font-size:12px;color:var(--kin);letter-spacing:.12em;margin-bottom:2px}
+  .char-card .bio{font-size:12.5px;color:var(--hai)}
+  .check{margin-left:auto;color:var(--ok);font-size:20px;flex:0 0 auto}
+
+  /* 証拠カード */
+  .ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ev-tile{border:1px solid var(--line);border-radius:8px;background:var(--sumi2);padding:14px 10px;text-align:center;
+    cursor:pointer;font-family:inherit;color:var(--kinari);transition:border-color .15s}
+  .ev-tile:hover{border-color:var(--kin)}
+  .ev-tile.done{border-color:var(--ok)}
+  .ev-tile .icon{font-size:28px;display:block;margin-bottom:6px}
+  .ev-tile .t{font-size:13px;font-weight:700;letter-spacing:.05em}
+
+  /* クイズ */
+  .q-num{font-size:12px;letter-spacing:.25em;color:var(--kin);margin-bottom:6px}
+  .q-text{font-size:17px;font-weight:700;margin-bottom:16px;line-height:1.7}
+  .choices{display:flex;flex-direction:column;gap:10px}
+  .choice{border:1px solid var(--line);background:var(--sumi2);color:var(--kinari);border-radius:8px;
+    padding:13px 14px;text-align:left;font-size:15px;cursor:pointer;font-family:inherit;transition:border-color .1s}
+  .choice:hover{border-color:var(--kin)}
+  .choice.correct{border-color:var(--ok);background:rgba(78,140,90,.15)}
+  .choice.wrong{border-color:var(--hi);background:rgba(196,58,42,.12)}
+  .fb{border-radius:8px;padding:12px 14px;margin-top:14px;font-size:14px}
+  .fb.ok{background:rgba(78,140,90,.15);border:1px solid var(--ok)}
+  .fb.ng{background:rgba(196,58,42,.12);border:1px solid var(--hi)}
+  .score-bar{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--hai);margin-bottom:14px}
+  .rank-big{font-size:44px;letter-spacing:.1em;text-align:center;margin:10px 0;color:var(--kin)}
+
+  /* 年表 */
+  .tl{border-right:2px solid var(--kin);padding-right:14px;margin:0 4px 0 0}
+  .tl-row{margin-bottom:14px;position:relative}
+  .tl-row .yr{font-family:"Shippori Mincho",serif;font-size:19px;color:var(--kin);letter-spacing:.08em}
+  .tl-row .ev{font-size:14.5px}
+  .tl-row .gr{font-size:12px;color:var(--hai)}
+
+  .progress{display:flex;gap:6px;margin:14px 0}
+  .progress span{flex:1;height:4px;border-radius:2px;background:var(--sumi2);border:1px solid var(--line)}
+  .progress span.on{background:var(--kin);border-color:var(--kin)}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(12,10,8,.92);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50;overflow-y:auto}
+  .modal-card{max-width:440px;width:100%;max-height:88vh;overflow-y:auto}
+
+  @media(min-width:560px){
+    .char-grid{grid-template-columns:1fr 1fr}
+    .ev-grid{grid-template-columns:1fr 1fr 1fr 1fr}
+    body{font-size:16px}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const {useState} = React;
+
+/* =====================================================
+   歴史探偵事件簿・壱 「本能寺の変」  (中学1年生向け・戦国時代)
+   ===================================================== */
+const APP_VERSION = "v1";
+
+const STORY = {
+  title:"本能寺の変",
+  subtitle:"歴史探偵事件簿・壱 ─ 戦国時代",
+  intro:[
+    "1582年(天正10年)6月2日、まだ夜が明けきらない京都。",
+    "本能寺という寺が、突然、大軍に囲まれた。中に泊まっていたのは、天下統一まであと一歩とせまっていた男 ── 織田信長(おだ のぶなが)。",
+    "「是非(ぜひ)に及ばず(=しかたあるまい)」",
+    "信長はそう言い残し、燃え上がる寺の中に消えた。日本の歴史を大きく変えた、戦国最大の事件である。",
+    "……さて、ここからが君の出番だ。",
+    "君は「歴史探偵団」の新人探偵。タイムレコーダー(歴史を記録する不思議な手帳)を使って事件直後の京都に飛び、証言と証拠を集め、この事件の犯人と動機を解き明かしてほしい。",
+    "手がかりは、すべて『歴史の事実』の中にある。"
+  ],
+  howto:[
+    "① まず【聞き込み】で、4人の容疑者の話を聞こう。",
+    "② 次に【証拠品しらべ】で、8つの証拠を調べよう。赤い枠は「テストに出る」超重要情報だ。",
+    "③ そろったら【推理】で犯人を指名。全問正解で真相が開く。",
+    "④ 最後は【一問一答道場】で腕試し。目指せ、天下人ランク!"
+  ],
+  suspects:[
+    {id:"hideyoshi", mon:"羽", color:"#c8a04e",
+     name:"羽柴 秀吉", yomi:"はしば ひでよし", role:"織田家の家臣・出世頭",
+     publicBio:"農民の子から出世した「人たらし」の天才。",
+     talk:[
+      "「わしが上様(信長さま)を討っただと? とんでもない!」",
+      "「事件のとき、わしは京都から遠くはなれた備中(びっちゅう・いまの岡山県)におった。毛利(もうり)という西の大大名と戦うため、高松城を水ぜめにしておる真っ最中よ」",
+      "「事件を知ったわしは、毛利とすぐに和睦(わぼく=仲直り)して、京都まで約200kmをたった10日ほどで駆けもどった。世にいう『中国大返し』じゃ。……なぜそんなに急いだかって? 主君のかたきを、一番に討った者が次の天下人になれるからよ」"
+     ],
+     memo:"アリバイあり(備中高松城で毛利と交戦中)。ただし事件後の行動がやたら早い……。"},
+    {id:"ieyasu", mon:"徳", color:"#5a8c6e",
+     name:"徳川 家康", yomi:"とくがわ いえやす", role:"三河の大名・信長の同盟者",
+     publicBio:"がまん強さで有名。信長とは長年の同盟仲間。",
+     talk:[
+      "「わたしは事件のとき、堺(さかい・いまの大阪府)の町を見物していた」",
+      "「堺は商人たちが自分たちで治める自由な町でな、鉄砲づくりでも日本一。見ておく価値があった」",
+      "「事件を知って、わたしは命からがら、山の中を通って三河(いまの愛知県)へ逃げ帰った。お供はわずか。あれほど死を覚悟したことはない……(のちに『伊賀越え』と呼ばれる大脱出である)」"
+     ],
+     memo:"アリバイあり(堺を見物中、兵をほとんど連れていない)。犯行は不可能に近い。"},
+    {id:"yoshiaki", mon:"足", color:"#7a6e9e",
+     name:"足利 義昭", yomi:"あしかが よしあき", role:"室町幕府・最後の将軍",
+     publicBio:"信長に京都を追放された、うらみを持つ男。",
+     talk:[
+      "「わしか? わしは信長がにくい。それはみとめよう」",
+      "「わしは室町幕府の15代将軍であった。だが1573年、信長のやつはわしを京都から追放した。あの日、約240年続いた室町幕府はほろんだのだ……!」",
+      "「だがな、探偵どの。わしはいま、遠い備後(びんご・いまの広島県)の鞆(とも)という港町に身を寄せておる。兵もおらん。うらみだけでは、大軍は動かせんのだよ」"
+     ],
+     memo:"動機は十分。しかし遠方にいて兵力ゼロ。実行は不可能。※1573年・室町幕府滅亡はテスト超頻出!"},
+    {id:"mitsuhide", mon:"明", color:"#8c5a5a",
+     name:"明智 光秀", yomi:"あけち みつひで", role:"織田家の重臣・教養人",
+     publicBio:"和歌や茶の湯にくわしい知性派。信長の信頼も厚かった…はず。",
+     talk:[
+      "「わたしは事件と関係ない。信長さまに『中国地方へ行き、秀吉の毛利攻めを助けよ』と命じられ、1万3千の兵をひきいて出陣していたところだ」",
+      "「……ん? 進んだ方角? も、もちろん西へ向かったに決まっている」",
+      "「たしかに、思うところはあった。信長さまはこのごろ、家臣にも厳しすぎた。比叡山(ひえいざん)を焼き、仏をもおそれぬやり方……。だが、だからといってわたしが……」"
+     ],
+     memo:"事件当日、京都のすぐ近くで1万3千の大軍を動かせた、ただひとりの人物。方角の話になると目が泳ぐ。"}
+  ],
+  evidence:[
+    {id:"e1", icon:"🔫", title:"焼け跡の鉄砲",
+     body:"本能寺の焼け跡から見つかった鉄砲。おそう側も守る側も、この時代の戦いはもう「鉄砲の時代」だった。",
+     fact:"鉄砲は1543年、ポルトガル人を乗せた船が種子島(たねがしま・鹿児島県)に流れ着いて伝わった。その後、堺(大阪府)や国友(滋賀県)で大量生産された。",
+     goro:"以後よさん(1543)そろえて鉄砲買おう"},
+    {id:"e2", icon:"✝️", title:"宣教師の手紙",
+     body:"「ノブナガ様は私たちに親切で、教会や学校を建てることを許してくださった」── 京都にいた外国人宣教師の記録。",
+     fact:"キリスト教は1549年、宣教師フランシスコ・ザビエルが鹿児島に伝えた。信長はキリスト教を保護した(仏教勢力に対抗するねらいもあった)。ポルトガル・スペインとの貿易を南蛮貿易という。",
+     goro:"以後よく(1549)広まるキリスト教"},
+    {id:"e3", icon:"⚔️", title:"古びた軍配",
+     body:"信長が若いころから使っていた軍配。「桶狭間」と刻まれている。信長が天下に名をあげた、伝説の戦いだ。",
+     fact:"1560年・桶狭間(おけはざま)の戦い。信長は、駿河の大大名・今川義元(いまがわ よしもと)を少ない兵で急襲して破り、一気に有名になった。",
+     goro:"戦国丸(1560)ごと変えた桶狭間"},
+    {id:"e4", icon:"🐎", title:"長篠の戦いの絵図",
+     body:"馬防柵(ばぼうさく)の内側から、大量の鉄砲が火をふく絵。信長の戦い方が、時代を変えた瞬間。",
+     fact:"1575年・長篠(ながしの)の戦い。信長・家康の連合軍が、大量の鉄砲を組織的に使って、武田勝頼(たけだ かつより)の騎馬隊を破った。「鉄砲が主役の時代」を決定づけた戦い。",
+     goro:"以後なこ(1575)う武田、長篠で"},
+    {id:"e5", icon:"🏯", title:"楽市・楽座の高札",
+     body:"安土(あづち)の城下町に立てられていた立て札。「だれでも自由に商売してよし。座(ざ=商人の組合)の特権は廃止」",
+     fact:"信長は琵琶湖のほとりに壮大な安土城を築き、城下で楽市・楽座を実施。市場の税を免除し、座をなくして、だれでも自由に商売できるようにした。関所も廃止して人と物の流れを活発にした。",
+     goro:"「楽」= 規制をなくしてラクに商売、と覚えよう"},
+    {id:"e6", icon:"🔥", title:"焼けた山の記録",
+     body:"「比叡山、全山焼きはらわれる」── 信長のもうひとつの顔。てき対する者には、寺であっても容赦しなかった。",
+     fact:"信長は1571年に比叡山延暦寺(ひえいざん えんりゃくじ)を焼き討ちし、各地の一向一揆(いっこういっき)や石山本願寺とも長く戦った。この「仏をおそれぬ厳しさ」をおそれ、うらむ者も多かった ── 家臣の中にさえ。",
+     goro:"動機のヒント:信長の敵は外だけじゃない"},
+    {id:"e7", icon:"🗺️", title:"進軍ルートの地図",
+     body:"【最重要証拠】中国地方へ向かうはずの1万3千の軍が、桂川(かつらがわ)を越えて京都へ向かった記録。指揮官はそこで全軍にこう告げたという ── 「敵は本能寺にあり」",
+     fact:"この軍を率いていたのは明智光秀。西へ向かうはずの軍を、京都の本能寺へ向けた。信長の周りには、わずかな家来しかいなかった。",
+     goro:"セリフごと覚えよう:「敵は本能寺にあり」"},
+    {id:"e8", icon:"📜", title:"信長の命令書",
+     body:"「明智光秀に命ず。中国へ出陣し、羽柴秀吉を助けよ」── 信長本人の書状。つまり信長は、光秀の大軍が近くにいることを疑ってもいなかった。",
+     fact:"1582年6月2日・本能寺の変。明智光秀が主君・織田信長を討った。天下統一を目前にした信長は49歳でこの世を去った。",
+     goro:"いちごパンツ(1582)の本能寺"}
+  ],
+  deduction:[
+    {q:"【推理・壱】信長を討った犯人はだれだ?",
+     choices:["羽柴 秀吉","徳川 家康","足利 義昭","明智 光秀"], ans:3,
+     ok:"その通り! 犯人は明智光秀。1582年、本能寺の変だ。",
+     ng:"ちがうようだ。事件の日、京都の近くで大軍を動かせた人物はだれだった? 証拠品🗺️をもう一度見てみよう。"},
+    {q:"【推理・弐】決め手となった証拠は?",
+     choices:["焼け跡の鉄砲","進軍ルートの地図「敵は本能寺にあり」","宣教師の手紙","楽市・楽座の高札"], ans:1,
+     ok:"正解! 西へ向かうはずの軍が京都へ── 動かぬ証拠だ。",
+     ng:"おしい。「西へ行くはずの軍が、なぜか京都へ向かった」…この矛盾こそが決め手だ。"},
+    {q:"【推理・参】なぜ光秀は、事件の日に大軍をひきいて京都の近くにいた?",
+     choices:["信長に「中国地方へ出陣せよ」と命じられていたから","たまたま旅行中だったから","京都の警備を担当していたから","秀吉に呼ばれたから"], ans:0,
+     ok:"完璧だ! 信長自身の命令が、皮肉にも光秀に大軍とチャンスを与えてしまった。",
+     ng:"証拠品📜の信長の命令書を思い出そう。"}
+  ],
+  truth:[
+    "犯人は、織田家の重臣・明智光秀。",
+    "1582年6月2日の未明、「中国地方へ出陣せよ」という信長の命令で動いていた1万3千の軍を、光秀は突然、京都へ向けた。「敵は本能寺にあり」──。",
+    "わずかな家来しかいなかった信長に、勝ち目はなかった。天下統一を目前にした戦国の風雲児は、燃える本能寺で49年の生涯を閉じた。",
+    "光秀の動機は、今も歴史のナゾだ。厳しすぎる信長への不満、比叡山焼き討ちなどへの反発、自分も天下を取りたいという野心……。いろいろな説があり、「日本史最大のミステリー」と呼ばれている。君はどの説が正しいと思う?",
+    "── そして歴史は、事件のあとも動き続ける。"
+  ],
+  epilogue:[
+    {yr:"1582", t:"山崎の戦い", d:"備中から『中国大返し』でもどった羽柴秀吉が、明智光秀を破る。光秀の天下はわずか11日ほど──「三日天下」と呼ばれた。主君のかたき討ちを果たした秀吉が、信長の後継者レースの先頭に立つ。"},
+    {yr:"1582〜", t:"太閤検地", d:"秀吉は全国の田畑の面積と収穫量(石高)を統一の基準で調査。年貢をきちんと集めるしくみを作った。"},
+    {yr:"1588", t:"刀狩", d:"秀吉は農民から刀や鉄砲を取り上げた。武士と農民の身分がはっきり分かれる「兵農分離」が進んだ。"},
+    {yr:"1590", t:"全国統一", d:"秀吉が小田原の北条氏をほろぼし、天下統一を完成。名字も豊臣(とよとみ)となっていた。"},
+    {yr:"1592・1597", t:"朝鮮出兵", d:"秀吉は明(中国)の征服を目指して朝鮮に2度出兵(文禄の役・慶長の役)。しかし苦戦し、秀吉の死とともに撤退。豊臣家の力は弱まった。"},
+    {yr:"1600", t:"関ヶ原の戦い", d:"「天下分け目の戦い」で徳川家康が石田三成らを破る。あの日、堺から命がけで逃げのびた男が、最後に天下を手にした。1603年、家康は江戸幕府を開く。"}
+  ],
+  culture:{
+    title:"桃山文化 ── 戦国の終わりに咲いた豪華な文化",
+    items:[
+      "姫路城 ── 白鷺城(しらさぎじょう)とも呼ばれる壮大な天守",
+      "狩野永徳(かのう えいとく) ──「唐獅子図屏風」などの豪華な障壁画",
+      "千利休(せんの りきゅう) ── わび茶(質素な茶の湯)を大成",
+      "出雲の阿国(いずもの おくに) ── かぶき踊りを始める"
+    ]
+  },
+  quiz:[
+    {q:"1543年、ポルトガル人によって種子島に伝えられたものは?",
+     c:["キリスト教","鉄砲","じゃがいも","活版印刷"], a:1,
+     ex:"鉄砲は1543年、種子島に伝来。堺や国友で大量生産された。", goro:"以後よさん(1543)そろえて鉄砲買おう"},
+    {q:"1549年、日本にキリスト教を伝えた宣教師は?",
+     c:["コロンブス","マルコ・ポーロ","フランシスコ・ザビエル","ペリー"], a:2,
+     ex:"ザビエルが鹿児島に上陸してキリスト教を伝えた。", goro:"以後よく(1549)広まるキリスト教"},
+    {q:"1560年、織田信長が今川義元を破った戦いは?",
+     c:["桶狭間の戦い","長篠の戦い","関ヶ原の戦い","山崎の戦い"], a:0,
+     ex:"桶狭間の戦い。信長は少ない兵で今川の大軍を急襲した。", goro:"戦国丸(1560)ごと変えた桶狭間"},
+    {q:"1573年、信長が足利義昭を京都から追放したことでほろんだ幕府は?",
+     c:["鎌倉幕府","室町幕府","江戸幕府","平氏政権"], a:1,
+     ex:"15代将軍・足利義昭の追放で、約240年続いた室町幕府が滅亡。", goro:"以後なみ(1573)だ将軍、幕府もおわり"},
+    {q:"1575年、信長・家康連合軍が大量の鉄砲で武田軍を破った戦いは?",
+     c:["桶狭間の戦い","川中島の戦い","長篠の戦い","壇ノ浦の戦い"], a:2,
+     ex:"長篠の戦い。鉄砲の組織的な使用で騎馬隊を破った。", goro:"以後なこ(1575)う武田、長篠で"},
+    {q:"信長が安土城下などで行った、税を免除し座を廃止して自由な商売を認めた政策は?",
+     c:["楽市・楽座","刀狩","太閤検地","参勤交代"], a:0,
+     ex:"楽市・楽座。関所の廃止とあわせて商業をさかんにした。", goro:"「楽」=規制をなくしてラクに商売"},
+    {q:"1582年、本能寺で織田信長を討った武将は?",
+     c:["豊臣秀吉","明智光秀","徳川家康","武田勝頼"], a:1,
+     ex:"本能寺の変。「敵は本能寺にあり」の言葉とセットで覚えよう。", goro:"いちごパンツ(1582)の本能寺"},
+    {q:"本能寺の変のあと、山崎の戦いで明智光秀を破ったのは?",
+     c:["徳川家康","上杉謙信","足利義昭","羽柴(豊臣)秀吉"], a:3,
+     ex:"秀吉は『中国大返し』で駆けもどり、光秀を破った。光秀は「三日天下」。", goro:"かたき討ちレースの勝者=次の天下人"},
+    {q:"秀吉が行った、全国の田畑の面積や収穫量を調べた政策は?",
+     c:["班田収授","楽市・楽座","太閤検地","地租改正"], a:2,
+     ex:"太閤検地。年貢を確実に集めるしくみを整えた。", goro:"検地=「検」査して土「地」を調べる"},
+    {q:"秀吉が農民から刀や鉄砲を取り上げた政策は?",
+     c:["刀狩","廃刀令","徳政令","武家諸法度"], a:0,
+     ex:"刀狩(1588)。武士と農民の身分が分かれる「兵農分離」が進んだ。", goro:"刀狩→兵農分離、はセットで書けるように"},
+    {q:"1590年、秀吉が小田原の北条氏をほろぼして達成したことは?",
+     c:["江戸幕府を開いた","全国統一","室町幕府の再興","鎖国"], a:1,
+     ex:"1590年、天下統一の完成。", goro:"戦国終わ(1590)る、天下統一"},
+    {q:"秀吉が明の征服を目指して2度出兵した場所は?",
+     c:["琉球","蝦夷地","朝鮮","台湾"], a:2,
+     ex:"朝鮮出兵(文禄の役1592・慶長の役1597)。苦戦し、豊臣家は力を失った。", goro:"行くには遠い異国(1592)の役"},
+    {q:"わび茶を大成した人物は?",
+     c:["千利休","狩野永徳","出雲の阿国","雪舟"], a:0,
+     ex:"千利休。質素な美しさを大切にする茶の湯を完成させた(桃山文化)。", goro:"「わび」=千利休、豪華な屏風=狩野永徳"},
+    {q:"「唐獅子図屏風」などの豪華な障壁画で知られる桃山文化の画家は?",
+     c:["葛飾北斎","狩野永徳","菱川師宣","運慶"], a:1,
+     ex:"狩野永徳。城の中をかざる金色の豪華な絵が桃山文化の特徴。", goro:"城の絵=永徳、と覚えよう"},
+    {q:"1600年、徳川家康が石田三成らを破った「天下分け目の戦い」は?",
+     c:["大坂の陣","長篠の戦い","桶狭間の戦い","関ヶ原の戦い"], a:3,
+     ex:"関ヶ原の戦い。3年後の1603年、家康は江戸幕府を開いた。", goro:"ヒーローわお(1600)!関ヶ原"}
+  ],
+  timeline:[
+    {yr:"1467", ev:"応仁の乱", gr:"京都が焼け野原に。下剋上の戦国時代が始まる"},
+    {yr:"1543", ev:"鉄砲伝来(種子島)", gr:"以後よさん(1543)そろえて鉄砲買おう"},
+    {yr:"1549", ev:"キリスト教伝来(ザビエル)", gr:"以後よく(1549)広まるキリスト教"},
+    {yr:"1560", ev:"桶狭間の戦い", gr:"信長が今川義元を破る"},
+    {yr:"1573", ev:"室町幕府滅亡", gr:"信長が足利義昭を追放"},
+    {yr:"1575", ev:"長篠の戦い", gr:"鉄砲 vs 騎馬隊。以後なこ(1575)う武田"},
+    {yr:"1582", ev:"本能寺の変 → 山崎の戦い", gr:"いちごパンツ(1582)の本能寺。光秀は三日天下"},
+    {yr:"1588", ev:"刀狩", gr:"兵農分離が進む"},
+    {yr:"1590", ev:"秀吉の全国統一", gr:"小田原の北条氏をほろぼす"},
+    {yr:"1592/97", ev:"朝鮮出兵(文禄・慶長の役)", gr:"豊臣家が力を失うきっかけに"},
+    {yr:"1600", ev:"関ヶ原の戦い", gr:"ヒーローわお(1600)!家康の勝利"},
+    {yr:"1603", ev:"江戸幕府が開かれる", gr:"約260年続く江戸時代へ"}
+  ],
+  ranks:[
+    {min:14, name:"天下人", msg:"完璧だ! 戦国時代は君のもの。テスト本番でもこの調子で!"},
+    {min:11, name:"軍師", msg:"すばらしい実力。まちがえた問題だけ、もう一周して天下人へ!"},
+    {min:7,  name:"侍大将", msg:"いい線いってる! 解説と語呂をもう一度読んで再挑戦しよう。"},
+    {min:0,  name:"足軽",  msg:"だれでも最初は足軽から。ストーリーをもう一度読むと、ぐっと解けるようになるぞ。"}
+  ]
+};
+
+/* ---------- 共通 ---------- */
+function TopBar({onHome, label}){
+  return (
+    <div className="topbar">
+      <span className="brand mincho">歴史探偵事件簿</span>
+      <button className="backlink" onClick={onHome}>{label||"表紙へ"}</button>
+    </div>
+  );
+}
+const P=({children})=><p>{children}</p>;
+function TestBox({fact, goro}){
+  return (
+    <div className="test-box">
+      <span className="tb-label">テストに出る!</span>
+      <div style={{fontSize:14.5}}>{fact}</div>
+      {goro && <div className="goro">{goro}</div>}
+    </div>
+  );
+}
+
+/* ---------- 表紙 ---------- */
+function Cover({go}){
+  return (
+    <div className="cover">
+      <div className="case-no mincho">事件簿 第壱号 ・ {APP_VERSION}</div>
+      <div className="title-wrap">
+        <span className="v-sub mincho">{STORY.subtitle}</span>
+        <h1 className="v-title mincho">本能寺の変<br/>犯人は誰だ</h1>
+        <div className="stamp mincho">捜査中</div>
+      </div>
+      <p className="lead">
+        1582年、京都。天下統一目前の織田信長が、燃える寺の中に消えた。<br/>
+        君は歴史探偵団の新人探偵。証言と証拠を集め、戦国最大の事件を解決せよ。<br/>
+        ── 手がかりは、すべて「テストに出る歴史の事実」の中にある。
+      </p>
+      <div className="menu">
+        <button className="btn primary block" onClick={()=>go("prologue")}>捜査ファイルを開く</button>
+        <button className="btn gold block" onClick={()=>go("dojo")}>一問一答道場(全15問)</button>
+        <button className="btn block" onClick={()=>go("timeline")}>戦国年表で復習する</button>
+        <button className="backlink" style={{marginTop:6}} onClick={()=>go("guide")}>先生用ガイド</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- 序章 ---------- */
+function Prologue({go}){
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">序章 ── 事件発生</div>
+      <div className="paper">
+        <div className="secret-stamp mincho">機密</div>
+        <div className="meta">捜査記録 第一頁</div>
+        <h3 className="mincho">燃える本能寺</h3>
+        {STORY.intro.map((t,i)=><P key={i}>{t}</P>)}
+      </div>
+      <div className="paper">
+        <div className="meta">探偵の心得</div>
+        <h3 className="mincho">捜査のすすめ方</h3>
+        <ul>{STORY.howto.map((t,i)=><li key={i}>{t}</li>)}</ul>
+      </div>
+      <button className="btn primary block" onClick={()=>go("suspects")}>聞き込みを始める</button>
+    </div>
+  );
+}
+
+/* ---------- 聞き込み ---------- */
+function Suspects({go, seen, setSeen}){
+  const [open,setOpen]=useState(null);
+  const allSeen = STORY.suspects.every(s=>seen[s.id]);
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">第一章 ── 聞き込み</div>
+      <p className="note" style={{marginBottom:12}}>4人の容疑者、全員の話を聞こう。話の中に、テストに出る事実がかくれている。</p>
+      <div className="char-grid">
+        {STORY.suspects.map(s=>(
+          <button key={s.id} className={"char-card"+(seen[s.id]?" done":"")} onClick={()=>setOpen(s)}>
+            <div className="char-mon mincho" style={{color:s.color, borderColor:s.color}}>{s.mon}</div>
+            <div>
+              <div className="rl">{s.role}</div>
+              <div className="nm mincho">{s.name}</div>
+              <div className="bio">{s.publicBio}</div>
+            </div>
+            {seen[s.id] && <span className="check">✓</span>}
+          </button>
+        ))}
+      </div>
+      <div style={{marginTop:16}}>
+        <button className="btn primary block" disabled={!allSeen} onClick={()=>go("evidence")}>
+          {allSeen? "証拠品しらべへ進む" : "全員の話を聞くと次へ進める"}
+        </button>
+      </div>
+
+      {open && (
+        <div className="modal-bg" onClick={()=>{setSeen(v=>({...v,[open.id]:true})); setOpen(null);}}>
+          <div className="modal-card paper" onClick={e=>e.stopPropagation()}>
+            <div className="meta">証言記録</div>
+            <h3 className="mincho">{open.name}({open.yomi})</h3>
+            {open.talk.map((t,i)=><P key={i}>{t}</P>)}
+            <div className="test-box">
+              <span className="tb-label">探偵メモ</span>
+              <div style={{fontSize:14}}>{open.memo}</div>
+            </div>
+            <button className="btn primary block" onClick={()=>{setSeen(v=>({...v,[open.id]:true})); setOpen(null);}}>メモした</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- 証拠品 ---------- */
+function Evidence({go, found, setFound}){
+  const [open,setOpen]=useState(null);
+  const count = STORY.evidence.filter(e=>found[e.id]).length;
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">第二章 ── 証拠品しらべ</div>
+      <p className="note" style={{marginBottom:8}}>8つの証拠を調べよう({count}/8)。赤い枠=テストに出る超重要ポイント。</p>
+      <div className="progress">{STORY.evidence.map(e=><span key={e.id} className={found[e.id]?"on":""}/>)}</div>
+      <div className="ev-grid">
+        {STORY.evidence.map(ev=>(
+          <button key={ev.id} className={"ev-tile"+(found[ev.id]?" done":"")} onClick={()=>setOpen(ev)}>
+            <span className="icon">{ev.icon}</span>
+            <span className="t">{ev.title}</span>
+          </button>
+        ))}
+      </div>
+      <div style={{marginTop:16}}>
+        <button className="btn primary block" disabled={count<8} onClick={()=>go("deduction")}>
+          {count<8? "すべて調べると推理へ進める" : "推理へ進む ── 犯人を指名せよ"}
+        </button>
+      </div>
+
+      {open && (
+        <div className="modal-bg" onClick={()=>{setFound(v=>({...v,[open.id]:true})); setOpen(null);}}>
+          <div className="modal-card paper" onClick={e=>e.stopPropagation()}>
+            <div className="secret-stamp mincho">証拠</div>
+            <div className="meta">押収品調書</div>
+            <h3 className="mincho">{open.icon} {open.title}</h3>
+            <P>{open.body}</P>
+            <TestBox fact={open.fact} goro={open.goro}/>
+            <button className="btn primary block" onClick={()=>{setFound(v=>({...v,[open.id]:true})); setOpen(null);}}>証拠として記録した</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- 推理 ---------- */
+function Deduction({go}){
+  const [idx,setIdx]=useState(0);
+  const [picked,setPicked]=useState(null);
+  const q=STORY.deduction[idx];
+  const correct = picked===q.ans;
+  const next=()=>{
+    if(idx+1<STORY.deduction.length){ setIdx(idx+1); setPicked(null); }
+    else go("truth");
+  };
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">第三章 ── 推理</div>
+      <div className="q-num mincho">{idx+1} / {STORY.deduction.length}</div>
+      <div className="q-text">{q.q}</div>
+      <div className="choices">
+        {q.choices.map((c,i)=>(
+          <button key={i}
+            className={"choice"+(picked===null?"":(i===q.ans?" correct":(i===picked?" wrong":"")))}
+            onClick={()=>{ if(picked===null) setPicked(i); }}>
+            {c}
+          </button>
+        ))}
+      </div>
+      {picked!==null && (
+        <div>
+          <div className={"fb "+(correct?"ok":"ng")}>{correct? q.ok : q.ng}</div>
+          <div style={{marginTop:14}}>
+            {correct
+              ? <button className="btn primary block" onClick={next}>{idx+1<STORY.deduction.length? "次の推理へ":"真相を開く"}</button>
+              : <button className="btn block" onClick={()=>setPicked(null)}>もう一度考える</button>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- 真相 ---------- */
+function Truth({go}){
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">最終章 ── 真相</div>
+      <div className="paper">
+        <div className="secret-stamp mincho">解決</div>
+        <div className="meta">事件簿 結び</div>
+        <h3 className="mincho">「敵は本能寺にあり」</h3>
+        {STORY.truth.map((t,i)=><P key={i}>{t}</P>)}
+      </div>
+      <div className="eyebrow" style={{marginTop:22}}>そして歴史は動く ── 事件のその後</div>
+      <div className="tl" style={{borderRight:"none", borderLeft:"2px solid var(--kin)", paddingLeft:14, paddingRight:0}}>
+        {STORY.epilogue.map((e,i)=>(
+          <div key={i} className="tl-row">
+            <div className="yr mincho">{e.yr} {e.t}</div>
+            <div className="ev" style={{fontSize:14, color:"#d8d2c2"}}>{e.d}</div>
+          </div>
+        ))}
+      </div>
+      <div className="paper" style={{marginTop:14}}>
+        <div className="meta">おまけ資料</div>
+        <h3 className="mincho">{STORY.culture.title}</h3>
+        <ul>{STORY.culture.items.map((t,i)=><li key={i}>{t}</li>)}</ul>
+      </div>
+      <button className="btn primary block" onClick={()=>go("dojo")}>一問一答道場で腕試し!</button>
+      <div style={{height:10}}/>
+      <button className="btn block" onClick={()=>go("timeline")}>年表で復習する</button>
+    </div>
+  );
+}
+
+/* ---------- 一問一答道場 ---------- */
+function Dojo({go}){
+  const [idx,setIdx]=useState(0);
+  const [picked,setPicked]=useState(null);
+  const [score,setScore]=useState(0);
+  const [fin,setFin]=useState(false);
+  const total=STORY.quiz.length;
+
+  if(fin){
+    const rank=STORY.ranks.find(r=>score>=r.min);
+    return (
+      <div>
+        <TopBar onHome={()=>go("cover")}/>
+        <div className="eyebrow">道場 ── 結果発表</div>
+        <div className="paper" style={{textAlign:"center"}}>
+          <div className="meta">認定証</div>
+          <p style={{marginBottom:0}}>{total}問中 <b style={{fontSize:24}}>{score}</b> 問正解</p>
+          <div className="rank-big mincho" style={{color:"#8a4a2a"}}>{rank.name}</div>
+          <P>{rank.msg}</P>
+        </div>
+        <button className="btn primary block" onClick={()=>{setIdx(0);setPicked(null);setScore(0);setFin(false);}}>もう一周する</button>
+        <div style={{height:10}}/>
+        <button className="btn block" onClick={()=>go("timeline")}>年表で復習する</button>
+      </div>
+    );
+  }
+
+  const q=STORY.quiz[idx];
+  const correct = picked===q.a;
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">一問一答道場</div>
+      <div className="score-bar">
+        <span className="mincho">第 {idx+1} 問 / {total}</span>
+        <span>正解 {score}</span>
+      </div>
+      <div className="q-text">{q.q}</div>
+      <div className="choices">
+        {q.c.map((c,i)=>(
+          <button key={i}
+            className={"choice"+(picked===null?"":(i===q.a?" correct":(i===picked?" wrong":"")))}
+            onClick={()=>{ if(picked===null){ setPicked(i); if(i===q.a) setScore(s=>s+1);} }}>
+            {c}
+          </button>
+        ))}
+      </div>
+      {picked!==null && (
+        <div>
+          <div className={"fb "+(correct?"ok":"ng")}>
+            <b>{correct?"正解!":"ざんねん!"}</b> {q.ex}
+            <div style={{fontSize:13, marginTop:4, opacity:.85}}>♪ {q.goro}</div>
+          </div>
+          <div style={{marginTop:14}}>
+            <button className="btn primary block" onClick={()=>{
+              if(idx+1<total){ setIdx(idx+1); setPicked(null);} else setFin(true);
+            }}>{idx+1<total?"次の問題へ":"結果を見る"}</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- 年表 ---------- */
+function Timeline({go}){
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">戦国年表 ── これだけは書けるように</div>
+      <div className="tl" style={{borderRight:"none", borderLeft:"2px solid var(--kin)", paddingLeft:14, paddingRight:0, marginTop:6}}>
+        {STORY.timeline.map((t,i)=>(
+          <div key={i} className="tl-row">
+            <div className="yr mincho">{t.yr}</div>
+            <div className="ev">{t.ev}</div>
+            <div className="gr">{t.gr}</div>
+          </div>
+        ))}
+      </div>
+      <button className="btn primary block" onClick={()=>go("dojo")}>この年表で道場に挑む</button>
+    </div>
+  );
+}
+
+/* ---------- 先生用ガイド ---------- */
+function Guide({go}){
+  return (
+    <div>
+      <TopBar onHome={()=>go("cover")}/>
+      <div className="eyebrow">先生用ガイド</div>
+      <div className="paper">
+        <div className="meta">授業で使う場合(15〜20分)</div>
+        <h3 className="mincho">授業パターン</h3>
+        <ul>
+          <li>導入5分:序章を生徒に音読させ、「犯人はだれだと思う?」と予想を立てさせてから捜査開始。予想が当たっても外れても盛り上がります。</li>
+          <li>捜査10分:聞き込み→証拠品しらべ。証拠を1つ開くたびに「今の、テストに出るところはどこだった?」と生徒に説明させてください。説明できたらしっかり認めてあげましょう。</li>
+          <li>まとめ5分:推理→真相。そのあと道場を宿題または次回の確認テスト代わりに。</li>
+          <li>記録:道場の正解数を記録し、8割(12問)を合格ラインの目安に。届かなかった問題は解説と語呂を読み直してから、その場でもう一度だけ解き直しをさせてください。</li>
+        </ul>
+      </div>
+      <div className="paper">
+        <div className="meta">自習・宿題で使う場合</div>
+        <h3 className="mincho">生徒ひとりでやるパターン</h3>
+        <ul>
+          <li>1周目:ストーリーを最後まで(約15分)。ゲーム感覚でOK。</li>
+          <li>2周目:年表を見ずに道場15問→まちがえた問題の解説と語呂を音読→もう1周。</li>
+          <li>仕上げ:年表を紙に書き出せたら合格。「いちごパンツの本能寺、言ってみて」など、口頭チェックが効果的です。</li>
+          <li>定期テスト前は「年表→道場」の順で1セット10分の復習になります。</li>
+        </ul>
+      </div>
+      <button className="btn block" onClick={()=>go("cover")}>表紙へ戻る</button>
+    </div>
+  );
+}
+
+/* ---------- App ---------- */
+function App(){
+  const [screen,setScreen]=useState("cover");
+  const [seen,setSeen]=useState({});
+  const [found,setFound]=useState({});
+  const go=s=>{ setScreen(s); window.scrollTo(0,0); };
+  return (
+    <div>
+      {screen==="cover" && <Cover go={go}/>}
+      {screen==="prologue" && <Prologue go={go}/>}
+      {screen==="suspects" && <Suspects go={go} seen={seen} setSeen={setSeen}/>}
+      {screen==="evidence" && <Evidence go={go} found={found} setFound={setFound}/>}
+      {screen==="deduction" && <Deduction go={go}/>}
+      {screen==="truth" && <Truth go={go}/>}
+      {screen==="dojo" && <Dojo go={go}/>}
+      {screen==="timeline" && <Timeline go={go}/>}
+      {screen==="guide" && <Guide go={go}/>}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
