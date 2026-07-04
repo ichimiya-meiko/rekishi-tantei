@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>歴史探偵事件簿・壱 本能寺の変 v2 | 戦国探索アドベンチャー</title>
+<title>歴史探偵事件簿・壱 本能寺の変 v3 | 戦国探索アドベンチャー</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -11,15 +11,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <style>
   :root{
-    --sumi:#171310;
-    --sumi2:#241d17;
-    --kin:#d4a94e;
-    --hi:#c43a2a;
-    --kinari:#f2e8d5;
-    --hai:#9a9184;
-    --line:rgba(212,169,78,.35);
-    --ok:#4e8c5a;
-    --ao:#5b8fc7;
+    --sumi:#171310; --sumi2:#241d17;
+    --kin:#d4a94e; --hi:#c43a2a;
+    --kinari:#f2e8d5; --hai:#9a9184;
+    --line:rgba(212,169,78,.35); --ok:#4e8c5a; --ao:#5b7fc7;
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
@@ -30,18 +25,18 @@
       radial-gradient(700px 500px at -5% 105%, rgba(196,58,42,.08), transparent 60%);
     color:var(--kinari);
     font-family:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
-    line-height:1.8;font-size:15px;
+    line-height:1.75;font-size:15px;
   }
-  #root{max-width:760px;margin:0 auto;min-height:100%;padding:0 16px 72px}
+  #root{max-width:760px;margin:0 auto;min-height:100%;padding:0 14px 64px}
   .mincho{font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif}
 
-  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 2px;border-bottom:1px solid var(--line);margin-bottom:16px;gap:8px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 2px;border-bottom:1px solid var(--line);margin-bottom:14px;gap:8px}
   .topbar .brand{font-size:13px;letter-spacing:.25em;color:var(--kin);white-space:nowrap}
-  .backlink{background:none;border:none;color:var(--hai);font-size:13px;cursor:pointer;padding:6px 0;letter-spacing:.1em;font-family:inherit;white-space:nowrap}
+  .backlink{background:none;border:none;color:var(--hai);font-size:13px;cursor:pointer;padding:6px 0;font-family:inherit;white-space:nowrap}
 
   .btn{display:inline-block;border:1px solid var(--line);background:var(--sumi2);color:var(--kinari);
-    padding:12px 18px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:15px;letter-spacing:.06em;transition:transform .08s}
-  .btn:active{transform:scale(.98)}
+    padding:12px 18px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:15px;transition:transform .08s}
+  .btn:active{transform:scale(.97)}
   .btn.primary{background:var(--hi);border-color:transparent;color:#fff;font-weight:700}
   .btn.gold{background:transparent;border-color:var(--kin);color:var(--kin)}
   .btn.small{padding:7px 12px;font-size:13px}
@@ -50,497 +45,698 @@
   .eyebrow{font-size:11px;letter-spacing:.4em;color:var(--kin);margin-bottom:8px}
   .note{font-size:12.5px;color:var(--hai)}
 
-  .cover{padding-top:6vh;text-align:center}
+  .cover{padding-top:5vh;text-align:center}
   .cover .case-no{font-size:11px;letter-spacing:.5em;color:var(--hai)}
-  .title-wrap{position:relative;display:inline-block;margin:24px auto 8px}
-  .v-title{writing-mode:vertical-rl;font-size:40px;font-weight:800;letter-spacing:.16em;line-height:1.5;
-    height:300px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
-  .v-sub{writing-mode:vertical-rl;font-size:13px;letter-spacing:.4em;color:var(--kin);height:260px;
-    display:inline-block;margin-right:24px;vertical-align:top;padding-top:10px}
-  .stamp{position:absolute;right:-56px;top:-4px;width:72px;height:72px;border:3px solid var(--hi);border-radius:50%;
-    color:var(--hi);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;
-    transform:rotate(12deg);opacity:.92}
-  .cover .lead{max-width:480px;margin:18px auto 28px;color:var(--hai);font-size:13.5px}
-  .cover .menu{display:flex;flex-direction:column;gap:12px;max-width:340px;margin:0 auto}
+  .title-wrap{position:relative;display:inline-block;margin:20px auto 6px}
+  .v-title{writing-mode:vertical-rl;font-size:38px;font-weight:800;letter-spacing:.14em;line-height:1.5;height:270px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  .v-sub{writing-mode:vertical-rl;font-size:13px;letter-spacing:.4em;color:var(--kin);height:240px;display:inline-block;margin-right:22px;vertical-align:top;padding-top:10px}
+  .stamp{position:absolute;right:-54px;top:-4px;width:70px;height:70px;border:3px solid var(--hi);border-radius:50%;
+    color:var(--hi);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;transform:rotate(12deg)}
+  .cover .lead{max-width:460px;margin:14px auto 24px;color:var(--hai);font-size:13.5px}
+  .cover .menu{display:flex;flex-direction:column;gap:11px;max-width:340px;margin:0 auto}
 
-  .paper{background:var(--kinari);color:#2b2317;border-radius:4px;padding:22px 20px;
+  .paper{background:var(--kinari);color:#2b2317;border-radius:4px;padding:20px 18px;
     box-shadow:0 10px 30px rgba(0,0,0,.5);position:relative;overflow:hidden;margin-bottom:14px}
   .paper:before{content:"";position:absolute;inset:0;pointer-events:none;
     background:repeating-linear-gradient(0deg, rgba(120,90,40,.045) 0 2px, transparent 2px 5px)}
-  .paper h3{font-size:17px;margin-bottom:10px;letter-spacing:.08em}
+  .paper h3{font-size:17px;margin-bottom:8px}
   .paper .meta{font-size:12px;color:#8a7a58;letter-spacing:.2em;margin-bottom:6px}
-  .paper p{margin-bottom:10px}
-  .paper ul{padding-left:1.2em;margin-bottom:10px}
-  .paper li{margin-bottom:6px}
+  .paper p{margin-bottom:9px}
+  .paper ul{padding-left:1.2em;margin-bottom:8px}
+  .paper li{margin-bottom:5px}
   .paper .secret-stamp{position:absolute;top:10px;right:12px;border:2px solid var(--hi);color:var(--hi);
     font-weight:800;font-size:13px;letter-spacing:.2em;padding:3px 8px;transform:rotate(8deg);opacity:.85}
 
-  .test-box{border:2px solid var(--hi);border-radius:6px;padding:12px 14px;margin:12px 0;background:rgba(196,58,42,.06)}
-  .test-box .tb-label{display:inline-block;background:var(--hi);color:#fff;font-size:11px;font-weight:700;
-    letter-spacing:.2em;padding:2px 10px;border-radius:3px;margin-bottom:6px}
-  .test-box .goro{font-size:13px;color:#8a4a2a;margin-top:6px}
+  .test-box{border:2px solid var(--hi);border-radius:6px;padding:11px 13px;margin:10px 0;background:rgba(196,58,42,.06)}
+  .test-box .tb-label{display:inline-block;background:var(--hi);color:#fff;font-size:11px;font-weight:700;letter-spacing:.2em;padding:2px 10px;border-radius:3px;margin-bottom:5px}
+  .test-box .goro{font-size:13px;color:#8a4a2a;margin-top:5px}
   .test-box .goro:before{content:"♪ おぼえ方 ";font-weight:700}
-  .deep-box{border:2px solid #5b7fc7;border-radius:6px;padding:12px 14px;margin:12px 0;background:rgba(91,127,199,.07)}
-  .deep-box .db-label{display:inline-block;background:#5b7fc7;color:#fff;font-size:11px;font-weight:700;
-    letter-spacing:.2em;padding:2px 10px;border-radius:3px;margin-bottom:6px}
+  .deep-box{border:2px solid var(--ao);border-radius:6px;padding:11px 13px;margin:10px 0;background:rgba(91,127,199,.07)}
+  .deep-box .db-label{display:inline-block;background:var(--ao);color:#fff;font-size:11px;font-weight:700;letter-spacing:.2em;padding:2px 10px;border-radius:3px;margin-bottom:5px}
   .deep-box .db-body{font-size:14px}
 
-  /* マップ */
-  .hud{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:8px;
-    padding:10px 14px;margin-bottom:14px;background:var(--sumi2);font-size:13px}
-  .hud .cnt{color:var(--kin);font-family:"Shippori Mincho",serif;font-size:17px}
-  .map-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .map-card{border:1px solid var(--line);border-radius:10px;background:var(--sumi2);padding:16px 10px;text-align:center;
-    cursor:pointer;font-family:inherit;color:var(--kinari);transition:border-color .15s;position:relative}
-  .map-card:hover{border-color:var(--kin)}
-  .map-card .icon{font-size:30px;display:block;margin-bottom:6px}
-  .map-card .nm{font-size:14px;font-weight:700;letter-spacing:.04em}
-  .map-card .st{font-size:11px;color:var(--hai);margin-top:2px}
-  .map-card.clear{border-color:var(--ok)}
-  .map-card.locked{opacity:.55}
-  .map-card .badge{position:absolute;top:8px;right:8px;font-size:11px;color:var(--ok)}
+  /* ===== ビジュアルノベル画面 ===== */
+  .vn-stage{
+    position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    background:radial-gradient(circle at 50% 42%, #3a2f24 0%, #241d17 55%, #171310 100%);
+    min-height:430px;display:flex;flex-direction:column;
+  }
+  .vn-lines{position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background:repeating-conic-gradient(from 0deg at 50% 40%, rgba(242,232,213,.05) 0deg 2deg, transparent 2deg 7deg)}
+  .vn-lines.hot{opacity:1;
+    background:repeating-conic-gradient(from 0deg at 50% 40%, rgba(196,58,42,.16) 0deg 2deg, transparent 2deg 6deg)}
+  .vn-portrait{flex:1;display:flex;align-items:flex-end;justify-content:center;position:relative;padding-top:14px;min-height:250px}
+  .vn-portrait svg{filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+  .vn-portrait.shake{animation:shake .35s}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+  .vn-nameplate{position:absolute;left:0;bottom:118px;background:var(--hi);color:#fff;font-weight:700;
+    padding:4px 16px 4px 12px;font-size:14px;letter-spacing:.1em;border-radius:0 4px 4px 0;z-index:3;
+    box-shadow:2px 2px 8px rgba(0,0,0,.4)}
+  .vn-nameplate.narr{background:#4a4238}
+  .vn-textbox{position:relative;z-index:2;background:rgba(15,12,9,.92);border-top:2px solid var(--kin);
+    min-height:118px;padding:16px 16px 14px;cursor:pointer}
+  .vn-textbox .txt{font-size:16px;line-height:1.9;min-height:62px}
+  .vn-next{position:absolute;right:14px;bottom:10px;color:var(--kin);font-size:13px;animation:blink 1s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+  .vn-prog{position:absolute;top:10px;right:12px;font-size:11px;color:var(--hai);z-index:3}
+  .vn-skip{position:absolute;top:6px;left:10px;z-index:3}
 
-  /* 探索スポット */
+  /* ツキツケ演出 */
+  .fx-bg{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
+    background:radial-gradient(circle, rgba(60,10,5,.85), rgba(20,5,3,.96));}
+  .fx-bg .fx-lines{position:absolute;inset:0;
+    background:repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,240,200,.22) 0deg 2deg, transparent 2deg 5deg);
+    animation:spin 9s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .fx-item{font-size:84px;z-index:2;animation:slam .4s cubic-bezier(.2,2,.4,1) both;filter:drop-shadow(0 0 18px rgba(255,220,140,.8))}
+  @keyframes slam{0%{transform:scale(4);opacity:0}60%{transform:scale(.9);opacity:1}100%{transform:scale(1)}}
+  .fx-word{z-index:2;font-size:44px;font-weight:800;color:#fff;letter-spacing:.1em;margin-top:6px;
+    text-shadow:0 0 12px var(--hi), 3px 3px 0 var(--hi);animation:slam .45s .1s cubic-bezier(.2,2,.4,1) both;
+    transform:rotate(-6deg)}
+  .fx-sub{z-index:2;color:#f0d9a0;font-size:13px;margin-top:14px;animation:blink 1.2s infinite}
+
+  /* 入手・解放バナー */
+  .get-banner{border:2px solid var(--kin);border-radius:8px;padding:11px 13px;margin:12px 0;background:rgba(212,169,78,.1);
+    display:flex;align-items:center;gap:12px;cursor:pointer;animation:pop .3s cubic-bezier(.2,1.6,.4,1) both}
+  @keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+  .get-banner .gicon{font-size:26px}
+  .get-banner .gt{font-weight:700;font-size:14px}
+
+  /* 絵地図 */
+  .hud{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:8px;
+    padding:9px 13px;margin-bottom:12px;background:var(--sumi2);font-size:13px}
+  .hud .cnt{color:var(--kin);font-family:"Shippori Mincho",serif;font-size:17px}
+  .mapwrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#e7dbbd}
+  .map-pin{cursor:pointer}
+  .map-pin:hover circle.pin-c{stroke:#8a2a1a}
+
+  /* 場所・話題 */
   .spot{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:8px;background:var(--sumi2);
-    padding:13px 14px;margin-bottom:10px;width:100%;text-align:left;color:var(--kinari);font-family:inherit;font-size:14.5px;cursor:pointer}
+    padding:12px 14px;margin-bottom:9px;width:100%;text-align:left;color:var(--kinari);font-family:inherit;font-size:14.5px;cursor:pointer}
   .spot:hover{border-color:var(--kin)}
   .spot.done{border-color:var(--ok)}
   .spot .sicon{font-size:22px;flex:0 0 auto}
   .spot .check{margin-left:auto;color:var(--ok)}
-
-  /* 会話 */
-  .person-head{display:flex;gap:14px;align-items:center;margin-bottom:12px}
-  .person-mon{flex:0 0 56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:24px;font-weight:800;border:2px solid var(--line)}
-  .person-head .nm{font-size:19px;font-weight:700}
-  .person-head .rl{font-size:12px;color:var(--kin);letter-spacing:.1em}
   .topic{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;background:var(--sumi2);
-    padding:12px 14px;margin-bottom:9px;width:100%;text-align:left;color:var(--kinari);font-family:inherit;font-size:14.5px;cursor:pointer}
+    padding:11px 13px;margin-bottom:8px;width:100%;text-align:left;color:var(--kinari);font-family:inherit;font-size:14.5px;cursor:pointer}
   .topic:hover{border-color:var(--kin)}
   .topic.done{border-color:var(--ok)}
   .topic.locked{opacity:.55;cursor:default}
   .topic .lockhint{font-size:11.5px;color:var(--hi);display:block}
-  .serif-line{border-left:3px solid var(--kin);padding:6px 12px;margin:10px 0;font-size:15px;background:rgba(212,169,78,.05);border-radius:0 6px 6px 0}
-  .get-banner{border:2px solid var(--kin);border-radius:8px;padding:12px 14px;margin:14px 0;background:rgba(212,169,78,.1);
-    display:flex;align-items:center;gap:12px;cursor:pointer}
-  .get-banner .gicon{font-size:26px}
-  .get-banner .gt{font-weight:700}
+  .topic.tsuki{border-color:var(--hi);background:rgba(196,58,42,.08)}
+  .loc-head{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+  .loc-head .licon{font-size:38px}
 
-  /* バッグ */
   .inv-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
-  .inv-tile{border:1px solid var(--line);border-radius:8px;background:var(--sumi2);padding:12px 6px;text-align:center;
-    cursor:pointer;font-family:inherit;color:var(--kinari)}
+  .inv-tile{border:1px solid var(--line);border-radius:8px;background:var(--sumi2);padding:11px 6px;text-align:center;cursor:pointer;font-family:inherit;color:var(--kinari)}
   .inv-tile .icon{font-size:24px;display:block;margin-bottom:4px}
   .inv-tile .t{font-size:11px;line-height:1.4}
   .inv-tile.empty{opacity:.3;cursor:default}
 
-  /* クイズ */
   .q-num{font-size:12px;letter-spacing:.25em;color:var(--kin);margin-bottom:6px}
-  .q-text{font-size:17px;font-weight:700;margin-bottom:16px;line-height:1.7}
-  .choices{display:flex;flex-direction:column;gap:10px}
+  .q-text{font-size:17px;font-weight:700;margin-bottom:14px;line-height:1.7}
+  .choices{display:flex;flex-direction:column;gap:9px}
   .choice{border:1px solid var(--line);background:var(--sumi2);color:var(--kinari);border-radius:8px;
-    padding:13px 14px;text-align:left;font-size:15px;cursor:pointer;font-family:inherit}
+    padding:12px 14px;text-align:left;font-size:15px;cursor:pointer;font-family:inherit}
   .choice:hover{border-color:var(--kin)}
   .choice.correct{border-color:var(--ok);background:rgba(78,140,90,.15)}
   .choice.wrong{border-color:var(--hi);background:rgba(196,58,42,.12)}
-  .fb{border-radius:8px;padding:12px 14px;margin-top:14px;font-size:14px}
+  .fb{border-radius:8px;padding:11px 13px;margin-top:12px;font-size:14px}
   .fb.ok{background:rgba(78,140,90,.15);border:1px solid var(--ok)}
   .fb.ng{background:rgba(196,58,42,.12);border:1px solid var(--hi)}
-  .score-bar{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--hai);margin-bottom:14px}
-  .rank-big{font-size:44px;letter-spacing:.1em;text-align:center;margin:10px 0;color:#8a4a2a}
-  .adv-tag{display:inline-block;background:#5b7fc7;color:#fff;font-size:10px;font-weight:700;letter-spacing:.15em;
-    padding:1px 8px;border-radius:3px;vertical-align:middle;margin-left:6px}
+  .score-bar{display:flex;justify-content:space-between;font-size:13px;color:var(--hai);margin-bottom:12px}
+  .rank-big{font-size:44px;text-align:center;margin:8px 0;color:#8a4a2a}
+  .adv-tag{display:inline-block;background:var(--ao);color:#fff;font-size:10px;font-weight:700;letter-spacing:.15em;padding:1px 8px;border-radius:3px;vertical-align:middle;margin-left:6px}
 
   .tl{border-left:2px solid var(--kin);padding-left:14px;margin-top:6px}
-  .tl-row{margin-bottom:14px}
-  .tl-row .yr{font-family:"Shippori Mincho",serif;font-size:19px;color:var(--kin);letter-spacing:.08em}
+  .tl-row{margin-bottom:12px}
+  .tl-row .yr{font-family:"Shippori Mincho",serif;font-size:18px;color:var(--kin)}
   .tl-row .ev{font-size:14.5px}
   .tl-row .gr{font-size:12px;color:var(--hai)}
 
-  .modal-bg{position:fixed;inset:0;background:rgba(12,10,8,.94);display:flex;align-items:flex-start;justify-content:center;padding:18px;z-index:50;overflow-y:auto}
+  .modal-bg{position:fixed;inset:0;background:rgba(12,10,8,.94);display:flex;align-items:flex-start;justify-content:center;padding:16px;z-index:50;overflow-y:auto}
   .modal-card{max-width:460px;width:100%;margin:auto 0}
 
   @media(min-width:560px){
-    .map-grid{grid-template-columns:1fr 1fr 1fr}
     .inv-grid{grid-template-columns:repeat(4,1fr)}
     body{font-size:16px}
+    .vn-stage{min-height:470px}
   }
-  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel" data-presets="react">
-const {useState} = React;
+const {useState, useEffect, useRef} = React;
 
 /* =====================================================
-   歴史探偵事件簿・壱 「本能寺の変」 v2 探索アドベンチャー版
+   歴史探偵事件簿・壱 「本能寺の変」 v3 ビジュアル版
    ===================================================== */
-const APP_VERSION = "v2";
+const APP_VERSION = "v3";
 
-/* ---------- アイテム(証拠) ---------- */
+/* ---------- キャラクター立ち絵(SVG漫画風) ---------- */
+const CHAR_CONF = {
+  shino:    {name:"侍女・しの",   role:"本能寺の生き残り", skin:"#f5dcc0", kimono:"#7a6296", collar:"#e8dff0", hair:"#2e2438", style:"long"},
+  froi:     {name:"フロイス",     role:"宣教師",           skin:"#f0d0b0", kimono:"#3a3a44", collar:"#d8d8dc", hair:"#6e5a44", style:"beard"},
+  rikyu:    {name:"千利休",       role:"堺の商人・茶人",   skin:"#ecd2ae", kimono:"#4a4436", collar:"#cfc6ae", hair:"#5a5248", style:"monk"},
+  akindo:   {name:"商人・与助",   role:"安土の商人",       skin:"#f0cfa6", kimono:"#8a6a2a", collar:"#e6d9b0", hair:"#3a2e20", style:"hachimaki"},
+  hideyoshi:{name:"羽柴 秀吉",    role:"織田家の出世頭",   skin:"#e8c49a", kimono:"#b0342b", collar:"#f0e0c0", hair:"#2a2018", style:"topknot"},
+  gonbe:    {name:"農民・権兵衛", role:"老ノ坂の村人",     skin:"#e0bc90", kimono:"#5a6242", collar:"#cfc6a0", hair:"#3a3026", style:"kasa"},
+  mitsuhide:{name:"明智 光秀",    role:"織田家の重臣",     skin:"#f2dabb", kimono:"#3a4a6e", collar:"#dfe4ee", hair:"#241e18", style:"eboshi", crest:true},
+  nobunaga: {name:"織田 信長",    role:"天下人まであと一歩",skin:"#eed2ac", kimono:"#6e1f1a", collar:"#e8d8b8", hair:"#241e18", style:"nobunaga"}
+};
+
+function Portrait({id, expr, size}){
+  const c=CHAR_CONF[id]; if(!c) return null;
+  const s=size||210;
+  const e=expr||"normal";
+  const eyes=()=>{
+    if(e==="shock") return (<g>
+      <circle cx="46" cy="52" r="7.5" fill="#fff" stroke="#222" strokeWidth="1.6"/>
+      <circle cx="74" cy="52" r="7.5" fill="#fff" stroke="#222" strokeWidth="1.6"/>
+      <circle cx="46" cy="52" r="2" fill="#222"/><circle cx="74" cy="52" r="2" fill="#222"/>
+      <path d="M36,41 L54,44" stroke="#222" strokeWidth="2.4" fill="none"/>
+      <path d="M84,41 L66,44" stroke="#222" strokeWidth="2.4" fill="none"/>
+      <path d="M88,60 q4,7 0,12 q-5,-4 -2,-11 z" fill="#9ecfec" stroke="#5a9ec4" strokeWidth="1"/>
+    </g>);
+    if(e==="smile") return (<g>
+      <path d="M40,52 q6,-7 12,0" stroke="#222" strokeWidth="2.4" fill="none"/>
+      <path d="M68,52 q6,-7 12,0" stroke="#222" strokeWidth="2.4" fill="none"/>
+    </g>);
+    if(e==="angry") return (<g>
+      <circle cx="46" cy="53" r="3.4" fill="#222"/><circle cx="74" cy="53" r="3.4" fill="#222"/>
+      <path d="M36,42 L56,48" stroke="#222" strokeWidth="2.6" fill="none"/>
+      <path d="M84,42 L64,48" stroke="#222" strokeWidth="2.6" fill="none"/>
+    </g>);
+    if(e==="sad") return (<g>
+      <circle cx="46" cy="53" r="3" fill="#222"/><circle cx="74" cy="53" r="3" fill="#222"/>
+      <path d="M38,46 L54,42" stroke="#222" strokeWidth="2.2" fill="none"/>
+      <path d="M82,46 L66,42" stroke="#222" strokeWidth="2.2" fill="none"/>
+    </g>);
+    return (<g>
+      <circle cx="46" cy="52" r="3.4" fill="#222"/><circle cx="74" cy="52" r="3.4" fill="#222"/>
+      <path d="M38,44 L54,44" stroke="#222" strokeWidth="2.2" fill="none"/>
+      <path d="M82,44 L66,44" stroke="#222" strokeWidth="2.2" fill="none"/>
+    </g>);
+  };
+  const mouth=()=>{
+    if(e==="shock") return <ellipse cx="60" cy="72" rx="6" ry="7" fill="#5a2a22"/>;
+    if(e==="smile") return <path d="M50,70 q10,9 20,0" stroke="#5a2a22" strokeWidth="2.6" fill="none"/>;
+    if(e==="angry") return <path d="M50,74 q10,-6 20,0" stroke="#5a2a22" strokeWidth="2.6" fill="none"/>;
+    if(e==="sad")   return <path d="M52,74 q8,-5 16,0" stroke="#5a2a22" strokeWidth="2.4" fill="none"/>;
+    return <path d="M52,71 L68,71" stroke="#5a2a22" strokeWidth="2.4" fill="none"/>;
+  };
+  const hairAndHat=()=>{
+    switch(c.style){
+      case "long": return (<g>
+        <path d="M28,54 q-4,-38 32,-38 q36,0 32,38 q0,-24 -12,-28 q4,10 -2,12 q-6,-14 -18,-14 q-12,0 -18,14 q-6,-2 -2,-12 q-12,4 -12,28 z" fill={c.hair}/>
+        <path d="M28,50 q-6,26 -4,44 l12,0 q-4,-20 -2,-36 z" fill={c.hair}/>
+        <path d="M92,50 q6,26 4,44 l-12,0 q4,-20 2,-36 z" fill={c.hair}/>
+      </g>);
+      case "beard": return (<g>
+        <path d="M32,40 q-2,-24 28,-24 q30,0 28,24 q-8,-14 -28,-14 q-20,0 -28,14 z" fill={c.hair}/>
+        <path d="M40,76 q20,18 40,0 q-2,16 -20,16 q-18,0 -20,-16 z" fill={c.hair} opacity=".9"/>
+        <rect x="55" y="96" width="10" height="14" rx="2" fill="#c8a04e"/>
+        <rect x="51" y="100" width="18" height="5" rx="2" fill="#c8a04e"/>
+      </g>);
+      case "monk": return (<g>
+        <path d="M34,38 q4,-16 26,-16 q22,0 26,16 q-10,-8 -26,-8 q-16,0 -26,8 z" fill={c.hair} opacity=".5"/>
+        <path d="M42,80 q18,14 36,0 q-2,12 -18,12 q-16,0 -18,-12 z" fill="#8a8276"/>
+      </g>);
+      case "hachimaki": return (<g>
+        <path d="M30,46 q0,-28 30,-28 q30,0 30,28 q-10,-16 -30,-16 q-20,0 -30,16 z" fill={c.hair}/>
+        <rect x="28" y="34" width="64" height="9" rx="4" fill="#e8e0cc" stroke="#b0a684" strokeWidth="1"/>
+      </g>);
+      case "topknot": return (<g>
+        <path d="M32,44 q0,-26 28,-26 q28,0 28,26 q-10,-15 -28,-15 q-18,0 -28,15 z" fill={c.hair}/>
+        <path d="M54,16 q6,-8 12,0 l-3,8 l-6,0 z" fill={c.hair}/>
+        <path d="M44,64 q4,4 8,0" stroke="#5a3a22" strokeWidth="1.6" fill="none"/>
+        <path d="M68,64 q4,4 8,0" stroke="#5a3a22" strokeWidth="1.6" fill="none"/>
+      </g>);
+      case "kasa": return (<g>
+        <path d="M14,40 L60,6 L106,40 Z" fill="#c8b478" stroke="#9a8a54" strokeWidth="1.5"/>
+        <path d="M40,88 q4,6 8,4 M72,88 q-4,6 -8,4" stroke={c.hair} strokeWidth="2" fill="none"/>
+      </g>);
+      case "eboshi": return (<g>
+        <path d="M34,42 q0,-24 26,-24 q26,0 26,24 q-8,-14 -26,-14 q-18,0 -26,14 z" fill={c.hair}/>
+        <path d="M44,20 q4,-22 26,-18 q8,2 6,14 q-2,10 -14,10 q-14,0 -18,-6 z" fill="#1a1512" stroke="#000" strokeWidth="1"/>
+      </g>);
+      case "nobunaga": return (<g>
+        <path d="M32,42 q0,-26 28,-26 q28,0 28,26 q-10,-16 -28,-16 q-18,0 -28,16 z" fill={c.hair}/>
+        <path d="M52,14 q8,-10 16,0 l-4,9 l-8,0 z" fill={c.hair}/>
+        <path d="M44,64 q6,5 12,2 M76,64 q-6,5 -12,2" stroke="#241e18" strokeWidth="2" fill="none"/>
+        <path d="M52,80 q8,7 16,0 l-2,7 q-6,4 -12,0 z" fill="#241e18" opacity=".8"/>
+      </g>);
+      default: return null;
+    }
+  };
+  return (
+    <svg width={s} height={s*1.08} viewBox="0 0 120 130">
+      {/* 体 */}
+      <path d="M14,130 Q60,86 106,130 Z" fill={c.kimono} stroke="#141414" strokeWidth="1.5"/>
+      <path d="M60,96 L38,130 L48,130 L60,106 L72,130 L82,130 Z" fill={c.collar}/>
+      {c.crest && <g transform="translate(60,118)">
+        <circle r="7" fill="#cfe0f4"/>
+        {[0,72,144,216,288].map(a=>(
+          <ellipse key={a} cx="0" cy="-4" rx="2.2" ry="4" fill="#5b7fc7" transform={"rotate("+a+")"}/>
+        ))}
+      </g>}
+      {/* 頭 */}
+      <circle cx="60" cy="54" r="32" fill={c.skin} stroke="#141414" strokeWidth="1.5"/>
+      {hairAndHat()}
+      {eyes()}
+      {mouth()}
+      <path d="M57,58 q3,4 6,0" stroke="#c9a27c" strokeWidth="1.6" fill="none"/>
+    </svg>
+  );
+}
+
+/* ---------- アイテム ---------- */
 const ITEMS = {
   teppo:{icon:"🔫", name:"焼けた鉄砲",
-    basic:"鉄砲は1543年、ポルトガル人を乗せた船が種子島(たねがしま・鹿児島県)に流れ着いて伝わった。その後、堺(大阪府)や国友(滋賀県)で大量生産された。",
+    basic:"鉄砲は1543年、ポルトガル人が種子島(鹿児島県)に伝えた。堺や国友で大量生産された。",
     goro:"以後よさん(1543)そろえて鉄砲買おう",
-    deep:"有名な長篠の戦い(1575)の「三千丁の鉄砲・三段撃ち」は、実は当時の史料には書かれておらず、後の時代の創作の可能性が指摘されている。ただし「大量の鉄砲を組織的に使って騎馬隊を破った」こと自体は確か。火縄銃は雨に弱く、1発撃つのに20秒以上かかった──だからこそ「組織的に使う工夫」が時代を変えた。"},
+    deep:"長篠の戦い(1575)の「三段撃ち」は当時の史料になく、後世の創作の可能性が指摘される。ただし大量の鉄砲で騎馬隊を破ったのは確か。火縄銃は雨に弱く1発20秒以上──だから「組織的に使う工夫」が時代を変えた。"},
   meirei:{icon:"📜", name:"燃え残った命令書",
-    basic:"「明智光秀に命ず。中国地方へ出陣し、羽柴秀吉を助けよ」── 信長本人の命令書。1582年6月2日・本能寺の変。この命令が、皮肉にも光秀に1万3千の大軍を与えた。",
+    basic:"「明智光秀に命ず。中国へ出陣し秀吉を助けよ」──信長の命令。1582年・本能寺の変。この命令が光秀に1万3千の大軍を与えた。",
     goro:"いちごパンツ(1582)の本能寺",
-    deep:"なぜ天下人目前の信長が、わずかな家来しか連れていなかったのか? このとき織田軍の主力は、毛利攻め(秀吉)・上杉攻め(柴田勝家)・関東(滝川一益)などに分散していた。「日本中に敵がいない」と思えた瞬間こそが、最大のすきだった。"},
+    deep:"なぜ信長は少人数だった? 織田軍主力は毛利攻め(秀吉)・上杉攻め(柴田)などに分散中。「日本中に敵なし」と思えた瞬間こそ最大のすきだった。"},
   shogen:{icon:"🎏", name:"侍女の証言メモ",
-    basic:"生き残った侍女の証言:「おそってきた軍の旗は、水色の桔梗(ききょう)の紋でした」── 水色桔梗は、明智家の家紋である。",
-    deep:"信長は最期のとき、女性たちに「女はくるしからず(=女は逃げてよい)」と逃げ道を開けたと記録に残る。「是非に及ばず(=しかたあるまい)」の一言とあわせて、信長の最期の姿を伝える貴重な証言だ。"},
+    basic:"「おそってきた軍の旗は、水色の桔梗(ききょう)でした」──水色桔梗は明智家の家紋。",
+    deep:"信長は最期に女性たちへ「女はくるしからず(逃げてよい)」と道を開けたと伝わる。「是非に及ばず」とあわせ、信長の最期を伝える証言。"},
   froisu:{icon:"✝️", name:"フロイスの記録",
-    basic:"キリスト教は1549年、宣教師フランシスコ・ザビエルが鹿児島に伝えた。信長はキリスト教を保護し、ポルトガル・スペインとの南蛮貿易がさかんになった。",
+    basic:"キリスト教は1549年、フランシスコ・ザビエルが鹿児島に伝えた。信長は保護し、南蛮貿易がさかんに。",
     goro:"以後よく(1549)広まるキリスト教",
-    deep:"ザビエルたちはイエズス会という組織の宣教師。宣教師ルイス・フロイスは『日本史』という記録を残し、信長を「決断力があり、家臣にも尊大にふるまう人物」と生き生きと書いた。外国人の目から見た戦国日本が分かる、世界的にも貴重な史料だ。"},
+    deep:"ザビエルらはイエズス会の宣教師。フロイスの『日本史』は、外国人の目から見た戦国日本が分かる世界的に貴重な史料。"},
   daicho:{icon:"📒", name:"堺の鉄砲台帳",
-    basic:"堺は鉄砲の大量生産地として栄えた商業都市。種子島に伝わった鉄砲の技術は、堺や国友(滋賀県)に広まり量産された。",
-    deep:"堺は大名に支配されず、会合衆(えごうしゅう)と呼ばれる豪商たちの合議で自治を行っていた。町の周りに堀をめぐらせ(環濠都市)、宣教師ヴィレラは「ベニス(イタリアの自治都市)のように自治が行われている」と本国に報告した。"},
+    basic:"鉄砲は堺(大阪府)と国友(滋賀県)で量産された。堺は日本一の貿易都市。",
+    deep:"堺は大名に支配されず、会合衆(えごうしゅう)という豪商の合議で自治。宣教師ヴィレラは「ベニスのように自治が行われる」と報告した。"},
   mokugeki:{icon:"👣", name:"家康の目撃メモ",
-    basic:"事件のとき、徳川家康はわずかな供を連れて堺を見物中だった。事件を知ると、山の中を命がけで通って三河へ脱出した(伊賀越え)。",
-    deep:"この「神君伊賀越え」は家康の生涯で最大の危機と言われる。ここを生きのびた男が、18年後の1600年に関ヶ原の戦いを制し、1603年に江戸幕府を開く ── 歴史はつながっている。"},
+    basic:"事件のとき家康はわずかな供と堺見物中。山中を命がけで三河へ脱出した(伊賀越え)。",
+    deep:"「神君伊賀越え」は家康最大の危機。ここを生きのびた男が1600年に関ヶ原を制し、1603年江戸幕府を開く──歴史はつながっている。"},
   kousatsu:{icon:"🏯", name:"楽市・楽座の高札",
-    basic:"信長は安土城下で楽市・楽座を実施。市場の税を免除し、座(商人の組合)の特権を廃止して、だれでも自由に商売できるようにした。関所も廃止した。",
+    basic:"信長は安土城下で楽市・楽座。税を免除し座を廃止、だれでも自由に商売できた。関所も廃止。",
     goro:"「楽」=規制をなくしてラクに商売",
-    deep:"信長の強さの秘密は「経済」。自由な商売で町がにぎわえば、人・モノ・お金・情報が集まり、それが軍資金になる。信長の印章「天下布武(てんかふぶ)」は武力だけでなく、新しい仕組みで天下を治める意志の表れとも言われる。"},
-  hieizan:{icon:"🔥", name:"比叡山焼き討ちの記録",
-    basic:"信長は1571年、敵対した比叡山延暦寺(ひえいざんえんりゃくじ)を焼き討ちにした。また各地の一向一揆(いっこういっき)や石山本願寺とも長く戦った。",
-    deep:"当時の延暦寺や本願寺は、僧兵という武力と、広大な領地・経済力を持つ「戦国大名なみの勢力」だった。石山本願寺との戦いは約10年続いた。この「仏をもおそれぬ厳しさ」への反発が、光秀の動機の一つになったという説もある。"},
+    deep:"信長の強さの秘密は経済。町がにぎわえば人・モノ・金・情報が集まり軍資金になる。印章「天下布武」は新しい仕組みで天下を治める意志とも。"},
+  hieizan:{icon:"🔥", name:"焼き討ちの記録",
+    basic:"信長は1571年、比叡山延暦寺を焼き討ち。一向一揆や石山本願寺とも長く戦った。",
+    deep:"当時の延暦寺や本願寺は僧兵と経済力を持つ「大名なみの勢力」。本願寺との戦いは約10年。この厳しさへの反発が光秀の動機という説も。"},
   mizuzeme:{icon:"🌊", name:"水攻めの絵図",
-    basic:"事件のとき、羽柴秀吉は備中高松城(岡山県)を水攻めの真っ最中だった。事件を知ると毛利氏とすぐ和睦し、京都まで約200kmを約10日で駆けもどった(中国大返し)。",
-    deep:"川をせき止める長大な堤防を短期間で築いた土木力と、だれよりも早く正確な情報をつかむ力 ── これが秀吉の武器。この力はのちの太閤検地(全国の土地調査)や大阪城の築城につながっていく。"},
+    basic:"事件のとき秀吉は備中高松城(岡山)を水攻め中。事件を知ると毛利と和睦し、約200kmを約10日で駆けもどった(中国大返し)。",
+    deep:"堤防を短期間で築く土木力と情報力が秀吉の武器。のちの太閤検地や大阪城築城につながる。"},
   chizu:{icon:"🗺️", name:"進軍ルートの地図",
-    basic:"中国地方へ向かうはずの1万3千の軍が、老ノ坂(おいのさか)峠で進路を東へ変え、桂川を越えて京都へ。指揮官は全軍に告げた──「敵は本能寺にあり」。",
+    basic:"西へ行くはずの1万3千の軍が、老ノ坂峠で東へ──京都へ。「敵は本能寺にあり」。",
     goro:"セリフごと覚えよう:「敵は本能寺にあり」",
-    deep:"老ノ坂は「西へ行くか、東(京都)へ行くか」の分かれ道。ここで東を選んだ瞬間、歴史が動いた。なお「敵は本能寺にあり」という言葉自体は後世の書物に書かれたもので、本当に言ったかは分かっていない──史料を疑う目も、探偵の力だ。"},
+    deep:"「敵は本能寺にあり」は後世の書物の言葉で、本当に言ったかは不明。史料を疑う目も探偵の力だ。"},
   tanzaku:{icon:"🎋", name:"愛宕百韻の短冊",
-    basic:"事件の数日前、光秀は愛宕山(あたごやま)で連歌の会を開き、こう詠んだ──「ときは今 あめが下しる 五月(さつき)かな」。",
-    deep:"「とき」は光秀の一族・土岐(とき)氏、「あめが下しる」は「天が下知る=天下を治める」に掛けられており、謀反(むほん)の決意表明だという説が有名。ただし「単に五月雨の季節を詠んだだけ」という説もある。一つの歌をどう読むか──解釈が分かれるのも歴史の面白さだ。"}
+    basic:"事件の数日前、光秀は愛宕山の連歌会で詠んだ──「ときは今 あめが下しる 五月かな」。",
+    deep:"「とき」=光秀の一族・土岐氏、「あめが下しる」=「天下を治める」に掛けた謀反の決意という説が有名。ただの季節の句という説もあり、解釈が分かれる。"}
 };
 const ITEM_ORDER = ["teppo","meirei","shogen","froisu","daicho","mokugeki","kousatsu","hieizan","mizuzeme","chizu","tanzaku"];
 
-/* ---------- 人物 ---------- */
+/* ---------- 会話スクリプト ---------- */
 const PEOPLE = {
-  shino:{mon:"忍", color:"#a08cb0", name:"侍女・しの", role:"本能寺の生き残り",
-    intro:"「……探偵様。あの夜のことを、お話しします」",
+  shino:{intro:[{sp:"shino",e:"sad",t:"……探偵様。あの夜のことを、お話しします"}],
     topics:[
       {id:"yoru", label:"あの夜、何があった?",
-       lines:["「明け方でした。ときの声と鉄砲の音で目が覚めたのです。寺はもう、大軍に囲まれておりました」",
-              "「上様(信長様)は敵の襲来を知ると、ただ一言──『是非に及ばず』と。そして自ら弓を取って戦われました」"]},
-      {id:"hata", label:"敵の軍の旗印は?",
-       lines:["「……水色の、桔梗(ききょう)の紋でございました。あの旗を、わたくしは生涯忘れません」",
-              "(証拠を手に入れた! 水色桔梗──どの家の家紋か、調べる価値がありそうだ)"],
-       gives:"shogen"},
-      {id:"nobunaga", label:"信長はどんな人だった?",
-       lines:["「恐ろしいお方、と世間は言います。ですが最期のとき、上様は私たち女性に『女はくるしからず』と、逃げ道を開けてくださいました」",
-              "「厳しさとお優しさの、両方をお持ちの方でした」"]}
+       script:[
+        {sp:"shino",e:"sad",t:"明け方、鉄砲の音で目が覚めました"},
+        {sp:"shino",e:"shock",t:"寺はもう、大軍に囲まれていて……"},
+        {sp:"shino",e:"normal",t:"上様はただ一言──「是非に及ばず」と"}]},
+      {id:"hata", label:"敵の軍の旗印は?", gives:"shogen",
+       script:[
+        {sp:"shino",e:"normal",t:"敵の旗は──水色の桔梗(ききょう)でした"},
+        {sp:null,t:"水色桔梗……どの家の家紋か、調べる価値がありそうだ。(証拠を入手!)"}]},
+      {id:"nobu", label:"信長はどんな人だった?",
+       script:[
+        {sp:"shino",e:"smile",t:"怖いお方と世間は言いますが……"},
+        {sp:"shino",e:"smile",t:"最期に「女は逃げよ」と、私たちに道を開けてくださいました"}]}
     ]},
-  froi:{mon:"福", color:"#7a9e9f", name:"ルイス・フロイス", role:"宣教師(イエズス会)",
-    intro:"「オオ、探偵サン。私はポルトガルから来た宣教師、フロイスと申しマス」",
+  froi:{intro:[{sp:"froi",e:"smile",t:"オオ、探偵サン。私はポルトガルの宣教師、フロイスと申しマス"}],
     topics:[
-      {id:"kirisuto", label:"キリスト教はいつ日本に?",
-       lines:["「1549年、我らの先輩フランシスコ・ザビエルが、カゴシマに上陸して伝えまシタ」",
-              "「ノブナガ様は私たちを保護してくださり、教会や学校を建てることも許してくださいまシタ」",
-              "(フロイスの記録を手に入れた!)"],
-       gives:"froisu"},
+      {id:"kirisuto", label:"キリスト教はいつ日本に?", gives:"froisu",
+       script:[
+        {sp:"froi",e:"smile",t:"1549年、ザビエル様がカゴシマに伝えまシタ"},
+        {sp:"froi",e:"normal",t:"ノブナガ様は、私たちを保護してくださいまシタ"}]},
       {id:"boueki", label:"南蛮貿易について",
-       lines:["「ポルトガルやスペインの船は、中国の生糸(きいと)や鉄砲・火薬を日本に運びマス。日本からは、たくさんの銀(ぎん)が支払われマス」",
-              "「日本の石見銀山(いわみぎんざん)の銀は、世界中で有名なのですヨ」"]},
-      {id:"jiken", label:"事件についてどう思う?",
-       lines:["「信じられまセン……。ノブナガ様は、天下統一まであと一歩でシタ」",
-              "「私は見たこと聞いたことを、すべて『日本史』という記録に書き残すつもりデス。真実は、記録の中に生き続けますカラ」"]}
+       script:[
+        {sp:"froi",e:"normal",t:"南蛮船は中国の生糸や火薬を日本へ運びマス"},
+        {sp:"froi",e:"smile",t:"日本からの支払いは──銀(ぎん)デス!"}]},
+      {id:"jiken", label:"事件をどう思う?",
+       script:[
+        {sp:"froi",e:"sad",t:"信じられまセン……天下統一まで、あと一歩でシタ"},
+        {sp:"froi",e:"normal",t:"私は見たことすべてを『日本史』に書き残しマス"}]}
     ]},
-  rikyu:{mon:"利", color:"#6e8c5a", name:"千利休", role:"堺の商人・茶人",
-    intro:"「ようこそ、堺へ。まあ、一服してから話しましょう」",
+  rikyu:{intro:[{sp:"rikyu",e:"smile",t:"ようこそ、堺へ。まあ、一服してから話しましょう"}],
     topics:[
       {id:"sakai", label:"堺はどんな町?",
-       lines:["「この町は、大名に支配されておりません。わしら商人が会合衆(えごうしゅう)という寄り合いで、自分たちの町を治めております」",
-              "「南蛮人の宣教師は『まるでベニスのようだ』と言うたそうな」"]},
-      {id:"teppo2", label:"鉄砲について聞く",
-       lines:["「種子島に伝わった鉄砲は、この堺と、近江の国友で大量に造られるようになりました。戦のやり方を、根こそぎ変えた道具ですわ」",
-              "(堺の鉄砲台帳を手に入れた!)"],
-       gives:"daicho"},
-      {id:"ieyasu2", label:"徳川家康を見なかったか?",
-       lines:["「家康様なら、昨日までこの堺を見物しておられましたよ。お供はほんのわずか」",
-              "「事件を聞くや、血相を変えて……山の中を通って三河へ逃げ帰られたとか。伊賀越えと言うそうな。ようご無事で」",
-              "(家康の目撃メモを手に入れた! 家康に犯行は不可能だったようだ)"],
-       gives:"mokugeki"},
+       script:[
+        {sp:"rikyu",e:"normal",t:"この町は、大名に支配されておりません"},
+        {sp:"rikyu",e:"smile",t:"会合衆(えごうしゅう)という商人の寄り合いが治めています"}]},
+      {id:"teppo2", label:"鉄砲について聞く", gives:"daicho",
+       script:[
+        {sp:"rikyu",e:"normal",t:"種子島の鉄砲は、この堺と国友で量産されました"},
+        {sp:"rikyu",e:"normal",t:"戦のやり方を、根こそぎ変えた道具ですわ"}]},
+      {id:"ieyasu2", label:"家康を見なかったか?", gives:"mokugeki",
+       script:[
+        {sp:"rikyu",e:"normal",t:"家康様なら、昨日までこの堺を見物しておられました"},
+        {sp:"rikyu",e:"shock",t:"事件を聞くや、山を越えて三河へ──伊賀越えです"}]},
       {id:"wabicha", label:"わび茶について",
-       lines:["「わしが目指すのは、豪華さではのうて、質素な中にある美しさ──わび茶です」",
-              "「金ぴかの茶室より、一輪の朝顔。……この心、いつか天下人にも伝わるとよいのですが」"],
-       deep:{title:"発展 ── 桃山文化", body:"千利休はわび茶を大成し、のちに秀吉に仕える。同じ時代、狩野永徳は「唐獅子図屏風」などの豪華な障壁画を描き、出雲の阿国はかぶき踊りを始めた。壮大な姫路城も含め、この時代の文化を桃山文化と呼ぶ。「豪華(永徳)」と「質素(利休)」が同居しているのが面白いところ。"}}
+       deep:{title:"発展 ── 桃山文化", body:"千利休はわび茶を大成。同時代に狩野永徳の「唐獅子図屏風」、出雲の阿国のかぶき踊り、壮大な姫路城──これらを桃山文化と呼ぶ。「豪華」と「質素」が同居するのが面白い。"},
+       script:[
+        {sp:"rikyu",e:"smile",t:"金ぴかの茶室より、一輪の朝顔"},
+        {sp:"rikyu",e:"smile",t:"質素の中の美──わび茶と申します"}]}
     ]},
-  akindo:{mon:"商", color:"#c8a04e", name:"安土の商人・与助", role:"城下町の商人",
-    intro:"「へい、いらっしゃい! 安土の町は日本一にぎやかでっせ……いや、でした」",
+  akindo:{intro:[{sp:"akindo",e:"smile",t:"へい、いらっしゃい! 安土は日本一にぎやかでっせ"}],
     topics:[
-      {id:"rakuichi", label:"この町の商売について",
-       lines:["「信長様はこの町で楽市・楽座をなさった。市場の税はタダ、座(組合)の特権もなし。だれでも自由に商売できますのや」",
-              "「関所もなくなって、人もモノもどんどん集まる。おかげでこの繁盛ですわ」",
-              "(楽市・楽座の高札を手に入れた!)"],
-       gives:"kousatsu"},
+      {id:"rakuichi", label:"この町の商売について", gives:"kousatsu",
+       script:[
+        {sp:"akindo",e:"smile",t:"信長様の楽市・楽座で、税はタダ、座の特権もなし!"},
+        {sp:"akindo",e:"smile",t:"関所も廃止で、人もモノもどんどん集まりますのや"}]},
       {id:"tenshu", label:"安土城について",
-       lines:["「あの天主(てんしゅ)を見なはれ! 金ぴかで、宣教師様も『ヨーロッパにもない』と驚いてはりました」",
-              "「城は戦うためだけやのうて、『新しい世の中を見せる』ためのもんやったんですなあ」"]},
-      {id:"hiei", label:"信長の怖い噂について",
-       lines:["「……声を落としなはれや。比叡山の焼き討ち(1571年)のことでっしゃろ。それに石山本願寺さんとの戦は10年も続きました」",
-              "「信長様に逆らえば、寺でも容赦なし。ありがたいお方やが、恨んどる人も多い……家来の中にもな」",
-              "(比叡山焼き討ちの記録を手に入れた! これは「動機」の手がかりになりそうだ)"],
-       gives:"hieizan"}
+       script:[
+        {sp:"akindo",e:"shock",t:"あの金ぴかの天主を見なはれ! 宣教師様も驚いてはった"},
+        {sp:"akindo",e:"normal",t:"城は戦うためだけやのうて、新しい世を見せるもんですなあ"}]},
+      {id:"hiei", label:"信長の怖い噂について", gives:"hieizan",
+       script:[
+        {sp:"akindo",e:"normal",t:"……声を落としなはれや"},
+        {sp:"akindo",e:"sad",t:"比叡山の焼き討ち(1571年)、本願寺との十年戦争……"},
+        {sp:"akindo",e:"sad",t:"信長様を恨む人は、家来の中にもおるとか"}]}
     ]},
-  hideyoshi:{mon:"羽", color:"#d4a94e", name:"羽柴 秀吉", role:"織田家の家臣・出世頭",
-    intro:"「おお、探偵か! わしは忙しい。手短に頼むぞ」",
+  hideyoshi:{intro:[{sp:"hideyoshi",e:"smile",t:"おお、探偵か! わしは忙しい。手短に頼むぞ"}],
     topics:[
-      {id:"mizuzeme2", label:"水攻めについて聞く",
-       lines:["「見よ、この備中高松城! 川をせき止めて城を水びたしにしておる。力攻めより、頭を使うのがわしの流儀よ」",
-              "(水攻めの絵図を手に入れた! 秀吉は事件のとき、京都から遠く離れたここ岡山にいた)"],
-       gives:"mizuzeme"},
+      {id:"mizu", label:"水攻めについて聞く", gives:"mizuzeme",
+       script:[
+        {sp:"hideyoshi",e:"smile",t:"見よ、この水攻め! 城が湖に浮かんでおるわ"},
+        {sp:"hideyoshi",e:"normal",t:"力攻めより、頭を使う。それがわしの流儀よ"}]},
       {id:"oogaeshi", label:"事件を知ってどうする?",
-       lines:["「毛利とはすぐに和睦(仲直り)する。そして京都まで200km、10日で駆けもどる ── 世にいう中国大返しよ!」",
-              "「主君のかたきを一番に討った者が、次の天下人になる。わしは走るぞ、探偵!」"]},
+       script:[
+        {sp:"hideyoshi",e:"normal",t:"毛利とすぐ和睦し、京まで200kmを10日で走る!"},
+        {sp:"hideyoshi",e:"angry",t:"中国大返しよ。かたきを討った者が、次の天下人じゃ!"}]},
       {id:"kuromaku", label:"あなたが黒幕では?", needs:["mizuzeme"],
-       lines:["「……ほう、わしを疑うか。事件で一番得をするのはわしじゃからのう。よい目のつけ所じゃ」",
-              "「じゃがな、わしは本当に毛利と戦の真っ最中だった。それに、もしわしが黒幕なら、和睦の交渉をこんなに慌ててやるものか。……疑う心と、証拠を確かめる心。両方を持つのが、ほんものの探偵じゃぞ」"],
-       deep:{title:"発展 ── 秀吉黒幕説?", body:"「事件で一番得をした人物=秀吉黒幕説」は昔からあるが、和睦交渉の記録などから、現在の研究ではほぼ否定されている。「得をした人が犯人とは限らない」──推理でも歴史でも大事な考え方だ。"}},
+       deep:{title:"発展 ── 秀吉黒幕説?", body:"「一番得をした人=秀吉黒幕説」は昔からあるが、和睦交渉の記録などから現在はほぼ否定されている。「得をした人が犯人とは限らない」──推理でも歴史でも大事な考え方。"},
+       script:[
+        {sp:"hideyoshi",e:"shock",t:"……ほう、わしを疑うか。よい目のつけ所じゃ"},
+        {sp:"hideyoshi",e:"normal",t:"じゃが、わしは本当に毛利と戦の真っ最中だった"},
+        {sp:"hideyoshi",e:"smile",t:"疑う心と、確かめる心。両方持つのが本物の探偵じゃぞ"}]},
       {id:"omoide", label:"信長との思い出",
-       lines:["「わしは農民の子よ。草履(ぞうり)取りから始めて、ここまで来た。信長様は、身分ではなく力で人を使うお方だった」",
-              "「……だからこそ、無念でならん」"]}
+       script:[
+        {sp:"hideyoshi",e:"smile",t:"わしは草履(ぞうり)取りから始めた、農民の子よ"},
+        {sp:"hideyoshi",e:"sad",t:"信長様は身分でなく、力で人を使うお方だった……無念よ"}]}
     ]},
-  gonbe:{mon:"権", color:"#8c7a5a", name:"農民・権兵衛", role:"老ノ坂近くの村人",
-    intro:"「お侍……じゃねえな。探偵様かい。おら、ゆうべ、おっかねえもんを見ただ」",
+  gonbe:{intro:[{sp:"gonbe",e:"shock",t:"お、探偵様かい。おら、ゆうべ、おっかねえもんを見ただ"}],
     topics:[
       {id:"mita", label:"昨夜、何を見た?",
-       lines:["「夜中だっただ。峠の道を、ものすごい数の軍勢が通っていっただ。松明(たいまつ)の列が、川みてえに続いてよ」",
-              "「旗は……暗くてよく見えなかったが、西の中国地方へ行くはずの軍が、東の京へ向かっていっただよ。おかしいと思わねえか?」"]},
-      {id:"mitsuhide2", label:"この辺りの殿様について",
-       lines:["「この先の亀山城の殿様は、明智光秀様だ。年貢もむちゃを言わねえし、堤を直してくれた。おらたち百姓には、いい殿様だっただよ」",
-              "「和歌だの茶の湯だのにも詳しい、学のあるお方だと聞くだ」"],
-       deep:{title:"発展 ── 光秀は名君?", body:"明智光秀は領地の亀山や坂本で治水や町づくりを行い、領民からの評判が良かったという記録が残る。教養人としても一流だった。「謀反人=悪人」と単純に決めつけず、多面的に人物を見るのが歴史の学び方だ。"}}
+       script:[
+        {sp:"gonbe",e:"shock",t:"夜中、峠をものすげえ軍勢が通っていっただ!"},
+        {sp:"gonbe",e:"normal",t:"西へ行くはずの軍が、東の京へ……おかしくねえか?"}]},
+      {id:"tono", label:"この辺りの殿様は?",
+       deep:{title:"発展 ── 光秀は名君?", body:"光秀は領地の亀山や坂本で治水や町づくりを行い、領民の評判が良かった記録が残る。「謀反人=悪人」と決めつけず、多面的に人物を見るのが歴史の学び方。"},
+       script:[
+        {sp:"gonbe",e:"smile",t:"亀山城の明智光秀様は、いい殿様だっただよ"},
+        {sp:"gonbe",e:"normal",t:"年貢もむちゃ言わねえ。和歌にも詳しい、学のあるお方だ"}]}
     ]},
-  mitsuhide:{mon:"明", color:"#8c5a5a", name:"明智 光秀", role:"織田家の重臣",
-    intro:"「……探偵殿か。わたしに、何用かな」",
+  mitsuhide:{intro:[{sp:"mitsuhide",e:"normal",t:"……探偵殿か。わたしに、何用かな"}],
     topics:[
-      {id:"tobokeru", label:"事件について問う",
-       lines:["「本能寺のことなら、わたしも驚いている。わたしは中国地方へ向かう途中であった。それ以上、話すことはない」",
-              "(……目が泳いでいる。証拠を集めて、突きつけるしかない)"]},
-      {id:"ts_meirei", label:"【つきつける】信長の命令書", needs:["meirei"],
-       lines:["「──それは、信長様の命令書……」",
-              "「たしかに、わたしは中国出陣を命じられていた。……そう。この命令が、京のすぐそばで、わたしに1万3千の兵を与えたのだ」"]},
-      {id:"ts_shogen", label:"【つきつける】侍女の証言(水色桔梗)", needs:["shogen"],
-       lines:["「水色桔梗の旗を見た者がいる、と……」",
-              "「……桔梗は、わが明智家の紋だ。言い逃れは、できぬようだな」"]},
-      {id:"ts_tanzaku", label:"【つきつける】愛宕百韻の短冊", needs:["tanzaku"],
-       lines:["「!! ……読まれてしまったか」",
-              "「『ときは今 あめが下しる 五月かな』── 土岐(とき)は、わが一族の名。あの夜、愛宕の神前で、わたしは心を決めたのだ」"]},
-      {id:"ts_chizu", label:"【最終対決】進軍ルートの地図をつきつける", needs:["chizu","shogen","tanzaku"],
-       lines:["「老ノ坂で東へ── 桂川を越え、京へ。……そこまで調べ上げたか、探偵殿」",
-              "「……認めよう。信長様を討ったのは、この明智光秀だ。『敵は本能寺にあり』── あの言葉とともに、わたしは歴史に残るのだろう」",
-              "「動機を聞きたいか。信長様の厳しすぎる仕打ちへの恨みか。比叡山を焼くやり方への反発か。それとも、わたし自身の野心か──」",
-              "「……探偵殿。正直に言おう。わたしにも、はっきりとは分からぬのだ。人の心は、一つの理由では動かぬ」",
-              "(光秀は静かに目を閉じた。──捜査完了! マップから【推理】に進もう)"],
-       confess:true,
-       deep:{title:"発展 ── 動機は日本史最大のナゾ", body:"光秀の動機には、①怨恨説(信長への恨み)、②野望説(自分が天下を取りたかった)、③四国説(長宗我部氏との交渉役だった光秀が、信長の方針転換で立場を失った/近年の新史料で注目)、④黒幕説(朝廷や足利義昭が関わった?)など多くの説があり、決着はついていない。新しい史料の発見で「歴史が更新される」ことがある──それが歴史学の面白さだ。"}}
+      {id:"toboke", label:"事件について問う",
+       script:[
+        {sp:"mitsuhide",e:"normal",t:"本能寺のことなら、わたしも驚いている"},
+        {sp:"mitsuhide",e:"normal",t:"わたしは中国へ向かう途中だった。それ以上、話すことはない"},
+        {sp:null,t:"(……目が泳いでいる。証拠を突きつけろ!)"}]},
+      {id:"ts1", label:"命令書をつきつける", needs:["meirei"], fx:"meirei",
+       script:[
+        {sp:"mitsuhide",e:"shock",t:"──それは、信長様の命令書……!"},
+        {sp:"mitsuhide",e:"sad",t:"そう。この命令が、京のそばで1万3千の兵をわたしに与えた"}]},
+      {id:"ts2", label:"侍女の証言をつきつける", needs:["shogen"], fx:"shogen",
+       script:[
+        {sp:"mitsuhide",e:"shock",t:"水色桔梗を見た者がいる、と……!"},
+        {sp:"mitsuhide",e:"sad",t:"桔梗は……わが明智家の紋だ"}]},
+      {id:"ts3", label:"短冊をつきつける", needs:["tanzaku"], fx:"tanzaku",
+       script:[
+        {sp:"mitsuhide",e:"shock",t:"!! ……読まれてしまったか"},
+        {sp:"mitsuhide",e:"normal",t:"「ときは今」──土岐(とき)は、わが一族の名"},
+        {sp:"mitsuhide",e:"sad",t:"あの夜、愛宕の神前で、心を決めたのだ"}]},
+      {id:"ts4", label:"【最終対決】進軍地図をつきつける", needs:["chizu","shogen","tanzaku"], fx:"chizu", confess:true,
+       deep:{title:"発展 ── 動機は日本史最大のナゾ", body:"①怨恨説(信長への恨み) ②野望説(自分が天下を) ③四国説(長宗我部氏との交渉役だった光秀が方針転換で立場を失った/近年の新史料で注目) ④黒幕説(朝廷や義昭?)──決着はついていない。新史料の発見で歴史は更新される。それが歴史学の面白さだ。"},
+       script:[
+        {sp:"mitsuhide",e:"shock",t:"老ノ坂で東へ……そこまで調べ上げたか、探偵殿"},
+        {sp:"mitsuhide",e:"sad",t:"……認めよう。信長様を討ったのは、この明智光秀だ"},
+        {sp:"mitsuhide",e:"angry",t:"「敵は本能寺にあり」──!"},
+        {sp:"mitsuhide",e:"sad",t:"動機か。恨みか、反発か、それとも野心か……"},
+        {sp:"mitsuhide",e:"sad",t:"探偵殿。正直に言おう。わたしにも、分からぬのだ"},
+        {sp:null,t:"捜査完了! マップにもどり【推理】で事件を解決せよ!"}]}
     ]}
 };
 
-/* ---------- マップ ---------- */
-const LOCATIONS = [
-  {id:"honnoji", icon:"🔥", name:"本能寺の焼け跡", area:"京都",
-   desc:"まだ煙のくすぶる事件現場。焼け落ちた本堂の跡に、手がかりが残されているはずだ。",
-   spots:[
-     {id:"yakeato", label:"焼け跡を調べる", icon:"🔍",
-      lines:["がれきの中から、焼けた鉄砲が見つかった。守る側も、おそう側も、鉄砲を使ったようだ。"], gives:"teppo"},
-     {id:"shoin", label:"書院の跡を調べる", icon:"🔍",
-      lines:["燃え残った書類の中に、信長の花押(サイン)が入った命令書があった。"], gives:"meirei"}
-   ],
-   person:"shino"},
-  {id:"nanban", icon:"✝️", name:"南蛮寺", area:"京都",
-   desc:"京の町に建つキリスト教の教会。外国人宣教師が、事件のなりゆきを心配そうに見守っている。",
-   spots:[
-     {id:"seido", label:"聖堂の中を見る", icon:"🔍",
-      lines:["ステンドグラスから光がさしこむ。祭壇には、はるばる海を越えてきた聖母の絵。ここは戦国日本と世界がつながる場所だ。"]}
-   ],
-   person:"froi"},
-  {id:"sakai", icon:"⚓", name:"堺の町", area:"和泉",
-   desc:"商人が自治を行う、日本一の貿易都市。鉄砲鍛冶の槌の音が響く。",
-   spots:[
-     {id:"minato", label:"港を調べる", icon:"🔍",
-      lines:["南蛮船が停泊している。荷は中国の生糸や火薬。日本からの支払いは──銀だ。積み荷の量に驚かされる。"]}
-   ],
-   person:"rikyu"},
-  {id:"azuchi", icon:"🏯", name:"安土の城下町", area:"近江",
-   desc:"琵琶湖のほとり、信長が築いた壮大な安土城の城下町。自由な商売でにぎわっている。",
-   spots:[
-     {id:"tenshudai", label:"天主を見上げる", icon:"🔍",
-      lines:["金箔(きんぱく)に輝く天主がそびえる。城は「戦うため」だけでなく「新しい世を見せるため」のものだったのかもしれない。"]}
-   ],
-   person:"akindo"},
-  {id:"bicchu", icon:"🌊", name:"備中高松の陣", area:"備中(岡山)",
-   desc:"羽柴秀吉が毛利軍と対陣中。城のまわりは一面の湖──これが噂の水攻めか。",
-   spots:[
-     {id:"teibou", label:"堤防を調べる", icon:"🔍",
-      lines:["川をせき止める長大な堤防。これを短期間で築いたというのか……。秀吉という男、ただの戦上手ではない。"]}
-   ],
-   person:"hideyoshi"},
-  {id:"oinosaka", icon:"⛰️", name:"老ノ坂峠・愛宕山", area:"丹波と京の境",
-   desc:"西国街道の分かれ道。西へ行けば中国地方、東へ下れば京都。事件の夜、ここを大軍が通った。",
-   spots:[
-     {id:"wakare", label:"分かれ道を調べる", icon:"🔍",
-      lines:["無数の足あとと馬のひづめの跡が、東──京都の方角へ続いている。西へ行くはずの軍が、なぜ?","(進軍ルートの地図を手に入れた!)"], gives:"chizu"},
-     {id:"atago", label:"愛宕神社に登る", icon:"🔍",
-      lines:["神社では数日前、連歌の会が開かれたという。奉納された短冊が残されていた。","「ときは今 あめが下しる 五月かな」──詠み人は、明智光秀。"], gives:"tanzaku"}
-   ],
-   person:"gonbe"},
-  {id:"jin", icon:"⚔️", name:"光秀の陣", area:"京都・郊外",
-   desc:"水色桔梗の旗がひるがえる明智軍の陣。核心の人物が、そこにいる。",
-   lockNeeds:["chizu"],
-   lockHint:"進軍ルートの地図を見つけると入れる",
-   spots:[],
-   person:"mitsuhide"}
+/* ---------- 開幕スクリプト ---------- */
+const OPENING = [
+  {sp:null,t:"1582年(天正10年)6月2日、夜明け前の京都。"},
+  {sp:null,t:"天下統一まであと一歩の男が泊まる本能寺を、大軍が囲んだ。"},
+  {sp:"nobunaga",e:"angry",t:"──謀反(むほん)か。是非に及ばず"},
+  {sp:null,t:"織田信長、燃える寺に消える。享年49。"},
+  {sp:null,t:"君は歴史探偵。戦国の各地をめぐり、証拠を11個集めよ。"},
+  {sp:null,t:"人物に質問し、最後は犯人に証拠を──つきつけろ!"}
 ];
 
-/* ---------- 推理・真相・道場・年表 ---------- */
+/* ---------- マップ ---------- */
+const LOCATIONS = [
+  {id:"bicchu", icon:"🌊", name:"備中高松の陣", area:"備中(岡山)", x:58, y:295,
+   desc:"秀吉が毛利軍と対陣中。城のまわりは一面の湖。",
+   spots:[{id:"teibou", label:"堤防を調べる", icon:"🔍",
+     lines:["川をせき止める長大な堤防。短期間でこれを……秀吉、ただ者ではない。"]}],
+   person:"hideyoshi"},
+  {id:"sakai", icon:"⚓", name:"堺の町", area:"和泉", x:205, y:392,
+   desc:"商人が自治する日本一の貿易都市。鉄砲鍛冶の音が響く。",
+   spots:[{id:"minato", label:"港を調べる", icon:"🔍",
+     lines:["南蛮船の荷は生糸と火薬。日本からの支払いは──銀だ。"]}],
+   person:"rikyu"},
+  {id:"honnoji", icon:"🔥", name:"本能寺の焼け跡", area:"京都", x:252, y:196,
+   desc:"まだ煙のくすぶる事件現場。",
+   spots:[
+     {id:"yakeato", label:"焼け跡を調べる", icon:"🔍",
+      lines:["がれきの中から、焼けた鉄砲が見つかった。"], gives:"teppo"},
+     {id:"shoin", label:"書院の跡を調べる", icon:"🔍",
+      lines:["燃え残った書類に、信長の花押(サイン)入りの命令書が!"], gives:"meirei"}],
+   person:"shino"},
+  {id:"nanban", icon:"✝️", name:"南蛮寺", area:"京都", x:318, y:236,
+   desc:"京の町のキリスト教会。宣教師が心配そうに空を見ている。",
+   spots:[{id:"seido", label:"聖堂を見る", icon:"🔍",
+     lines:["ステンドグラスの光。ここは戦国日本と世界がつながる場所だ。"]}],
+   person:"froi"},
+  {id:"oinosaka", icon:"⛰️", name:"老ノ坂峠・愛宕山", area:"丹波との境", x:178, y:146,
+   desc:"西国街道の分かれ道。事件の夜、ここを大軍が通った。",
+   spots:[
+     {id:"wakare", label:"分かれ道を調べる", icon:"🔍",
+      lines:["無数の足あとが、東──京都へ続いている。西へ行くはずの軍が、なぜ?"], gives:"chizu"},
+     {id:"atago", label:"愛宕神社に登る", icon:"🔍",
+      lines:["数日前の連歌会の短冊が残っていた。","「ときは今 あめが下しる 五月かな」──詠み人、明智光秀。"], gives:"tanzaku"}],
+   person:"gonbe"},
+  {id:"azuchi", icon:"🏯", name:"安土の城下町", area:"近江", x:345, y:128,
+   desc:"琵琶湖のほとり、信長の城下町。自由な商売でにぎわう。",
+   spots:[{id:"tenshudai", label:"天主を見上げる", icon:"🔍",
+     lines:["金箔に輝く天主。城は「新しい世を見せる」ものだったのかもしれない。"]}],
+   person:"akindo"},
+  {id:"jin", icon:"⚔️", name:"光秀の陣", area:"京都・郊外", x:256, y:98,
+   desc:"水色桔梗の旗がひるがえる。核心の人物が、そこにいる。",
+   lockNeeds:["chizu"], lockHint:"進軍ルートの地図が必要",
+   spots:[], person:"mitsuhide"}
+];
+
+/* ---------- 推理・真相・道場・年表(v2から継承) ---------- */
 const DEDUCTION = [
   {q:"【推理・壱】織田信長を討った犯人は?",
    c:["羽柴 秀吉","徳川 家康","足利 義昭","明智 光秀"], a:3,
-   ok:"その通り。1582年・本能寺の変。証拠がすべて光秀を指している。",
-   ng:"証拠を思い出そう。水色桔梗の旗、そして東へ向かった大軍──。"},
+   ok:"その通り! 1582年・本能寺の変。証拠はすべて光秀を指す。",
+   ng:"水色桔梗の旗、東へ向かった大軍──証拠を思い出そう。"},
   {q:"【推理・弐】光秀が京都の近くで大軍を動かせた直接の理由は?",
-   c:["京都の警備担当だったから","信長に中国出陣を命じられていたから","秀吉に呼ばれたから","たまたま旅の途中だったから"], a:1,
-   ok:"正解。信長自身の命令書が、光秀に軍とチャンスを与えた。",
-   ng:"本能寺で見つけた「燃え残った命令書」をもう一度読もう。"},
-  {q:"【推理・参】「ときは今 あめが下しる 五月かな」──「とき」に掛けられているとされる、光秀の一族の名は?",
+   c:["京都の警備担当だった","信長に中国出陣を命じられていた","秀吉に呼ばれた","旅の途中だった"], a:1,
+   ok:"正解。信長自身の命令が、光秀に軍とチャンスを与えた。",
+   ng:"本能寺で見つけた「命令書」をもう一度。"},
+  {q:"【推理・参】「ときは今…」の「とき」に掛けられたとされる光秀の一族は?",
    c:["土岐(とき)氏","北条氏","今川氏","毛利氏"], a:0,
-   ok:"正解! 愛宕百韻の短冊は、謀反の決意表明という説がある(諸説あり)。",
-   ng:"短冊の【発展】をもう一度。光秀のご先祖の一族だ。"},
-  {q:"【推理・四】事件後、約200kmを約10日で駆けもどり、天下取りに一歩リードしたのは?",
+   ok:"正解! 謀反の決意表明という説がある(諸説あり)。",
+   ng:"短冊の【発展】をもう一度。光秀のご先祖だ。"},
+  {q:"【推理・四】事件後、約200kmを約10日で駆けもどったのは?",
    c:["徳川家康","柴田勝家","羽柴秀吉","上杉景勝"], a:2,
    ok:"正解。中国大返し! このあと山崎の戦いで光秀を破る。",
-   ng:"備中高松の陣で会った、あの人物を思い出そう。"},
-  {q:"【推理・五】光秀の「動機」について、歴史学の立場からもっとも正確な説明は?",
-   c:["恨みが原因と証明されている","野心が原因と証明されている","朝廷が命じたと証明されている","諸説あり、はっきりとは分かっていない"], a:3,
-   ok:"見事! 「分からないことを、分からないと言える」──それが本物の探偵であり、歴史を学ぶ者の誠実さだ。",
-   ng:"光秀自身は何と言っていた? 「わたしにも、はっきりとは分からぬのだ」──。"}
+   ng:"備中高松の陣の、あの人物を思い出そう。"},
+  {q:"【推理・五】光秀の「動機」について、もっとも正確な説明は?",
+   c:["恨みと証明されている","野心と証明されている","朝廷の命令と証明されている","諸説あり、分かっていない"], a:3,
+   ok:"見事! 「分からない」を「分からない」と言える誠実さ──それが本物の探偵だ。",
+   ng:"光秀は何と言っていた? 「わたしにも、分からぬのだ」──。"}
 ];
 const TRUTH = [
   "犯人は、織田家の重臣・明智光秀。",
-  "1582年6月2日の未明、「中国地方へ出陣せよ」という信長の命令で動いていた1万3千の軍を、光秀は老ノ坂峠で突然、東へ──京都へ向けた。「敵は本能寺にあり」。",
-  "わずかな家来しかいなかった信長に、勝ち目はなかった。「是非に及ばず」と言い残し、天下統一を目前にした戦国の風雲児は、燃える本能寺で49年の生涯を閉じた。",
-  "動機は、今も日本史最大のナゾだ。恨みか、野心か、追いつめられた末か──君が集めた証拠と証言から、君自身の「説」を考えてみてほしい。",
-  "── そして歴史は、事件のあとも動き続ける。"
+  "「中国へ出陣せよ」との命令で動く1万3千の軍を、光秀は老ノ坂峠で東へ──京都へ向けた。「敵は本能寺にあり」。",
+  "「是非に及ばず」──信長は燃える本能寺に消えた。享年49。",
+  "動機は今も日本史最大のナゾ。君が集めた証拠から、君自身の「説」を考えてみてほしい。"
 ];
 const EPILOGUE = [
-  {yr:"1582", t:"山崎の戦い", d:"中国大返しでもどった秀吉が光秀を破る。光秀の天下は約11日──「三日天下」と呼ばれた。"},
-  {yr:"1582〜", t:"太閤検地", d:"秀吉が全国の田畑の面積と収穫量(石高)を統一基準で調査。"},
-  {yr:"1588", t:"刀狩", d:"農民から武器を取り上げ、兵農分離が進む。"},
-  {yr:"1590", t:"全国統一", d:"秀吉が小田原の北条氏をほろぼし天下統一。"},
-  {yr:"1592・97", t:"朝鮮出兵", d:"文禄の役・慶長の役。苦戦し、豊臣家の力は弱まる。"},
-  {yr:"1600・03", t:"関ヶ原→江戸幕府", d:"堺から伊賀越えで生きのびた家康が関ヶ原を制し、江戸幕府を開く。"}
+  {yr:"1582", t:"山崎の戦い", d:"中国大返しの秀吉が光秀を破る。光秀は「三日天下」。"},
+  {yr:"1582〜", t:"太閤検地", d:"全国の田畑と収穫量(石高)を統一基準で調査。"},
+  {yr:"1588", t:"刀狩", d:"農民から武器を回収。兵農分離が進む。"},
+  {yr:"1590", t:"全国統一", d:"小田原の北条氏をほろぼし天下統一。"},
+  {yr:"1592・97", t:"朝鮮出兵", d:"文禄・慶長の役。苦戦し豊臣家は弱まる。"},
+  {yr:"1600・03", t:"関ヶ原→江戸幕府", d:"伊賀越えを生きのびた家康が天下を取る。"}
 ];
 const SETSU = [
-  {t:"怨恨(えんこん)説", d:"信長の厳しい仕打ちへの恨みが爆発した、という昔からある説。"},
-  {t:"野望説", d:"光秀自身が天下を取ろうとした、という説。"},
-  {t:"四国説", d:"四国の長宗我部氏との交渉役だった光秀が、信長の方針転換で立場を失ったという説。近年の新史料発見で注目されている。"},
-  {t:"黒幕説", d:"朝廷や足利義昭など、背後に別の人物がいたという説。決定的な証拠はない。"},
-  {t:"君の説は?", d:"証拠と証言をもとに、自分の考えを説明できたら、君はもう立派な歴史探偵だ。"}
+  {t:"怨恨説", d:"信長の厳しい仕打ちへの恨み。"},
+  {t:"野望説", d:"光秀自身が天下を取ろうとした。"},
+  {t:"四国説", d:"長宗我部氏との交渉役だった光秀が方針転換で立場を失った。近年の新史料で注目。"},
+  {t:"黒幕説", d:"朝廷や足利義昭が背後に? 決定的証拠はない。"},
+  {t:"君の説は?", d:"証拠をもとに自分の考えを説明できたら、立派な歴史探偵だ。"}
 ];
 const QUIZ = [
   {q:"1543年、ポルトガル人によって種子島に伝えられたものは?", c:["キリスト教","鉄砲","じゃがいも","活版印刷"], a:1,
-   ex:"鉄砲は1543年、種子島に伝来。堺や国友で大量生産された。", goro:"以後よさん(1543)そろえて鉄砲買おう"},
+   ex:"鉄砲は1543年、種子島に伝来。堺や国友で大量生産。", goro:"以後よさん(1543)そろえて鉄砲買おう"},
   {q:"1549年、日本にキリスト教を伝えた宣教師は?", c:["コロンブス","マルコ・ポーロ","フランシスコ・ザビエル","ペリー"], a:2,
-   ex:"ザビエルが鹿児島に上陸してキリスト教を伝えた。", goro:"以後よく(1549)広まるキリスト教"},
-  {q:"1560年、織田信長が今川義元を破った戦いは?", c:["桶狭間の戦い","長篠の戦い","関ヶ原の戦い","山崎の戦い"], a:0,
-   ex:"桶狭間の戦い。信長は少ない兵で今川の大軍を急襲した。", goro:"戦国丸(1560)ごと変えた桶狭間"},
-  {q:"1573年、信長が足利義昭を京都から追放したことでほろんだ幕府は?", c:["鎌倉幕府","室町幕府","江戸幕府","平氏政権"], a:1,
-   ex:"15代将軍・足利義昭の追放で、約240年続いた室町幕府が滅亡。", goro:"以後なみ(1573)だ将軍、幕府もおわり"},
-  {q:"1575年、信長・家康連合軍が大量の鉄砲で武田軍を破った戦いは?", c:["桶狭間の戦い","川中島の戦い","長篠の戦い","壇ノ浦の戦い"], a:2,
-   ex:"長篠の戦い。鉄砲の組織的な使用で騎馬隊を破った。", goro:"以後なこ(1575)う武田、長篠で"},
-  {q:"信長が安土城下などで行った、税を免除し座を廃止して自由な商売を認めた政策は?", c:["楽市・楽座","刀狩","太閤検地","参勤交代"], a:0,
-   ex:"楽市・楽座。関所の廃止とあわせて商業をさかんにした。", goro:"「楽」=規制をなくしてラクに商売"},
-  {q:"1582年、本能寺で織田信長を討った武将は?", c:["豊臣秀吉","明智光秀","徳川家康","武田勝頼"], a:1,
-   ex:"本能寺の変。「敵は本能寺にあり」の言葉とセットで覚えよう。", goro:"いちごパンツ(1582)の本能寺"},
-  {q:"本能寺の変のあと、山崎の戦いで明智光秀を破ったのは?", c:["徳川家康","上杉謙信","足利義昭","羽柴(豊臣)秀吉"], a:3,
-   ex:"秀吉は『中国大返し』で駆けもどり、光秀を破った。光秀は「三日天下」。", goro:"かたき討ちレースの勝者=次の天下人"},
-  {q:"秀吉が行った、全国の田畑の面積や収穫量を調べた政策は?", c:["班田収授","楽市・楽座","太閤検地","地租改正"], a:2,
-   ex:"太閤検地。年貢を確実に集めるしくみを整えた。", goro:"検地=「検」査して土「地」を調べる"},
+   ex:"ザビエルが鹿児島に上陸して伝えた。", goro:"以後よく(1549)広まるキリスト教"},
+  {q:"1560年、信長が今川義元を破った戦いは?", c:["桶狭間の戦い","長篠の戦い","関ヶ原の戦い","山崎の戦い"], a:0,
+   ex:"桶狭間の戦い。少ない兵で今川の大軍を急襲。", goro:"戦国丸(1560)ごと変えた桶狭間"},
+  {q:"1573年、信長が足利義昭を追放してほろんだ幕府は?", c:["鎌倉幕府","室町幕府","江戸幕府","平氏政権"], a:1,
+   ex:"15代将軍・義昭の追放で室町幕府が滅亡。", goro:"以後なみ(1573)だ将軍、幕府もおわり"},
+  {q:"1575年、大量の鉄砲で武田軍を破った戦いは?", c:["桶狭間の戦い","川中島の戦い","長篠の戦い","壇ノ浦の戦い"], a:2,
+   ex:"長篠の戦い。鉄砲の組織的使用で騎馬隊を破った。", goro:"以後なこ(1575)う武田、長篠で"},
+  {q:"信長が行った、税を免除し座を廃止して自由な商売を認めた政策は?", c:["楽市・楽座","刀狩","太閤検地","参勤交代"], a:0,
+   ex:"楽市・楽座。関所の廃止とあわせて商業をさかんに。", goro:"「楽」=規制をなくしてラクに商売"},
+  {q:"1582年、本能寺で信長を討った武将は?", c:["豊臣秀吉","明智光秀","徳川家康","武田勝頼"], a:1,
+   ex:"本能寺の変。「敵は本能寺にあり」とセットで。", goro:"いちごパンツ(1582)の本能寺"},
+  {q:"山崎の戦いで光秀を破ったのは?", c:["徳川家康","上杉謙信","足利義昭","羽柴(豊臣)秀吉"], a:3,
+   ex:"中国大返しで駆けもどった秀吉。光秀は三日天下。", goro:"かたき討ちの勝者=次の天下人"},
+  {q:"秀吉が行った、全国の田畑や収穫量を調べた政策は?", c:["班田収授","楽市・楽座","太閤検地","地租改正"], a:2,
+   ex:"太閤検地。年貢を確実に集めるしくみ。", goro:"検地=「検」査して土「地」を調べる"},
   {q:"秀吉が農民から刀や鉄砲を取り上げた政策は?", c:["刀狩","廃刀令","徳政令","武家諸法度"], a:0,
-   ex:"刀狩(1588)。武士と農民の身分が分かれる「兵農分離」が進んだ。", goro:"刀狩→兵農分離、はセットで"},
-  {q:"1590年、秀吉が小田原の北条氏をほろぼして達成したことは?", c:["江戸幕府を開いた","全国統一","室町幕府の再興","鎖国"], a:1,
+   ex:"刀狩(1588)。兵農分離が進んだ。", goro:"刀狩→兵農分離、はセットで"},
+  {q:"1590年、秀吉が北条氏をほろぼして達成したことは?", c:["江戸幕府を開いた","全国統一","室町幕府の再興","鎖国"], a:1,
    ex:"1590年、天下統一の完成。", goro:"戦国終わ(1590)る、天下統一"},
-  {q:"秀吉が明の征服を目指して2度出兵した場所は?", c:["琉球","蝦夷地","朝鮮","台湾"], a:2,
-   ex:"朝鮮出兵(文禄の役1592・慶長の役1597)。苦戦し、豊臣家は力を失った。", goro:"行くには遠い異国(1592)の役"},
+  {q:"秀吉が2度出兵した場所は?", c:["琉球","蝦夷地","朝鮮","台湾"], a:2,
+   ex:"朝鮮出兵(文禄の役1592・慶長の役1597)。", goro:"行くには遠い異国(1592)の役"},
   {q:"わび茶を大成した人物は?", c:["千利休","狩野永徳","出雲の阿国","雪舟"], a:0,
-   ex:"千利休。質素な美しさを大切にする茶の湯を完成させた(桃山文化)。", goro:"「わび」=千利休"},
-  {q:"「唐獅子図屏風」などの豪華な障壁画で知られる桃山文化の画家は?", c:["葛飾北斎","狩野永徳","菱川師宣","運慶"], a:1,
-   ex:"狩野永徳。城の中をかざる金色の豪華な絵が桃山文化の特徴。", goro:"城の絵=永徳"},
-  {q:"1600年、徳川家康が石田三成らを破った「天下分け目の戦い」は?", c:["大坂の陣","長篠の戦い","桶狭間の戦い","関ヶ原の戦い"], a:3,
-   ex:"関ヶ原の戦い。3年後の1603年、家康は江戸幕府を開いた。", goro:"ヒーローわお(1600)!関ヶ原"},
-  {q:"「ときは今 あめが下しる 五月かな」を詠んだとされる武将は?", adv:true,
+   ex:"千利休。質素の中の美(桃山文化)。", goro:"「わび」=千利休"},
+  {q:"「唐獅子図屏風」で知られる桃山文化の画家は?", c:["葛飾北斎","狩野永徳","菱川師宣","運慶"], a:1,
+   ex:"狩野永徳。金色の豪華な絵が桃山文化の特徴。", goro:"城の絵=永徳"},
+  {q:"1600年、家康が石田三成らを破った戦いは?", c:["大坂の陣","長篠の戦い","桶狭間の戦い","関ヶ原の戦い"], a:3,
+   ex:"関ヶ原の戦い。1603年、江戸幕府へ。", goro:"ヒーローわお(1600)!関ヶ原"},
+  {q:"「ときは今 あめが下しる 五月かな」を詠んだとされるのは?", adv:true,
    c:["織田信長","明智光秀","豊臣秀吉","石田三成"], a:1,
-   ex:"愛宕百韻。「とき」は光秀の一族・土岐氏に掛けた謀反の決意という説がある(諸説あり)。", goro:"愛宕の短冊=光秀"},
-  {q:"信長が長く戦った、浄土真宗の信者たちが起こした一揆は?", adv:true,
+   ex:"愛宕百韻。「とき」=土岐氏に掛けた説が有名(諸説あり)。", goro:"愛宕の短冊=光秀"},
+  {q:"信長が長く戦った、浄土真宗の信者たちの一揆は?", adv:true,
    c:["一向一揆","打ちこわし","土一揆","島原の乱"], a:0,
-   ex:"一向一揆。石山本願寺との戦いは約10年続いた。", goro:"一向(いっこう)に終わらない10年戦争"},
-  {q:"堺の自治を担った、豪商たちの合議組織は?", adv:true,
+   ex:"一向一揆。石山本願寺との戦いは約10年。", goro:"一向(いっこう)に終わらない10年戦争"},
+  {q:"堺の自治を担った豪商の合議組織は?", adv:true,
    c:["五人組","会合衆","株仲間","惣"], a:1,
-   ex:"会合衆(えごうしゅう)。宣教師は堺を「ベニスのよう」と評した。", goro:"堺=会合衆、で高校入試レベル"},
-  {q:"ザビエルやフロイスら宣教師が所属した組織は?", adv:true,
+   ex:"会合衆(えごうしゅう)。「ベニスのよう」と評された。", goro:"堺=会合衆、で高校入試レベル"},
+  {q:"ザビエルやフロイスが所属した組織は?", adv:true,
    c:["イエズス会","十字軍","東インド会社","ハンザ同盟"], a:0,
-   ex:"イエズス会。フロイスは『日本史』という貴重な記録を残した。", goro:"ザビエル=イエズス会"},
-  {q:"南蛮貿易で、日本が主に「支払い」として輸出したものは?", adv:true,
+   ex:"イエズス会。フロイスは『日本史』を残した。", goro:"ザビエル=イエズス会"},
+  {q:"南蛮貿易で日本が主に輸出したものは?", adv:true,
    c:["米","生糸","銀","茶"], a:2,
-   ex:"石見銀山などの銀。輸入品は中国の生糸や鉄砲・火薬など。", goro:"日本から出るのは銀(ぎん)"}
+   ex:"石見銀山などの銀。輸入は生糸・鉄砲・火薬など。", goro:"日本から出るのは銀(ぎん)"}
 ];
 const TIMELINE = [
   {yr:"1467", ev:"応仁の乱", gr:"下剋上の戦国時代へ"},
-  {yr:"1543", ev:"鉄砲伝来(種子島)", gr:"以後よさん(1543)そろえて鉄砲買おう"},
-  {yr:"1549", ev:"キリスト教伝来(ザビエル)", gr:"以後よく(1549)広まるキリスト教"},
+  {yr:"1543", ev:"鉄砲伝来(種子島)", gr:"以後よさん(1543)"},
+  {yr:"1549", ev:"キリスト教伝来(ザビエル)", gr:"以後よく(1549)"},
   {yr:"1560", ev:"桶狭間の戦い", gr:"信長が今川義元を破る"},
   {yr:"1571", ev:"比叡山焼き討ち", gr:"信長 vs 仏教勢力(発展)"},
   {yr:"1573", ev:"室町幕府滅亡", gr:"足利義昭を追放"},
   {yr:"1575", ev:"長篠の戦い", gr:"以後なこ(1575)う武田"},
-  {yr:"1582", ev:"本能寺の変 → 山崎の戦い", gr:"いちごパンツ(1582)。光秀は三日天下"},
+  {yr:"1582", ev:"本能寺の変 → 山崎の戦い", gr:"いちごパンツ(1582)。三日天下"},
   {yr:"1588", ev:"刀狩", gr:"兵農分離"},
-  {yr:"1590", ev:"秀吉の全国統一", gr:"小田原の北条氏をほろぼす"},
+  {yr:"1590", ev:"秀吉の全国統一", gr:"北条氏をほろぼす"},
   {yr:"1592/97", ev:"朝鮮出兵", gr:"文禄・慶長の役"},
   {yr:"1600", ev:"関ヶ原の戦い", gr:"ヒーローわお(1600)!"},
   {yr:"1603", ev:"江戸幕府", gr:"家康が征夷大将軍に"}
 ];
 const RANKS = [
-  {min:18, name:"天下人", msg:"完璧! 発展問題まで制覇するとは、恐れ入った。テスト本番も君のものだ。"},
-  {min:14, name:"軍師", msg:"すばらしい。まちがえた問題の解説を読んで、天下人へあと一歩!"},
-  {min:9,  name:"侍大将", msg:"いい調子! 探索でアイテムの赤枠を読み直すと、ぐっと伸びるぞ。"},
-  {min:0,  name:"足軽", msg:"だれでも最初は足軽から。まずはマップ探索からじっくりどうぞ。"}
+  {min:18, name:"天下人", msg:"完璧! 発展まで制覇とは恐れ入った。テスト本番も君のものだ。"},
+  {min:14, name:"軍師", msg:"すばらしい。まちがえた問題を読み直して天下人へ!"},
+  {min:9,  name:"侍大将", msg:"いい調子! 証拠の赤枠を読み直すと、ぐっと伸びるぞ。"},
+  {min:0,  name:"足軽", msg:"だれでも最初は足軽から。まずはマップ探索をじっくりと。"}
 ];
 
 /* ===================================================== */
 const P=({children})=><p>{children}</p>;
 function TestBox({fact, goro}){
-  return (
-    <div className="test-box">
-      <span className="tb-label">テストに出る!</span>
-      <div style={{fontSize:14.5}}>{fact}</div>
-      {goro && <div className="goro">{goro}</div>}
-    </div>
-  );
+  return (<div className="test-box">
+    <span className="tb-label">テストに出る!</span>
+    <div style={{fontSize:14.5}}>{fact}</div>
+    {goro && <div className="goro">{goro}</div>}
+  </div>);
 }
 function DeepBox({title, body}){
   const [open,setOpen]=useState(false);
-  return (
-    <div className="deep-box">
-      <span className="db-label">発展(高校入試レベル)</span>
-      {open
-        ? <div className="db-body">{body}</div>
-        : <div><button className="btn small" style={{borderColor:"#5b7fc7", color:"#5b7fc7", background:"transparent"}} onClick={()=>setOpen(true)}>{title||"もっと深く知る"} ▶</button></div>}
-    </div>
-  );
+  return (<div className="deep-box">
+    <span className="db-label">発展(高校入試レベル)</span>
+    {open ? <div className="db-body">{body}</div>
+      : <div><button className="btn small" style={{borderColor:"var(--ao)", color:"var(--ao)", background:"transparent"}}
+          onClick={()=>setOpen(true)}>{title||"もっと深く知る"} ▶</button></div>}
+  </div>);
 }
 function TopBar({onBack, label}){
+  return (<div className="topbar">
+    <span className="brand mincho">歴史探偵事件簿</span>
+    <button className="backlink" onClick={onBack}>{label}</button>
+  </div>);
+}
+
+/* ---------- 会話エンジン(逆転裁判風) ---------- */
+function Dialogue({script, fxItem, onEnd}){
+  const [idx,setIdx]=useState(0);
+  const [chars,setChars]=useState(0);
+  const [fxDone,setFxDone]=useState(!fxItem);
+  const line=script[idx];
+  const full=line.t;
+  const typing = chars < full.length;
+
+  useEffect(()=>{
+    if(!fxDone) return;
+    setChars(0);
+    const iv=setInterval(()=>{
+      setChars(c=>{
+        if(c>=full.length){clearInterval(iv); return c;}
+        return c+1;
+      });
+    }, 28);
+    return ()=>clearInterval(iv);
+  },[idx, fxDone]);
+
+  const tap=()=>{
+    if(typing){ setChars(full.length); return; }
+    if(idx+1<script.length) setIdx(idx+1);
+    else onEnd();
+  };
+
+  const isShock = line.e==="shock" || line.e==="angry";
+  if(!fxDone){
+    const it=ITEMS[fxItem];
+    return (
+      <div className="vn-stage" onClick={()=>setFxDone(true)}>
+        <div className="fx-bg">
+          <div className="fx-lines"/>
+          <div className="fx-item">{it.icon}</div>
+          <div className="fx-word mincho">ツキツケル!!</div>
+          <div className="fx-sub">▼ タップ ── 「{it.name}」をつきつけた!</div>
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="topbar">
-      <span className="brand mincho">歴史探偵事件簿</span>
-      <button className="backlink" onClick={onBack}>{label}</button>
+    <div className="vn-stage">
+      <div className={"vn-lines"+(isShock?" hot":"")}/>
+      <div className="vn-prog">{idx+1}/{script.length}</div>
+      <div className={"vn-portrait"+(isShock && chars<3 ? " shake":"")} key={idx}>
+        {line.sp && <Portrait id={line.sp} expr={line.e}/>}
+        {!line.sp && <div style={{fontSize:64, opacity:.5, paddingBottom:30}}>📔</div>}
+      </div>
+      <div className={"vn-nameplate mincho"+(line.sp?"":" narr")}>
+        {line.sp? CHAR_CONF[line.sp].name : "探偵メモ"}
+      </div>
+      <div className="vn-textbox" onClick={tap}>
+        <div className="txt">{full.slice(0,chars)}</div>
+        {!typing && <div className="vn-next">▼ タップ</div>}
+      </div>
     </div>
   );
 }
@@ -549,60 +745,91 @@ function TopBar({onBack, label}){
 function Cover({go}){
   return (
     <div className="cover">
-      <div className="case-no mincho">事件簿 第壱号 ・ {APP_VERSION} 探索版</div>
+      <div className="case-no mincho">事件簿 第壱号 ・ {APP_VERSION} ビジュアル版</div>
       <div className="title-wrap">
         <span className="v-sub mincho">戦国探索アドベンチャー</span>
         <h1 className="v-title mincho">本能寺の変<br/>真実を集めよ</h1>
         <div className="stamp mincho">捜査中</div>
       </div>
+      <div style={{display:"flex", justifyContent:"center", gap:4, margin:"6px 0 2px"}}>
+        <Portrait id="mitsuhide" expr="normal" size={86}/>
+        <Portrait id="nobunaga" expr="angry" size={86}/>
+        <Portrait id="hideyoshi" expr="smile" size={86}/>
+      </div>
       <p className="lead">
         1582年、京都。信長が燃える寺に消えた。<br/>
-        君は歴史探偵。戦国の各地をめぐり、<b>11個の証拠</b>を集め、人物たちを尋問し、<br/>
-        最後は犯人に証拠を突きつけろ。手がかりはすべて「テストに出る事実」の中に。
+        絵地図をめぐり、証拠を11個集め、人物を尋問し──<br/>
+        最後は犯人に<b>つきつけろ!</b>
       </p>
       <div className="menu">
-        <button className="btn primary block" onClick={()=>go("prologue")}>捜査を開始する</button>
+        <button className="btn primary block" onClick={()=>go("opening")}>捜査を開始する</button>
         <button className="btn gold block" onClick={()=>go("dojo")}>一問一答道場(全20問)</button>
         <button className="btn block" onClick={()=>go("timeline")}>戦国年表で復習</button>
-        <button className="backlink" style={{marginTop:6}} onClick={()=>go("guide")}>先生用ガイド</button>
+        <button className="backlink" style={{marginTop:4}} onClick={()=>go("guide")}>先生用ガイド</button>
       </div>
     </div>
   );
 }
 
-/* ---------- 序章 ---------- */
-function Prologue({go}){
+/* ---------- 開幕 ---------- */
+function Opening({go}){
   return (
     <div>
       <TopBar onBack={()=>go("cover")} label="← 表紙へ"/>
-      <div className="eyebrow">序章 ── 事件発生</div>
-      <div className="paper">
-        <div className="secret-stamp mincho">機密</div>
-        <div className="meta">捜査指令書</div>
-        <h3 className="mincho">燃える本能寺</h3>
-        <P>1582年(天正10年)6月2日、未明の京都。天下統一まであと一歩の男・織田信長が泊まる本能寺が、突然、大軍に囲まれた。</P>
-        <P>「是非(ぜひ)に及ばず(=しかたあるまい)」──信長はそう言い残し、燃え上がる寺の中に消えた。</P>
-        <P>君は歴史探偵団の探偵。タイムレコーダー(歴史を記録するふしぎな手帳)で事件直後の戦国日本に飛び、各地をめぐって証拠と証言を集めてほしい。</P>
-        <div className="test-box">
-          <span className="tb-label">捜査のルール</span>
-          <div style={{fontSize:14}}>
-            ① マップの好きな場所から探索してよい(順番は自由!)<br/>
-            ② 「調べる」と「話を聞く」で証拠アイテムを集める(全11個)<br/>
-            ③ 赤い枠=テストに出る。青い枠=発展(高校入試レベル)<br/>
-            ④ 証拠がそろったら、核心の人物に<b>つきつけろ</b><br/>
-            ⑤ すべてが終わったら【推理】で事件を解決せよ
-          </div>
-        </div>
-      </div>
-      <button className="btn primary block" onClick={()=>go("map")}>マップへ ── 捜査開始</button>
+      <div className="eyebrow">序章 ── 燃える本能寺</div>
+      <Dialogue script={OPENING} onEnd={()=>go("map")}/>
+      <p className="note" style={{marginTop:10}}>画面タップでセリフが進みます。赤枠=テストに出る/青枠=発展。</p>
     </div>
   );
 }
 
-/* ---------- マップ ---------- */
+/* ---------- 絵地図 ---------- */
+function MapSVG({items, locDone, onPick}){
+  const has=id=>!!items[id];
+  return (
+    <svg viewBox="0 0 400 470" width="100%" style={{display:"block"}}>
+      <rect width="400" height="470" fill="#e7dbbd"/>
+      <rect width="400" height="470" fill="url(#grain)" opacity="0"/>
+      {/* 海 */}
+      <path d="M0,470 L0,340 Q60,330 90,360 Q130,400 110,470 Z" fill="#a8c4cf"/>
+      <path d="M120,470 Q150,430 200,428 Q260,426 300,470 Z" fill="#a8c4cf"/>
+      <path d="M14,360 q10,-6 20,0 M30,390 q10,-6 20,0 M150,450 q10,-6 20,0 M240,452 q10,-6 20,0" stroke="#7fa2b0" strokeWidth="2" fill="none"/>
+      {/* 琵琶湖 */}
+      <ellipse cx="352" cy="170" rx="26" ry="44" fill="#a8c4cf"/>
+      <text x="352" y="174" textAnchor="middle" fontSize="9" fill="#5a7a88">琵琶湖</text>
+      {/* 山 */}
+      {[[120,120],[95,175],[150,90],[300,70],[70,240],[230,60]].map((m,i)=>(
+        <path key={i} d={"M"+(m[0]-22)+","+(m[1]+16)+" L"+m[0]+","+(m[1]-14)+" L"+(m[0]+22)+","+(m[1]+16)+" Z"}
+          fill="#c9b98c" stroke="#a08e5e" strokeWidth="1.5"/>
+      ))}
+      {/* 街道 */}
+      <path d="M58,295 Q120,330 205,392 M205,392 Q230,300 252,196 M252,196 Q210,170 178,146 M252,196 Q290,215 318,236 M252,196 Q300,160 345,128 M178,146 Q215,120 256,98"
+        stroke="#a0885a" strokeWidth="2.5" strokeDasharray="6 5" fill="none"/>
+      {/* 地名 */}
+      <text x="60" y="255" fontSize="11" fill="#8a7a50" fontWeight="bold">備 中</text>
+      <text x="255" y="255" fontSize="11" fill="#8a7a50" fontWeight="bold">京</text>
+      <text x="352" y="100" fontSize="11" fill="#8a7a50" fontWeight="bold">近 江</text>
+      <text x="160" y="420" fontSize="11" fill="#8a7a50" fontWeight="bold">和 泉</text>
+      {/* ピン */}
+      {LOCATIONS.map(L=>{
+        const locked = L.lockNeeds && !L.lockNeeds.every(has);
+        const done = locDone(L);
+        return (
+          <g key={L.id} className="map-pin" transform={"translate("+L.x+","+L.y+")"}
+             onClick={()=>{ if(!locked) onPick(L.id); }} opacity={locked?0.55:1}>
+            <circle className="pin-c" r="21" fill={done? "#dff0e0":"#fdf6e6"} stroke={done? "#4e8c5a": (locked? "#9a9184":"#b0342b")} strokeWidth="2.5"/>
+            <text y="7" textAnchor="middle" fontSize="20">{locked? "❓" : L.icon}</text>
+            <text y="38" textAnchor="middle" fontSize="10.5" fill="#4a3a20" fontWeight="bold">{locked? "???" : L.name.split("・")[0]}</text>
+            {done && <text x="15" y="-13" fontSize="11">✅</text>}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 function MapScreen({go, items, confessed, openInv, locDone}){
   const itemCount = ITEM_ORDER.filter(i=>items[i]).length;
-  const has = id => !!items[id];
   return (
     <div>
       <TopBar onBack={()=>go("cover")} label="表紙へ"/>
@@ -610,27 +837,16 @@ function MapScreen({go, items, confessed, openInv, locDone}){
         <span>証拠 <span className="cnt">{itemCount}</span> / 11</span>
         <button className="btn small gold" onClick={openInv}>🎒 捜査バッグ</button>
       </div>
-      <div className="eyebrow">捜査マップ ── 行きたい場所をえらぼう</div>
-      <div className="map-grid">
-        {LOCATIONS.map(L=>{
-          const locked = L.lockNeeds && !L.lockNeeds.every(has);
-          return (
-            <button key={L.id} className={"map-card"+(locked?" locked":"")+(locDone(L)?" clear":"")}
-              onClick={()=>{ if(!locked) go("loc", L.id); }}>
-              {locDone(L) && <span className="badge">✓済</span>}
-              <span className="icon">{L.icon}</span>
-              <span className="nm mincho">{locked? "???" : L.name}</span>
-              <span className="st">{locked? L.lockHint : L.area}</span>
-            </button>
-          );
-        })}
+      <div className="eyebrow">捜査絵図 ── ピンをタップして移動</div>
+      <div className="mapwrap">
+        <MapSVG items={items} locDone={locDone} onPick={id=>go("loc", id)}/>
       </div>
-      <div style={{marginTop:18}}>
+      <div style={{marginTop:14}}>
         <button className="btn primary block" disabled={!confessed} onClick={()=>go("deduction")}>
-          {confessed? "推理へ ── 事件を解決する" : "推理(核心の人物を追いつめると解放)"}
+          {confessed? "⚖️ 推理へ ── 事件を解決する" : "🔒 推理(光秀を追いつめると解放)"}
         </button>
       </div>
-      <div style={{display:"flex", gap:8, marginTop:12}}>
+      <div style={{display:"flex", gap:8, marginTop:10}}>
         <button className="btn small" onClick={()=>go("dojo")}>一問一答道場</button>
         <button className="btn small" onClick={()=>go("timeline")}>年表</button>
       </div>
@@ -640,14 +856,19 @@ function MapScreen({go, items, confessed, openInv, locDone}){
 
 /* ---------- 場所 ---------- */
 function LocationScreen({loc, go, items, addItem, spotsDone, markSpot, openItem}){
-  const [view,setView]=useState(null); // spot result lines
-  const person = loc.person? PEOPLE[loc.person] : null;
+  const [view,setView]=useState(null);
+  const person = loc.person? CHAR_CONF[loc.person] : null;
   return (
     <div>
-      <TopBar onBack={()=>go("map")} label="← マップへ"/>
-      <div className="eyebrow">{loc.area}</div>
-      <h2 className="mincho" style={{fontSize:24, letterSpacing:".06em"}}>{loc.icon} {loc.name}</h2>
-      <p style={{color:"var(--hai)", fontSize:14, margin:"6px 0 16px"}}>{loc.desc}</p>
+      <TopBar onBack={()=>go("map")} label="← 絵図へ"/>
+      <div className="loc-head">
+        <span className="licon">{loc.icon}</span>
+        <div>
+          <div className="eyebrow" style={{marginBottom:0}}>{loc.area}</div>
+          <h2 className="mincho" style={{fontSize:22}}>{loc.name}</h2>
+        </div>
+      </div>
+      <p style={{color:"var(--hai)", fontSize:14, margin:"4px 0 14px"}}>{loc.desc}</p>
 
       {loc.spots.length>0 && <div className="eyebrow">調べる</div>}
       {loc.spots.map(sp=>{
@@ -665,10 +886,11 @@ function LocationScreen({loc, go, items, addItem, spotsDone, markSpot, openItem}
       })}
 
       {person && (
-        <div style={{marginTop:14}}>
+        <div style={{marginTop:12}}>
           <div className="eyebrow">話を聞く</div>
           <button className="spot" onClick={()=>go("talk", loc.person)}>
-            <span className="sicon">💬</span>{person.name}({person.role})と話す
+            <span style={{marginLeft:-6, marginRight:2, flex:"0 0 auto"}}><Portrait id={loc.person} expr="normal" size={46}/></span>
+            {person.name}({person.role})と話す
           </button>
         </div>
       )}
@@ -683,7 +905,7 @@ function LocationScreen({loc, go, items, addItem, spotsDone, markSpot, openItem}
               <div className="get-banner" style={{borderColor:"#8a6a2a", background:"rgba(138,106,42,.08)"}}
                 onClick={()=>{setView(null); openItem(view.gives);}}>
                 <span className="gicon">{ITEMS[view.gives].icon}</span>
-                <span className="gt" style={{color:"#6a4a1a"}}>証拠を入手:「{ITEMS[view.gives].name}」(タップで詳しく)</span>
+                <span className="gt" style={{color:"#6a4a1a"}}>証拠入手!「{ITEMS[view.gives].name}」(タップで詳細)</span>
               </div>
             )}
             <button className="btn primary block" onClick={()=>setView(null)}>とじる</button>
@@ -694,62 +916,77 @@ function LocationScreen({loc, go, items, addItem, spotsDone, markSpot, openItem}
   );
 }
 
-/* ---------- 会話 ---------- */
+/* ---------- 会話画面 ---------- */
 function TalkScreen({personId, backLocId, go, items, addItem, talked, markTalk, openItem, setConfessed}){
-  const person = PEOPLE[personId];
-  const [current,setCurrent]=useState(null); // topic object
-  const has = id => !!items[id];
+  const conf=CHAR_CONF[personId];
+  const data=PEOPLE[personId];
+  const [mode,setMode]=useState("intro");   // intro / topics / dialog / after
+  const [topic,setTopic]=useState(null);
+  const has=id=>!!items[id];
 
-  if(current){
+  if(mode==="intro"){
     return (
       <div>
-        <TopBar onBack={()=>setCurrent(null)} label="← 質問一覧へ"/>
-        <div className="person-head">
-          <div className="person-mon mincho" style={{color:person.color, borderColor:person.color}}>{person.mon}</div>
-          <div><div className="rl">{person.role}</div><div className="nm mincho">{person.name}</div></div>
-        </div>
-        <div className="eyebrow">{current.label}</div>
-        {current.lines.map((t,i)=><div key={i} className="serif-line">{t}</div>)}
-        {current.gives && (
-          <div className="get-banner" onClick={()=>openItem(current.gives)}>
-            <span className="gicon">{ITEMS[current.gives].icon}</span>
-            <span className="gt">証拠を入手:「{ITEMS[current.gives].name}」(タップで詳しく)</span>
-          </div>
-        )}
-        {current.deep && <DeepBox title={current.deep.title} body={current.deep.body}/>}
-        {current.confess && (
-          <div className="get-banner" style={{borderColor:"var(--hi)", background:"rgba(196,58,42,.1)"}}>
-            <span className="gicon">⚖️</span>
-            <span className="gt">捜査完了! マップの【推理】が解放された</span>
-          </div>
-        )}
-        <button className="btn primary block" onClick={()=>setCurrent(null)}>質問一覧へもどる</button>
+        <TopBar onBack={()=>go("loc", backLocId)} label="← 場所へ"/>
+        <Dialogue script={data.intro} onEnd={()=>setMode("topics")}/>
       </div>
     );
   }
-
+  if(mode==="dialog" && topic){
+    return (
+      <div>
+        <TopBar onBack={()=>setMode("topics")} label="← 質問一覧へ"/>
+        <Dialogue script={topic.script} fxItem={topic.fx} onEnd={()=>setMode("after")}/>
+      </div>
+    );
+  }
+  if(mode==="after" && topic){
+    return (
+      <div>
+        <TopBar onBack={()=>go("loc", backLocId)} label="場所へ"/>
+        <div className="eyebrow">{topic.label} ── 記録</div>
+        {topic.gives && (
+          <div className="get-banner" onClick={()=>openItem(topic.gives)}>
+            <span className="gicon">{ITEMS[topic.gives].icon}</span>
+            <span className="gt">証拠入手!「{ITEMS[topic.gives].name}」(タップで詳細)</span>
+          </div>
+        )}
+        {topic.confess && (
+          <div className="get-banner" style={{borderColor:"var(--hi)", background:"rgba(196,58,42,.1)"}}>
+            <span className="gicon">⚖️</span>
+            <span className="gt">捜査完了! 絵図の【推理】が解放された</span>
+          </div>
+        )}
+        {topic.deep && <DeepBox title={topic.deep.title} body={topic.deep.body}/>}
+        <button className="btn primary block" onClick={()=>setMode("topics")}>質問一覧へもどる</button>
+      </div>
+    );
+  }
   return (
     <div>
-      <TopBar onBack={()=>go("loc", backLocId)} label="← 場所へもどる"/>
-      <div className="person-head">
-        <div className="person-mon mincho" style={{color:person.color, borderColor:person.color}}>{person.mon}</div>
-        <div><div className="rl">{person.role}</div><div className="nm mincho">{person.name}</div></div>
+      <TopBar onBack={()=>go("loc", backLocId)} label="← 場所へ"/>
+      <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:8}}>
+        <Portrait id={personId} expr="normal" size={78}/>
+        <div>
+          <div className="eyebrow" style={{marginBottom:2}}>{conf.role}</div>
+          <div className="mincho" style={{fontSize:20, fontWeight:700}}>{conf.name}</div>
+        </div>
       </div>
-      <div className="serif-line">{person.intro}</div>
-      <div className="eyebrow" style={{marginTop:14}}>質問する</div>
-      {person.topics.map(tp=>{
+      <div className="eyebrow">質問する</div>
+      {data.topics.map(tp=>{
         const locked = tp.needs && !tp.needs.every(has);
         const done = talked[personId+":"+tp.id];
         return (
-          <button key={tp.id} className={"topic"+(locked?" locked":"")+(done?" done":"")}
+          <button key={tp.id}
+            className={"topic"+(locked?" locked":"")+(done?" done":"")+(tp.fx&&!locked?" tsuki":"")}
             onClick={()=>{
               if(locked) return;
               if(tp.gives) addItem(tp.gives);
               if(tp.confess) setConfessed(true);
               markTalk(personId, tp.id);
-              setCurrent(tp);
+              setTopic(tp); setMode("dialog");
             }}>
-            <span>{done?"✓ ":""}{tp.label}
+            <span>{done?"✓ ":""}{tp.fx?"⚡ ":""}{tp.label}
               {locked && <span className="lockhint">🔒 必要な証拠: {tp.needs.map(n=>ITEMS[n].name).join("、")}</span>}
             </span>
           </button>
@@ -759,24 +996,24 @@ function TalkScreen({personId, backLocId, go, items, addItem, talked, markTalk, 
   );
 }
 
-/* ---------- バッグ&アイテム詳細 ---------- */
+/* ---------- バッグ&アイテム ---------- */
 function InventoryModal({items, close, openItem}){
   return (
     <div className="modal-bg" onClick={close}>
       <div className="modal-card" onClick={e=>e.stopPropagation()}>
-        <div className="eyebrow">捜査バッグ ── 集めた証拠({ITEM_ORDER.filter(i=>items[i]).length}/11)</div>
+        <div className="eyebrow">捜査バッグ({ITEM_ORDER.filter(i=>items[i]).length}/11)</div>
         <div className="inv-grid">
           {ITEM_ORDER.map(id=>{
-            const got = items[id];
+            const got=items[id];
             return (
               <button key={id} className={"inv-tile"+(got?"":" empty")} onClick={()=>{ if(got) openItem(id); }}>
-                <span className="icon">{got? ITEMS[id].icon : "❓"}</span>
-                <span className="t">{got? ITEMS[id].name : "未発見"}</span>
+                <span className="icon">{got? ITEMS[id].icon:"❓"}</span>
+                <span className="t">{got? ITEMS[id].name:"未発見"}</span>
               </button>
             );
           })}
         </div>
-        <button className="btn block" style={{marginTop:14}} onClick={close}>とじる</button>
+        <button className="btn block" style={{marginTop:12}} onClick={close}>とじる</button>
       </div>
     </div>
   );
@@ -805,8 +1042,11 @@ function Deduction({go}){
   const correct=picked===q.a;
   return (
     <div>
-      <TopBar onBack={()=>go("map")} label="← マップへ"/>
+      <TopBar onBack={()=>go("map")} label="← 絵図へ"/>
       <div className="eyebrow">最終章 ── 推理</div>
+      <div style={{display:"flex", justifyContent:"center", marginBottom:6}}>
+        <Portrait id="mitsuhide" expr={picked===null? "normal" : (correct? "shock":"normal")} size={110}/>
+      </div>
       <div className="q-num mincho">{idx+1} / {DEDUCTION.length}</div>
       <div className="q-text">{q.q}</div>
       <div className="choices">
@@ -818,7 +1058,7 @@ function Deduction({go}){
       {picked!==null && (
         <div>
           <div className={"fb "+(correct?"ok":"ng")}>{correct? q.ok : q.ng}</div>
-          <div style={{marginTop:14}}>
+          <div style={{marginTop:12}}>
             {correct
               ? <button className="btn primary block" onClick={()=>{ if(idx+1<DEDUCTION.length){setIdx(idx+1);setPicked(null);} else go("truth"); }}>
                   {idx+1<DEDUCTION.length? "次の推理へ":"真相を開く"}</button>
@@ -834,8 +1074,12 @@ function Deduction({go}){
 function Truth({go}){
   return (
     <div>
-      <TopBar onBack={()=>go("map")} label="マップへ"/>
+      <TopBar onBack={()=>go("map")} label="絵図へ"/>
       <div className="eyebrow">解決 ── 真相</div>
+      <div style={{display:"flex", justifyContent:"center", gap:8, marginBottom:6}}>
+        <Portrait id="mitsuhide" expr="sad" size={110}/>
+        <Portrait id="nobunaga" expr="normal" size={110}/>
+      </div>
       <div className="paper">
         <div className="secret-stamp mincho">解決</div>
         <div className="meta">事件簿 結び</div>
@@ -843,11 +1087,11 @@ function Truth({go}){
         {TRUTH.map((t,i)=><P key={i}>{t}</P>)}
       </div>
       <div className="paper">
-        <div className="meta">歴史のナゾ ── 光秀の動機、君はどの説?</div>
+        <div className="meta">歴史のナゾ ── 君はどの説?</div>
         <h3 className="mincho">日本史最大のミステリー</h3>
         <ul>{SETSU.map((s,i)=><li key={i}><b>{s.t}</b> ── {s.d}</li>)}</ul>
       </div>
-      <div className="eyebrow" style={{marginTop:20}}>そして歴史は動く</div>
+      <div className="eyebrow" style={{marginTop:18}}>そして歴史は動く</div>
       <div className="tl">
         {EPILOGUE.map((e,i)=>(
           <div key={i} className="tl-row">
@@ -903,7 +1147,7 @@ function Dojo({go}){
       <div className="choices">
         {q.c.map((c,i)=>(
           <button key={i} className={"choice"+(picked===null?"":(i===q.a?" correct":(i===picked?" wrong":"")))}
-            onClick={()=>{ if(picked===null){ setPicked(i); if(i===q.a) setScore(s=>s+1);} }}>{c}</button>
+            onClick={()=>{ if(picked===null){setPicked(i); if(i===q.a) setScore(s=>s+1);} }}>{c}</button>
         ))}
       </div>
       {picked!==null && (
@@ -912,7 +1156,7 @@ function Dojo({go}){
             <b>{correct?"正解!":"ざんねん!"}</b> {q.ex}
             <div style={{fontSize:13, marginTop:4, opacity:.85}}>♪ {q.goro}</div>
           </div>
-          <div style={{marginTop:14}}>
+          <div style={{marginTop:12}}>
             <button className="btn primary block" onClick={()=>{
               if(idx+1<total){setIdx(idx+1);setPicked(null);} else setFin(true);
             }}>{idx+1<total?"次の問題へ":"結果を見る"}</button>
@@ -948,26 +1192,26 @@ function Guide({go}){
   return (
     <div>
       <TopBar onBack={()=>go("cover")} label="表紙へ"/>
-      <div className="eyebrow">先生用ガイド(v2 探索版)</div>
+      <div className="eyebrow">先生用ガイド(v3 ビジュアル版)</div>
       <div className="paper">
         <div className="meta">授業で使う場合(20〜30分)</div>
         <h3 className="mincho">授業パターン ── ペア探偵</h3>
         <ul>
-          <li>導入3分:序章を音読し「犯人はだれだと思う?」と予想を立てさせてから探索開始。</li>
-          <li>探索15分:2人1組の「ペア探偵」がおすすめ。証拠を1つ入手するたびに、相方に赤枠(テストに出る)の内容を自分の言葉で説明する。説明できたら記録用紙に◯、あやしければ△をつける。</li>
-          <li>探索の順番は自由なので、「どこから調べる?」と生徒に決めさせてください。自分で選ぶことが集中力を生みます。</li>
-          <li>まとめ10分:光秀への「つきつけ」→推理→真相。青枠の発展は、余裕のある生徒・上位校志望の生徒向けに。</li>
-          <li>チェック:道場20問(基本15+発展5)。基本15問の8割(12問)を合格ラインの目安に、△✕の問題は解説と語呂を読み直してその場で解き直しを。</li>
+          <li>導入3分:開幕ムービー(タップ送り)をみんなで見て「犯人はだれ?」と予想させてから探索へ。</li>
+          <li>探索15分:2人1組の「ペア探偵」。証拠を1つ入手するたびに、相方に赤枠の内容を自分の言葉で説明。説明できたら記録用紙に◯、あやしければ△。</li>
+          <li>探索順は自由。「どこから調べる?」は生徒に決めさせてください。自分で選ぶと集中が生まれます。</li>
+          <li>クライマックス:光秀への「つきつけ」演出はぜひ画面を見せ合って盛り上がってください。青枠の発展は余裕のある生徒・上位校志望向け。</li>
+          <li>チェック:道場20問(基本15+発展5)。基本15問の8割(12問)を合格ラインの目安に、△✕は解説と語呂を読み直してその場で解き直し。</li>
         </ul>
       </div>
       <div className="paper">
         <div className="meta">自習・宿題で使う場合</div>
         <h3 className="mincho">生徒ひとりでやるパターン</h3>
         <ul>
-          <li>1周目:マップを自由に探索し、証拠11個をコンプリート(約20〜25分)。ゲーム感覚でOK。</li>
+          <li>1周目:絵図を自由に探索して証拠11個をコンプリート(約20分)。</li>
           <li>2周目:道場20問→まちがえた問題の解説と語呂を音読→もう1周。</li>
-          <li>仕上げ:年表を紙に書き出せたら合格。発展問題まで全問正解なら「天下人」認定!</li>
-          <li>テスト前は「年表→道場」で1セット10分の復習に。発展の青枠は高校入試の資料問題対策にもなります。</li>
+          <li>仕上げ:年表を紙に書き出せたら合格。発展まで全問正解で「天下人」!</li>
+          <li>テスト前は「年表→道場」で1セット10分の復習に。</li>
         </ul>
       </div>
       <button className="btn block" onClick={()=>go("cover")}>表紙へもどる</button>
@@ -996,16 +1240,16 @@ function App(){
   const markTalk=(p,t)=>setTalked(v=>({...v,[p+":"+t]:true}));
   const markSpot=(l,s)=>setSpotsDone(v=>({...v,[l+":"+s]:true}));
   const locDone=L=>{
-    const spotsOk = L.spots.every(sp=>spotsDone[L.id+":"+sp.id]);
-    const personOk = !L.person || PEOPLE[L.person].topics.every(tp=>talked[L.person+":"+tp.id] || (tp.needs && !tp.needs.every(n=>items[n])));
+    const spotsOk=L.spots.every(sp=>spotsDone[L.id+":"+sp.id]);
+    const personOk=!L.person || PEOPLE[L.person].topics.every(tp=>talked[L.person+":"+tp.id] || (tp.needs && !tp.needs.every(n=>items[n])));
     return spotsOk && personOk && (L.spots.length>0 || L.person);
   };
-  const loc = LOCATIONS.find(l=>l.id===locId);
+  const loc=LOCATIONS.find(l=>l.id===locId);
 
   return (
     <div>
       {screen==="cover" && <Cover go={go}/>}
-      {screen==="prologue" && <Prologue go={go}/>}
+      {screen==="opening" && <Opening go={go}/>}
       {screen==="map" && <MapScreen go={go} items={items} confessed={confessed} openInv={()=>setInvOpen(true)} locDone={locDone}/>}
       {screen==="loc" && loc && <LocationScreen loc={loc} go={go} items={items} addItem={addItem} spotsDone={spotsDone} markSpot={markSpot} openItem={id=>setItemModal(id)}/>}
       {screen==="talk" && personId && <TalkScreen personId={personId} backLocId={locId} go={go} items={items} addItem={addItem} talked={talked} markTalk={markTalk} openItem={id=>setItemModal(id)} setConfessed={setConfessed}/>}
