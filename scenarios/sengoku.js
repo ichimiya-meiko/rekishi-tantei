@@ -1,4 +1,4 @@
-/* 事件簿・弐 戦国「本能寺の変」 data v1.1(ミニ対決を別所証拠化)
+/* 事件簿・四 戦国「本能寺の変」 data v1.2(時系列番号に変更)
    歴史探偵事件簿 シナリオデータ(エンジン v8 対応) */
 (function(){
   const mt=(x,y)=>({t:"path",d:"M"+(x-22)+","+(y+16)+" L"+x+","+(y-14)+" L"+(x+22)+","+(y+16)+" Z",fill:"#c9b98c",stroke:"#a08e5e",sw:1.5});
@@ -30,7 +30,7 @@
   },
   map: MAP,
 
-  id:"sengoku", no:"弐", era:"戦国時代",
+  id:"sengoku", no:"四", era:"戦国時代",
   title:"本能寺の変", sub:"1582年・京都",
   face:"mitsuhide", rival:"mitsuhide",
   lead:"信長が燃える寺に消えた。犯人に証拠をつきつけろ!",
