@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>歴史探偵事件簿 v4 | 歴史探索アドベンチャー</title>
+<title>歴史探偵事件簿 v6 | 歴史探索アドベンチャー</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -49,8 +49,8 @@
   .cover .case-no{font-size:11px;letter-spacing:.5em;color:var(--hai)}
   .big-title{font-size:34px;font-weight:800;letter-spacing:.1em;margin:14px 0 4px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
   .cover .lead{max-width:460px;margin:10px auto 20px;color:var(--hai);font-size:13.5px}
+  .cover .menu{display:flex;flex-direction:column;gap:11px;max-width:340px;margin:0 auto}
 
-  /* 事件簿選択カード */
   .sc-card{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--sumi2);
     padding:14px;margin-bottom:12px;width:100%;text-align:left;color:var(--kinari);font-family:inherit;cursor:pointer;transition:border-color .15s}
   .sc-card:hover{border-color:var(--kin)}
@@ -81,7 +81,6 @@
   .deep-box .db-label{display:inline-block;background:var(--ao);color:#fff;font-size:11px;font-weight:700;letter-spacing:.2em;padding:2px 10px;border-radius:3px;margin-bottom:5px}
   .deep-box .db-body{font-size:14px}
 
-  /* ビジュアルノベル */
   .vn-stage{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;
     background:radial-gradient(circle at 50% 42%, #3a2f24 0%, #241d17 55%, #171310 100%);
     min-height:430px;display:flex;flex-direction:column}
@@ -122,8 +121,12 @@
   .get-banner .gt{font-weight:700;font-size:14px}
 
   .hud{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:8px;
-    padding:9px 13px;margin-bottom:12px;background:var(--sumi2);font-size:13px}
+    padding:9px 13px;margin-bottom:10px;background:var(--sumi2);font-size:13px}
   .hud .cnt{color:var(--kin);font-family:"Shippori Mincho",serif;font-size:17px}
+  .item-strip{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .item-chip{border:1px solid var(--line);border-radius:8px;background:var(--sumi2);padding:5px 8px;font-size:18px;
+    cursor:pointer;font-family:inherit;line-height:1}
+  .item-chip.empty{opacity:.25;cursor:default}
   .mapwrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#e7dbbd}
   .map-pin{cursor:pointer}
   .map-pin:hover circle.pin-c{stroke:#8a2a1a}
@@ -149,6 +152,17 @@
   .inv-tile .icon{font-size:24px;display:block;margin-bottom:4px}
   .inv-tile .t{font-size:11px;line-height:1.4}
   .inv-tile.empty{opacity:.3;cursor:default}
+  .inv-tile.sel{border-color:var(--hi);background:rgba(196,58,42,.12)}
+
+  /* 対決 */
+  .hp-bar{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--hai)}
+  .hp-bar .hp{font-size:18px}
+  .hp-bar .hp.off{opacity:.18;filter:grayscale(1)}
+  .claim-box{border:2px solid var(--kin);border-radius:10px;background:rgba(212,169,78,.07);padding:13px 14px;margin:12px 0;font-size:15px;font-weight:700;line-height:1.8}
+  .claim-box .cb-label{display:inline-block;background:var(--kin);color:#241d17;font-size:11px;font-weight:800;letter-spacing:.2em;padding:2px 10px;border-radius:3px;margin-bottom:6px}
+  .go-stage{border:1px solid var(--hi);border-radius:12px;background:radial-gradient(circle at 50% 30%, #3a1512 0%, #1a0d0a 70%);
+    padding:26px 16px;text-align:center}
+  .go-word{font-size:40px;font-weight:800;color:var(--hi);letter-spacing:.15em;text-shadow:0 0 16px rgba(196,58,42,.6);margin:8px 0}
 
   .q-num{font-size:12px;letter-spacing:.25em;color:var(--kin);margin-bottom:6px}
   .q-text{font-size:17px;font-weight:700;margin-bottom:14px;line-height:1.7}
@@ -188,14 +202,14 @@
 const {useState, useEffect} = React;
 
 /* =====================================================
-   歴史探偵事件簿 v4 ── 時代選択マルチシナリオ版
+   歴史探偵事件簿 v6 ── 道中ミニ対決追加版
    壱:旧石器時代「消えた祖先事件」 / 弐:戦国「本能寺の変」
    ===================================================== */
-const APP_VERSION = "v4";
+const APP_VERSION = "v6";
+const MAX_HP = 5;
 
 /* ---------- キャラクター設定 ---------- */
 const CHAR_CONF = {
-  /* 戦国 */
   shino:    {name:"侍女・しの",   role:"本能寺の生き残り", skin:"#f5dcc0", kimono:"#7a6296", collar:"#e8dff0", hair:"#2e2438", style:"long"},
   froi:     {name:"フロイス",     role:"宣教師",           skin:"#f0d0b0", kimono:"#3a3a44", collar:"#d8d8dc", hair:"#6e5a44", style:"beard"},
   rikyu:    {name:"千利休",       role:"堺の商人・茶人",   skin:"#ecd2ae", kimono:"#4a4436", collar:"#cfc6ae", hair:"#5a5248", style:"monk"},
@@ -204,7 +218,6 @@ const CHAR_CONF = {
   gonbe:    {name:"農民・権兵衛", role:"老ノ坂の村人",     skin:"#e0bc90", kimono:"#5a6242", collar:"#cfc6a0", hair:"#3a3026", style:"kasa"},
   mitsuhide:{name:"明智 光秀",    role:"織田家の重臣",     skin:"#f2dabb", kimono:"#3a4a6e", collar:"#dfe4ee", hair:"#241e18", style:"eboshi", crest:true},
   nobunaga: {name:"織田 信長",    role:"天下人まであと一歩",skin:"#eed2ac", kimono:"#6e1f1a", collar:"#e8d8b8", hair:"#241e18", style:"nobunaga"},
-  /* 旧石器 */
   aizawa:   {name:"相沢 忠洋",    role:"行商人・考古学好き", skin:"#f0d4b4", kimono:"#4a5a6e", collar:"#dce4ea", hair:"#241e18", style:"cap"},
   hakase:   {name:"古井戸博士",   role:"考古学の大先生",     skin:"#eed8c0", kimono:"#5a5248", collar:"#e8e4d8", hair:"#d8d4c8", style:"hakase"},
   karyudo:  {name:"狩人・ガジ",   role:"2万年前のハンター",  skin:"#dcb890", kimono:"#7a5a3a", collar:"#a8845a", hair:"#241a12", style:"wild"},
@@ -346,7 +359,7 @@ function Portrait({id, expr, size}){
 const SC_KYUSEKKI = {
   id:"kyusekki", no:"壱", era:"旧石器時代",
   title:"消えた祖先事件", sub:"1946年・岩宿 ⇔ 約2万年前",
-  face:"aizawa", rival:"hakase", fxWord:"ツキツケル!!",
+  face:"aizawa", rival:"hakase",
   lead:"「日本に旧石器時代はなかった」──学界の定説に、君は挑む。",
   coverFaces:["aizawa","hakase","karyudo"],
   opening:[
@@ -411,30 +424,14 @@ const SC_KYUSEKKI = {
          script:[
           {sp:"hakase",e:"angry",t:"日本に旧石器時代はない! 縄文が最古だ!"},
           {sp:"hakase",e:"normal",t:"証拠? 出せるものなら出してみたまえ!"},
-          {sp:null,t:"(証拠を集めて、博士につきつけろ!)"}]},
-        {id:"ts1", label:"打製石器をつきつける", needs:["sekki"], fx:"sekki",
-         script:[
-          {sp:"hakase",e:"shock",t:"な……打製石器だと!?"},
-          {sp:"hakase",e:"normal",t:"し、しかし、ただの割れた石かもしれんぞ!"}]},
-        {id:"ts2", label:"赤土の地層をつきつける", needs:["roam"], fx:"roam",
-         script:[
-          {sp:"hakase",e:"shock",t:"関東ローム層から出ただと……!?"},
-          {sp:"hakase",e:"sad",t:"あの赤土は、縄文よりはるかに古い層……ば、ばかな"}]},
-        {id:"ts3", label:"【最終対決】氷河時代の証拠をつきつける", needs:["kiba","rikuchizu"], fx:"kiba", confess:true,
-         deep:{title:"発展 ── 科学は更新される", body:"岩宿遺跡の発見(1946年発見・1949年発掘)で、日本の歴史は一気に数万年さかのぼった。教科書は「新しい証拠」で書きかわる。疑う勇気と、証拠で確かめる誠実さ──それが科学の心だ。"},
-         script:[
-          {sp:"hakase",e:"shock",t:"ナウマンゾウのきばに、陸続きの地図まで……!"},
-          {sp:"hakase",e:"sad",t:"……わしの負けじゃ。証拠が、すべてを変えた"},
-          {sp:"hakase",e:"normal",t:"1949年、岩宿を正式に発掘調査しよう!"},
-          {sp:"hakase",e:"smile",t:"定説を疑い、証拠で確かめる。それが科学じゃ。見事だった!"},
-          {sp:null,t:"捜査完了! 絵図にもどり【推理】で事件を解決せよ!"}]}
+          {sp:null,t:"(証拠を集めてから、【対決】で定説をくつがえせ!)"}]}
       ]},
     karyudo:{intro:[{sp:"karyudo",e:"normal",t:"見ない顔だな。……ふしぎな服を着てるな、おまえ"}],
       topics:[
-        {id:"kurashi", label:"どんな暮らしをしている?", gives:"yari",
+        {id:"kurashi", label:"どんな暮らしをしている?",
          script:[
           {sp:"karyudo",e:"normal",t:"オレたちは、けものを追って移動して暮らす"},
-          {sp:"karyudo",e:"smile",t:"これがオレの槍。石の刃は、打ち欠いて作るんだ"}]},
+          {sp:"karyudo",e:"normal",t:"それ以上知りたきゃ──オレに認められることだな"}]},
         {id:"samui", label:"寒くない?",
          script:[
           {sp:"karyudo",e:"normal",t:"このごろは、ずーっと寒い(※氷河時代)"},
@@ -444,7 +441,28 @@ const SC_KYUSEKKI = {
          script:[
           {sp:"karyudo",e:"angry",t:"大きなけものは、みんなで力を合わせて狩る!"},
           {sp:"karyudo",e:"smile",t:"一人じゃ無理でも、仲間となら勝てるんだ"}]}
-      ]},
+      ],
+      duel:{
+        startNeeds:["sekki"], hp:3,
+        intro:[
+          {sp:"karyudo",e:"angry",t:"よそ者を、オレたちのキャンプには入れられん!"},
+          {sp:"karyudo",e:"normal",t:"入りたきゃ──おまえがオレたちの「仲間」だと、証拠で見せてみろ!"}],
+        rounds:[
+          {st:[{sp:"karyudo",e:"angry",t:"オレたちの命は、道具が守る。石を打ち欠いて作る、鋭い刃だ"},
+               {sp:"karyudo",e:"angry",t:"おまえ、オレたちと同じ道具を持ってるのか!?"}],
+           q:"「仲間の証」──同じ道具であることを示す証拠をつきつけろ!",
+           correct:["sekki"],
+           ok:[{sp:"karyudo",e:"shock",t:"!! それは……オレたちと同じ、打ち欠いた石の刃!"},
+               {sp:"karyudo",e:"smile",t:"おまえ、分かってるやつだな。気に入った!"}]}],
+        taunts:[
+          [{sp:"karyudo",e:"angry",t:"はあ? そんなもの、オレたちの暮らしと関係ないだろ!"}],
+          [{sp:"karyudo",e:"normal",t:"ちがうな。オレたちが毎日、命をあずけてるものだ"}]],
+        win:[
+          {sp:"karyudo",e:"smile",t:"ほら、オレの槍をやる。石の刃を木の先につけた、狩りの槍だ"},
+          {sp:"karyudo",e:"normal",t:"これでナウマンゾウみたいな大物を狩る。キャンプにも案内してやるよ"}],
+        goLine:[{sp:"karyudo",e:"normal",t:"出直してこい。オレたちの道具を、よーく見てからな"}],
+        gives:["yari"]
+      }},
     chourou:{intro:[{sp:"chourou",e:"smile",t:"おお、旅の子か。火のそばへ来なされ"}],
       topics:[
         {id:"hi", label:"火について聞く",
@@ -460,7 +478,72 @@ const SC_KYUSEKKI = {
          script:[
           {sp:"chourou",e:"smile",t:"近ごろ、土をこねて焼くと器になると気づいた者がおる"},
           {sp:"chourou",e:"normal",t:"暮らしは、少しずつ変わっていくのじゃろうなあ"}]}
-      ]},
+      ],
+      duel:{
+        startNeeds:["kiba"], hp:3,
+        intro:[
+          {sp:"chourou",e:"normal",t:"旅の子よ。わしらの「暮らしの秘密」を知りたいのじゃな?"},
+          {sp:"chourou",e:"smile",t:"よかろう。ただし──わしらを分かっておる者にだけ、話すのじゃ"}],
+        rounds:[
+          {st:[{sp:"chourou",e:"normal",t:"わしらは、何を追いかけて生きておると思う?"},
+               {sp:"chourou",e:"normal",t:"口で言うのはたやすい。「証拠」で示してみせい"}],
+           q:"狩人たちが「追いかけているもの」を示す証拠をつきつけろ!",
+           correct:["kiba","yari"],
+           ok:[{sp:"chourou",e:"shock",t:"ほほう……ナウマンゾウ! そのとおりじゃ!"},
+               {sp:"chourou",e:"smile",t:"よう調べておる。合格じゃよ、旅の子"}]}],
+        taunts:[
+          [{sp:"chourou",e:"normal",t:"ほっほ、ちがうのう。わしらの「食」を考えてみい"}],
+          [{sp:"chourou",e:"normal",t:"惜しいが、それではないの。大きな大きな、あれじゃよ"}]],
+        win:[
+          {sp:"chourou",e:"normal",t:"わしらは獲物を追って、住みかを変える。だから荷は少なくての"},
+          {sp:"chourou",e:"smile",t:"移動する暮らし──それが、わしら旧石器の民の生き方じゃ"}],
+        goLine:[{sp:"chourou",e:"smile",t:"ほっほっほ。焦らんでよい。よく見て、よく考えなされ"}],
+        gives:["idou"]
+      }},
+  },
+  showdown:{
+    person:"hakase",
+    startNeeds:["sekki","roam","kiba","rikuchizu"],
+    intro:[
+      {sp:"hakase",e:"angry",t:"まだおったのか! よろしい、相手になってやろう"},
+      {sp:"hakase",e:"normal",t:"わしの「定説」を崩せるものなら、崩してみたまえ!"},
+      {sp:null,t:"最終対決! 博士の主張の「穴」を、自分で選んだ証拠でつらぬけ!"}],
+    rounds:[
+      {st:[{sp:"hakase",e:"angry",t:"日本に旧石器時代など、ない!"},
+           {sp:"hakase",e:"normal",t:"いたと言うなら──「道具」のひとつでも見せてみたまえ!"}],
+       q:"旧石器人の「道具」を示す証拠をつきつけろ!",
+       correct:["sekki"],
+       ok:[{sp:"hakase",e:"shock",t:"な……打ち欠いて作られた、鋭い刃……!"},
+           {sp:"hakase",e:"angry",t:"い、いや、まだじゃ! まだ認めんぞ!"}]},
+      {st:[{sp:"hakase",e:"normal",t:"そ、そんなもの、縄文人が使った石かもしれんではないか!"},
+           {sp:"hakase",e:"angry",t:"「縄文より古い」という証拠が、どこにある!"}],
+       q:"「縄文より古い」ことを示す証拠をつきつけろ!",
+       correct:["roam"],
+       ok:[{sp:"hakase",e:"shock",t:"関東ローム層……縄文土器より下の層から出た、じゃと!?"},
+           {sp:"hakase",e:"sad",t:"地層は、うそをつかん……ぐぬぬ"}]},
+      {st:[{sp:"hakase",e:"normal",t:"だ、だが考えてもみよ! 大昔の日本は海に囲まれた島じゃ!"},
+           {sp:"hakase",e:"angry",t:"人類がどうやって渡って来たと言うんだ。泳いだのかね!?"}],
+       q:"人類が日本へ来られた理由を示す証拠をつきつけろ!",
+       correct:["rikuchizu"],
+       ok:[{sp:"hakase",e:"shock",t:"氷河時代は海面が低く……大陸と陸続き……!"},
+           {sp:"hakase",e:"sad",t:"歩いて、来られたと言うのか……"}]},
+      {st:[{sp:"hakase",e:"normal",t:"さ、最後の質問じゃ!"},
+           {sp:"hakase",e:"angry",t:"その旧石器人とやらは、この寒い日本で「何を食べて」生きたのかね!"}],
+       q:"旧石器人の「食料」を示す証拠をつきつけろ!",
+       correct:["kiba","yari"],
+       ok:[{sp:"hakase",e:"shock",t:"ナウマンゾウ……! 狩りをして生きておったのか……"}]}
+    ],
+    taunts:[
+      [{sp:"hakase",e:"smile",t:"フン、それがどうしたと言うんだね!"}],
+      [{sp:"hakase",e:"smile",t:"話にならんね! やり直したまえ!"}],
+      [{sp:"hakase",e:"normal",t:"その程度で、わしの定説は崩せんよ"}]],
+    win:[
+      {sp:"hakase",e:"sad",t:"……わしの、負けじゃ。証拠が、すべてを変えた"},
+      {sp:"hakase",e:"normal",t:"1949年、岩宿を正式に発掘調査しよう!"},
+      {sp:"hakase",e:"smile",t:"定説を疑い、証拠で確かめる。それが科学じゃ。見事だった!"},
+      {sp:null,t:"対決勝利! 絵図にもどり【推理】で事件を解決せよ!"}],
+    goLine:[{sp:"hakase",e:"smile",t:"ふぉっふぉっふぉ! 百年早いわい! 出直してきなさい!"}],
+    deep:{title:"発展 ── 科学は更新される", body:"岩宿遺跡の発見(1946年発見・1949年発掘)で、日本の歴史は一気に数万年さかのぼった。教科書は「新しい証拠」で書きかわる。疑う勇気と、証拠で確かめる誠実さ──それが科学の心だ。"}
   },
   locations:[
     {id:"iwajuku", icon:"🪨", name:"岩宿の切通し", area:"群馬・1946年", x:300, y:120,
@@ -492,7 +575,7 @@ const SC_KYUSEKKI = {
        {id:"hi2", label:"たき火を調べる", icon:"🔍",
         lines:["焼けた骨と炭。火で肉を焼いて食べていたんだ。"], gives:"takibi"},
        {id:"nimotsu", label:"荷物を見る", icon:"🔍",
-        lines:["荷物はとても少ない。すぐ運べるものだけ。","そうか──獲物を追って移動する生活だから、身軽なんだ。"], gives:"idou"}],
+        lines:["荷物はとても少ない。すぐ運べるものだけ。","なぜこんなに身軽なんだろう? 長老が何か知っていそうだ。"]}],
      person:"chourou"}
   ],
   deduction:[
@@ -582,7 +665,7 @@ const SC_KYUSEKKI = {
 const SC_SENGOKU = {
   id:"sengoku", no:"弐", era:"戦国時代",
   title:"本能寺の変", sub:"1582年・京都",
-  face:"mitsuhide", rival:"mitsuhide", fxWord:"ツキツケル!!",
+  face:"mitsuhide", rival:"mitsuhide",
   lead:"信長が燃える寺に消えた。犯人に証拠をつきつけろ!",
   coverFaces:["mitsuhide","nobunaga","hideyoshi"],
   opening:[
@@ -591,7 +674,7 @@ const SC_SENGOKU = {
     {sp:"nobunaga",e:"angry",t:"──謀反(むほん)か。是非に及ばず"},
     {sp:null,t:"織田信長、燃える寺に消える。享年49。"},
     {sp:null,t:"君は歴史探偵。戦国の各地をめぐり、証拠を11個集めよ。"},
-    {sp:null,t:"人物に質問し、最後は犯人に証拠を──つきつけろ!"}
+    {sp:null,t:"人物に質問し、最後は犯人との【対決】だ!"}
   ],
   items:{
     teppo:{icon:"🔫", name:"焼けた鉄砲",
@@ -676,16 +759,37 @@ const SC_SENGOKU = {
          script:[
           {sp:"rikyu",e:"normal",t:"種子島の鉄砲は、この堺と国友で量産されました"},
           {sp:"rikyu",e:"normal",t:"戦のやり方を、根こそぎ変えた道具ですわ"}]},
-        {id:"ieyasu2", label:"家康を見なかったか?", gives:"mokugeki",
+        {id:"ieyasu2", label:"家康を見なかったか?",
          script:[
-          {sp:"rikyu",e:"normal",t:"家康様なら、昨日までこの堺を見物しておられました"},
-          {sp:"rikyu",e:"shock",t:"事件を聞くや、山を越えて三河へ──伊賀越えです"}]},
+          {sp:"rikyu",e:"normal",t:"……さて。この堺は自由の町。よそ者の詮索には、軽々しく答えられません"},
+          {sp:"rikyu",e:"smile",t:"どうしても知りたければ──【対決】で、探偵の腕を見せてくださいまし"}]},
         {id:"wabicha", label:"わび茶について",
          deep:{title:"発展 ── 桃山文化", body:"千利休はわび茶を大成。同時代に狩野永徳の「唐獅子図屏風」、出雲の阿国のかぶき踊り、壮大な姫路城──これらを桃山文化と呼ぶ。「豪華」と「質素」が同居するのが面白い。"},
          script:[
           {sp:"rikyu",e:"smile",t:"金ぴかの茶室より、一輪の朝顔"},
           {sp:"rikyu",e:"smile",t:"質素の中の美──わび茶と申します"}]}
-      ]},
+      ],
+      duel:{
+        startNeeds:["daicho"], hp:3,
+        intro:[
+          {sp:"rikyu",e:"normal",t:"大事なお客様の行方は、だれにでも話すものではありません"},
+          {sp:"rikyu",e:"smile",t:"この堺の「力の源」を証拠で示せたら──腕を認めて、お話ししましょう"}],
+        rounds:[
+          {st:[{sp:"rikyu",e:"normal",t:"堺は、大名も手を出せぬ日本一の町"},
+               {sp:"rikyu",e:"normal",t:"さて、この町の力の源は何か。証拠でお示しなされ"}],
+           q:"堺の町の「力の源」を示す証拠をつきつけろ!",
+           correct:["daicho"],
+           ok:[{sp:"rikyu",e:"shock",t:"鉄砲の台帳……! 堺と国友の量産体制まで、お調べとは"},
+               {sp:"rikyu",e:"smile",t:"鉄砲と南蛮貿易の富。それがこの町の力。お見事です"}]}],
+        taunts:[
+          [{sp:"rikyu",e:"smile",t:"ふふ。それは堺の「力の源」ではございませんなあ"}],
+          [{sp:"rikyu",e:"normal",t:"惜しい。この町で作られ、戦を変えた「あれ」ですよ"}]],
+        win:[
+          {sp:"rikyu",e:"normal",t:"家康様なら、昨日までこの堺を見物しておられました"},
+          {sp:"rikyu",e:"shock",t:"事件を聞くや、わずかな供と山を越えて三河へ──伊賀越えです"}],
+        goLine:[{sp:"rikyu",e:"smile",t:"まあ、一服してから出直しなされ"}],
+        gives:["mokugeki"]
+      }},
     akindo:{intro:[{sp:"akindo",e:"smile",t:"へい、いらっしゃい! 安土は日本一にぎやかでっせ"}],
       topics:[
         {id:"rakuichi", label:"この町の商売について", gives:"kousatsu",
@@ -696,12 +800,33 @@ const SC_SENGOKU = {
          script:[
           {sp:"akindo",e:"shock",t:"あの金ぴかの天主を見なはれ! 宣教師様も驚いてはった"},
           {sp:"akindo",e:"normal",t:"城は戦うためだけやのうて、新しい世を見せるもんですなあ"}]},
-        {id:"hiei", label:"信長の怖い噂について", gives:"hieizan",
+        {id:"hiei", label:"信長の怖い噂について",
          script:[
-          {sp:"akindo",e:"normal",t:"……声を落としなはれや"},
+          {sp:"akindo",e:"shock",t:"め、めっそうもない! 信長様の悪い噂なんて、おまへん!"},
+          {sp:"akindo",e:"normal",t:"……どうしても聞きたいなら、【対決】でわしを言い負かしてみなはれ"}]}
+      ],
+      duel:{
+        startNeeds:["kousatsu"], hp:3,
+        intro:[
+          {sp:"akindo",e:"smile",t:"へっへ、探偵さん相手に、商人の意地を見せまっせ"},
+          {sp:"akindo",e:"normal",t:"わしの言い分の「穴」を、証拠でついてみなはれ!"}],
+        rounds:[
+          {st:[{sp:"akindo",e:"smile",t:"安土がこんなににぎわうのは、ぜんぶ、わしら商人の腕のおかげ!"},
+               {sp:"akindo",e:"normal",t:"お上の政策なんぞ、なーんも関係おまへんわ!"}],
+           q:"町のにぎわいの「本当の理由」を示す証拠をつきつけろ!",
+           correct:["kousatsu"],
+           ok:[{sp:"akindo",e:"shock",t:"うっ……楽市・楽座の高札!"},
+               {sp:"akindo",e:"sad",t:"へえ……税はタダ、座も関所も廃止。信長様の政策あってこそ、ですわ"}]}],
+        taunts:[
+          [{sp:"akindo",e:"smile",t:"へっへ、それとこれとは話が別ですわ!"}],
+          [{sp:"akindo",e:"normal",t:"ちゃいますなあ。この町の「決まりごと」を思い出しなはれ"}]],
+        win:[
+          {sp:"akindo",e:"normal",t:"……負けましたわ。ほな、声を落として、内緒の話を"},
           {sp:"akindo",e:"sad",t:"比叡山の焼き討ち(1571年)、本願寺との十年戦争……"},
-          {sp:"akindo",e:"sad",t:"信長様を恨む人は、家来の中にもおるとか"}]}
-      ]},
+          {sp:"akindo",e:"sad",t:"信長様を恨む人は、家来の中にもおるとか……"}],
+        goLine:[{sp:"akindo",e:"smile",t:"へっへ、商人はしぶといでっせ。出直しなはれ!"}],
+        gives:["hieizan"]
+      }},
     hideyoshi:{intro:[{sp:"hideyoshi",e:"smile",t:"おお、探偵か! わしは忙しい。手短に頼むぞ"}],
       topics:[
         {id:"mizu", label:"水攻めについて聞く", gives:"mizuzeme",
@@ -741,30 +866,53 @@ const SC_SENGOKU = {
          script:[
           {sp:"mitsuhide",e:"normal",t:"本能寺のことなら、わたしも驚いている"},
           {sp:"mitsuhide",e:"normal",t:"わたしは中国へ向かう途中だった。それ以上、話すことはない"},
-          {sp:null,t:"(……目が泳いでいる。証拠を突きつけろ!)"}]},
-        {id:"ts1", label:"命令書をつきつける", needs:["meirei"], fx:"meirei",
-         script:[
-          {sp:"mitsuhide",e:"shock",t:"──それは、信長様の命令書……!"},
-          {sp:"mitsuhide",e:"sad",t:"そう。この命令が、京のそばで1万3千の兵をわたしに与えた"}]},
-        {id:"ts2", label:"侍女の証言をつきつける", needs:["shogen"], fx:"shogen",
-         script:[
-          {sp:"mitsuhide",e:"shock",t:"水色桔梗を見た者がいる、と……!"},
-          {sp:"mitsuhide",e:"sad",t:"桔梗は……わが明智家の紋だ"}]},
-        {id:"ts3", label:"短冊をつきつける", needs:["tanzaku"], fx:"tanzaku",
-         script:[
-          {sp:"mitsuhide",e:"shock",t:"!! ……読まれてしまったか"},
-          {sp:"mitsuhide",e:"normal",t:"「ときは今」──土岐(とき)は、わが一族の名"},
-          {sp:"mitsuhide",e:"sad",t:"あの夜、愛宕の神前で、心を決めたのだ"}]},
-        {id:"ts4", label:"【最終対決】進軍地図をつきつける", needs:["chizu","shogen","tanzaku"], fx:"chizu", confess:true,
-         deep:{title:"発展 ── 動機は日本史最大のナゾ", body:"①怨恨説(信長への恨み) ②野望説(自分が天下を) ③四国説(長宗我部氏との交渉役だった光秀が方針転換で立場を失った/近年の新史料で注目) ④黒幕説(朝廷や義昭?)──決着はついていない。新史料の発見で歴史は更新される。それが歴史学の面白さだ。"},
-         script:[
-          {sp:"mitsuhide",e:"shock",t:"老ノ坂で東へ……そこまで調べ上げたか、探偵殿"},
-          {sp:"mitsuhide",e:"sad",t:"……認めよう。信長様を討ったのは、この明智光秀だ"},
-          {sp:"mitsuhide",e:"angry",t:"「敵は本能寺にあり」──!"},
-          {sp:"mitsuhide",e:"sad",t:"動機か。恨みか、反発か、それとも野心か……"},
-          {sp:"mitsuhide",e:"sad",t:"探偵殿。正直に言おう。わたしにも、分からぬのだ"},
-          {sp:null,t:"捜査完了! 絵図にもどり【推理】で事件を解決せよ!"}]}
+          {sp:null,t:"(……目が泳いでいる。証拠を集めてから【対決】だ!)"}]}
       ]}
+  },
+  showdown:{
+    person:"mitsuhide",
+    startNeeds:["meirei","shogen","chizu","tanzaku"],
+    intro:[
+      {sp:"mitsuhide",e:"normal",t:"……まだ何か用かな、探偵殿"},
+      {sp:"mitsuhide",e:"angry",t:"いいだろう。その推理とやら、聞いてやろう"},
+      {sp:null,t:"最終対決! 光秀の主張の「穴」を、自分で選んだ証拠でつらぬけ!"}],
+    rounds:[
+      {st:[{sp:"mitsuhide",e:"normal",t:"わたしは信長様の命で、中国地方へ向かう途中だった"},
+           {sp:"mitsuhide",e:"normal",t:"京を襲うなど、方角がまるで逆。できるはずがない"}],
+       q:"「京へは行っていない」──この主張をくずす証拠をつきつけろ!",
+       correct:["chizu"],
+       ok:[{sp:"mitsuhide",e:"shock",t:"ぐっ……老ノ坂の分かれ道で、東へ折れた跡……!"},
+           {sp:"mitsuhide",e:"sad",t:"……軍勢の向きまで、調べていたか"}]},
+      {st:[{sp:"mitsuhide",e:"normal",t:"だが考えてもみよ。本能寺を襲ったのは一万を超える大軍と聞く"},
+           {sp:"mitsuhide",e:"normal",t:"わたしがそのような大軍を、勝手に動かせるはずがなかろう"}],
+       q:"光秀が「大軍を動かせた」ことを示す証拠をつきつけろ!",
+       correct:["meirei"],
+       ok:[{sp:"mitsuhide",e:"shock",t:"信長様の……中国出陣の命令書!"},
+           {sp:"mitsuhide",e:"sad",t:"そうだ。この命令こそが、わたしに1万3千の兵を与えた……"}]},
+      {st:[{sp:"mitsuhide",e:"normal",t:"よかろう。だが襲った軍が「明智軍」だという証拠はあるのか?"},
+           {sp:"mitsuhide",e:"normal",t:"夜明け前のこと。旗印など、だれも見てはおるまい"}],
+       q:"襲撃軍の正体を示す証拠をつきつけろ!",
+       correct:["shogen"],
+       ok:[{sp:"mitsuhide",e:"shock",t:"生き残りの侍女が……水色桔梗の旗を見ていた!?"},
+           {sp:"mitsuhide",e:"sad",t:"桔梗は──わが明智家の紋。言い逃れは、できぬか"}]},
+      {st:[{sp:"mitsuhide",e:"angry",t:"……ならば最後に問おう、探偵殿"},
+           {sp:"mitsuhide",e:"angry",t:"わたしに前々からの「決意」があった証拠が、どこにある!"}],
+       q:"事件前からの「決意」を示す証拠をつきつけろ!",
+       correct:["tanzaku"],
+       ok:[{sp:"mitsuhide",e:"shock",t:"!! 愛宕百韻の短冊……読まれてしまったか"},
+           {sp:"mitsuhide",e:"sad",t:"「ときは今」──土岐は、わが一族の名。あの夜、心は決まっていた"}]}
+    ],
+    taunts:[
+      [{sp:"mitsuhide",e:"normal",t:"……それが、何の関係がある?"}],
+      [{sp:"mitsuhide",e:"smile",t:"探偵殿、それは的外れというものだ"}],
+      [{sp:"mitsuhide",e:"normal",t:"その証拠では、わたしは崩せぬよ"}]],
+    win:[
+      {sp:"mitsuhide",e:"sad",t:"……見事だ。認めよう。信長様を討ったのは、この明智光秀"},
+      {sp:"mitsuhide",e:"angry",t:"「敵は本能寺にあり」──!"},
+      {sp:"mitsuhide",e:"sad",t:"動機か。恨みか、反発か、野心か……わたしにも、分からぬのだ"},
+      {sp:null,t:"対決勝利! 絵図にもどり【推理】で事件を解決せよ!"}],
+    goLine:[{sp:"mitsuhide",e:"smile",t:"……出直してくることだ、探偵殿"}],
+    deep:{title:"発展 ── 動機は日本史最大のナゾ", body:"①怨恨説(信長への恨み) ②野望説(自分が天下を) ③四国説(長宗我部氏との交渉役だった光秀が方針転換で立場を失った/近年の新史料で注目) ④黒幕説(朝廷や義昭?)──決着はついていない。新史料の発見で歴史は更新される。それが歴史学の面白さだ。"}
   },
   locations:[
     {id:"bicchu", icon:"🌊", name:"備中高松の陣", area:"備中(岡山)", x:58, y:295,
@@ -941,10 +1089,22 @@ function DeepBox({title, body}){
           onClick={()=>setOpen(true)}>{title||"もっと深く知る"} ▶</button></div>}
   </div>);
 }
-function TopBar({onBack, label}){
+function TopBar({onBack, label, onBag}){
   return (<div className="topbar">
     <span className="brand mincho">歴史探偵事件簿</span>
-    <button className="backlink" onClick={onBack}>{label}</button>
+    <span style={{display:"flex", gap:10, alignItems:"center"}}>
+      {onBag && <button className="btn small gold" onClick={onBag}>🎒</button>}
+      <button className="backlink" onClick={onBack}>{label}</button>
+    </span>
+  </div>);
+}
+function HPBar({hp, max}){
+  const mx = max || MAX_HP;
+  return (<div className="hp-bar">
+    <span>気力</span>
+    {Array.from({length:mx}).map((_,i)=>(
+      <span key={i} className={"hp"+(i<hp?"":" off")}>❗</span>
+    ))}
   </div>);
 }
 
@@ -1007,6 +1167,127 @@ function Dialogue({script, fxObj, onEnd}){
   );
 }
 
+/* ---------- 対決モード(証拠を自分で選ぶ) ---------- */
+function Showdown({sc, sd, items, onWin, onExit, openItem}){
+  const maxHp = sd.hp || MAX_HP;
+  const [phase,setPhase]=useState("intro"); // intro / st / choose / okfx / taunt / win / gameover
+  const [round,setRound]=useState(0);
+  const [hp,setHp]=useState(maxHp);
+  const [wrongCnt,setWrongCnt]=useState(0);
+  const [pickerOpen,setPickerOpen]=useState(false);
+  const [preview,setPreview]=useState(null);
+  const [lastPick,setLastPick]=useState(null);
+  const r=sd.rounds[round];
+
+  const restart=()=>{setPhase("intro");setRound(0);setHp(maxHp);setWrongCnt(0);setPickerOpen(false);setPreview(null);};
+
+  const present=(id)=>{
+    setPickerOpen(false); setPreview(null); setLastPick(id);
+    if(r.correct.includes(id)){
+      setPhase("okfx");
+    }else{
+      const nhp=hp-1;
+      setHp(nhp);
+      setPhase("taunt");
+    }
+  };
+
+  if(phase==="intro"){
+    return <Dialogue script={sd.intro} onEnd={()=>setPhase("st")}/>;
+  }
+  if(phase==="st"){
+    return <Dialogue script={r.st} onEnd={()=>setPhase("choose")}/>;
+  }
+  if(phase==="okfx"){
+    return <Dialogue script={r.ok} fxObj={sc.items[lastPick]}
+      onEnd={()=>{
+        if(round+1<sd.rounds.length){ setRound(round+1); setPhase("st"); }
+        else setPhase("win");
+      }}/>;
+  }
+  if(phase==="taunt"){
+    const taunt=sd.taunts[wrongCnt % sd.taunts.length];
+    return <Dialogue script={taunt}
+      onEnd={()=>{
+        setWrongCnt(wrongCnt+1);
+        if(hp<=0) setPhase("gameover");
+        else setPhase("choose");
+      }}/>;
+  }
+  if(phase==="win"){
+    return <Dialogue script={sd.win} onEnd={()=>onWin()}/>;
+  }
+  if(phase==="gameover"){
+    return (
+      <div>
+        <Dialogue script={sd.goLine} onEnd={()=>{}}/>
+        <div className="go-stage" style={{marginTop:12}}>
+          <div className="go-word mincho">敗 北</div>
+          <p className="note" style={{color:"#d8b0a8"}}>気力がつきた……。捜査バッグで証拠調書を読み直して、再挑戦だ!</p>
+          <div style={{display:"flex", gap:10, marginTop:14, justifyContent:"center", flexWrap:"wrap"}}>
+            <button className="btn primary" onClick={restart}>もう一度挑む</button>
+            <button className="btn" onClick={onExit}>絵図にもどって調べ直す</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  /* choose */
+  return (
+    <div>
+      <div className="vn-stage" style={{minHeight:0}}>
+        <div className="vn-lines hot"/>
+        <div className="vn-portrait" style={{minHeight:170, paddingTop:8}}>
+          <Portrait id={sd.person} expr="angry" size={150}/>
+        </div>
+        <div style={{position:"relative", zIndex:2, background:"rgba(15,12,9,.92)", borderTop:"2px solid var(--kin)", padding:"12px 14px"}}>
+          <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8}}>
+            <HPBar hp={hp} max={maxHp}/>
+            <span className="note mincho">対決 {round+1}/{sd.rounds.length}</span>
+          </div>
+          <div className="claim-box" style={{margin:"4px 0 10px"}}>
+            <span className="cb-label">つきつけろ!</span>
+            <div>{r.q}</div>
+          </div>
+          <button className="btn primary block" onClick={()=>setPickerOpen(true)}>🎒 証拠をえらぶ</button>
+          <button className="backlink" style={{marginTop:6}} onClick={onExit}>対決から離れる(絵図へ)</button>
+        </div>
+      </div>
+
+      {pickerOpen && (
+        <div className="modal-bg" onClick={()=>{setPickerOpen(false);setPreview(null);}}>
+          <div className="modal-card" onClick={e=>e.stopPropagation()}>
+            {!preview && (<div>
+              <div className="eyebrow">どの証拠をつきつける?</div>
+              <div className="inv-grid">
+                {sc.itemOrder.map(id=>{
+                  const got=items[id];
+                  return (
+                    <button key={id} className={"inv-tile"+(got?"":" empty")}
+                      onClick={()=>{ if(got) setPreview(id); }}>
+                      <span className="icon">{got? sc.items[id].icon:"❓"}</span>
+                      <span className="t">{got? sc.items[id].name:"未発見"}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <button className="btn block" style={{marginTop:12}} onClick={()=>setPickerOpen(false)}>やめる</button>
+            </div>)}
+            {preview && (<div className="paper">
+              <div className="meta">証拠調書 ── 確認</div>
+              <h3 className="mincho">{sc.items[preview].icon} {sc.items[preview].name}</h3>
+              <p style={{fontSize:14}}>{sc.items[preview].basic}</p>
+              <button className="btn primary block" onClick={()=>present(preview)}>⚡ これをつきつける!</button>
+              <div style={{height:8}}/>
+              <button className="btn block" onClick={()=>setPreview(null)}>ほかの証拠を見る</button>
+            </div>)}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ---------- 事件簿選択(ホーム) ---------- */
 function Home({go, progressOf}){
   return (
@@ -1024,7 +1305,7 @@ function Home({go, progressOf}){
                 <span className="no">事件簿・{sc.no} ── {sc.era}</span><br/>
                 <span className="tt mincho">{sc.title}</span>
                 <span className="ss" style={{display:"block"}}>{sc.lead}</span>
-                {pr.items>0 && <span className="prog">証拠 {pr.items}/{sc.itemOrder.length}{pr.confessed?" ・捜査完了!":""}</span>}
+                {pr.items>0 && <span className="prog">証拠 {pr.items}/{sc.itemOrder.length}{pr.confessed?" ・対決勝利!":""}</span>}
               </span>
             </button>
           );
@@ -1077,7 +1358,6 @@ function Opening({sc, go}){
 
 /* ---------- 絵地図 ---------- */
 function MapSengokuSVG({sc, items, locDone, onPick}){
-  const has=id=>!!items[id];
   return (
     <svg viewBox="0 0 400 470" width="100%" style={{display:"block"}}>
       <rect width="400" height="470" fill="#e7dbbd"/>
@@ -1103,11 +1383,9 @@ function MapSengokuSVG({sc, items, locDone, onPick}){
 function MapKyusekkiSVG({sc, items, locDone, onPick}){
   return (
     <svg viewBox="0 0 400 470" width="100%" style={{display:"block"}}>
-      {/* 左:2万年前(氷) 右:昭和21年(土) */}
       <rect width="400" height="470" fill="#e0e6e2"/>
       <path d="M215,0 q-18,60 6,120 q22,56 -8,118 q-26,54 4,116 q20,44 -2,116 L400,470 L400,0 Z" fill="#e7dbbd"/>
       <path d="M215,0 q-18,60 6,120 q22,56 -8,118 q-26,54 4,116 q20,44 -2,116" stroke="#c4a95a" strokeWidth="3" strokeDasharray="8 6" fill="none"/>
-      {/* 氷の山と雪 */}
       {[[70,80],[130,60],[50,200]].map((m,i)=>(
         <g key={i}>
           <path d={"M"+(m[0]-26)+","+(m[1]+20)+" L"+m[0]+","+(m[1]-18)+" L"+(m[0]+26)+","+(m[1]+20)+" Z"} fill="#c8d4d8" stroke="#9ab0b8" strokeWidth="1.5"/>
@@ -1116,7 +1394,6 @@ function MapKyusekkiSVG({sc, items, locDone, onPick}){
       ))}
       <text x="30" y="420" fontSize="26" opacity=".8">🦣</text>
       <text x="150" y="230" fontSize="16" opacity=".7">❄️</text>
-      {/* 昭和側の山と町 */}
       {[[320,70],[360,230]].map((m,i)=>(
         <path key={i} d={"M"+(m[0]-22)+","+(m[1]+16)+" L"+m[0]+","+(m[1]-14)+" L"+(m[0]+22)+","+(m[1]+16)+" Z"} fill="#c9b98c" stroke="#a08e5e" strokeWidth="1.5"/>
       ))}
@@ -1146,7 +1423,7 @@ function MapPins({sc, items, locDone, onPick}){
   </g>);
 }
 
-function MapScreen({sc, go, items, confessed, openInv, locDone}){
+function MapScreen({sc, go, items, confessed, openInv, openItem, locDone}){
   const itemCount = sc.itemOrder.filter(i=>items[i]).length;
   const MapArt = sc.id==="kyusekki" ? MapKyusekkiSVG : MapSengokuSVG;
   return (
@@ -1156,13 +1433,21 @@ function MapScreen({sc, go, items, confessed, openInv, locDone}){
         <span>証拠 <span className="cnt">{itemCount}</span> / {sc.itemOrder.length}</span>
         <button className="btn small gold" onClick={openInv}>🎒 捜査バッグ</button>
       </div>
+      <div className="item-strip">
+        {sc.itemOrder.map(id=>(
+          <button key={id} className={"item-chip"+(items[id]?"":" empty")} title={items[id]? sc.items[id].name:"未発見"}
+            onClick={()=>{ if(items[id]) openItem(id); }}>
+            {items[id]? sc.items[id].icon : "❓"}
+          </button>
+        ))}
+      </div>
       <div className="eyebrow">捜査絵図 ── ピンをタップして移動</div>
       <div className="mapwrap">
         <MapArt sc={sc} items={items} locDone={locDone} onPick={id=>go("loc", null, id)}/>
       </div>
       <div style={{marginTop:14}}>
         <button className="btn primary block" disabled={!confessed} onClick={()=>go("deduction")}>
-          {confessed? "⚖️ 推理へ ── 事件を解決する" : "🔒 推理(核心の人物を追いつめると解放)"}
+          {confessed? "⚖️ 推理へ ── 事件を解決する" : "🔒 推理(【対決】に勝利すると解放)"}
         </button>
       </div>
       <div style={{display:"flex", gap:8, marginTop:10}}>
@@ -1174,12 +1459,12 @@ function MapScreen({sc, go, items, confessed, openInv, locDone}){
 }
 
 /* ---------- 場所 ---------- */
-function LocationScreen({sc, loc, go, items, addItem, spotsDone, markSpot, openItem}){
+function LocationScreen({sc, loc, go, items, addItem, spotsDone, markSpot, openItem, openInv}){
   const [view,setView]=useState(null);
   const person = loc.person? CHAR_CONF[loc.person] : null;
   return (
     <div>
-      <TopBar onBack={()=>go("map")} label="← 絵図へ"/>
+      <TopBar onBack={()=>go("map")} label="← 絵図へ" onBag={openInv}/>
       <div className="loc-head">
         <span className="licon">{loc.icon}</span>
         <div>
@@ -1236,28 +1521,76 @@ function LocationScreen({sc, loc, go, items, addItem, spotsDone, markSpot, openI
 }
 
 /* ---------- 会話画面 ---------- */
-function TalkScreen({sc, personId, backLocId, go, items, addItem, talked, markTalk, openItem, setConfessed}){
+function TalkScreen({sc, personId, backLocId, go, items, addItem, talked, markTalk, openItem, openInv, setConfessed, confessed}){
   const conf=CHAR_CONF[personId];
   const data=sc.people[personId];
+  const sd = sc.showdown && sc.showdown.person===personId ? sc.showdown : null;
+  const duel = data.duel || null;
   const [mode,setMode]=useState("intro");
   const [topic,setTopic]=useState(null);
   const has=id=>!!items[id];
 
   if(mode==="intro"){
     return (<div>
-      <TopBar onBack={()=>go("loc", null, backLocId)} label="← 場所へ"/>
+      <TopBar onBack={()=>go("loc", null, backLocId)} label="← 場所へ" onBag={openInv}/>
       <Dialogue script={data.intro} onEnd={()=>setMode("topics")}/>
+    </div>);
+  }
+  if(mode==="showdown" && sd){
+    return (<div>
+      <TopBar onBack={()=>setMode("topics")} label="← 質問一覧へ"/>
+      <div className="eyebrow">最終対決 ── 証拠は自分でえらべ!</div>
+      <Showdown sc={sc} sd={sd} items={items}
+        onWin={()=>{setConfessed(); setMode("aftersd");}}
+        onExit={()=>go("map")}
+        openItem={openItem}/>
+    </div>);
+  }
+  if(mode==="duel" && duel){
+    return (<div>
+      <TopBar onBack={()=>setMode("topics")} label="← 質問一覧へ"/>
+      <div className="eyebrow">対決 ── 証拠は自分でえらべ!</div>
+      <Showdown sc={sc} sd={duel} items={items}
+        onWin={()=>{ (duel.gives||[]).forEach(id=>addItem(id)); markTalk(personId,"duel"); setMode("afterduel"); }}
+        onExit={()=>go("map")}
+        openItem={openItem}/>
+    </div>);
+  }
+  if(mode==="afterduel" && duel){
+    return (<div>
+      <TopBar onBack={()=>go("loc", null, backLocId)} label="場所へ" onBag={openInv}/>
+      <div className="eyebrow">対決勝利 ── 記録</div>
+      {(duel.gives||[]).map(id=>(
+        <div key={id} className="get-banner" onClick={()=>openItem(id)}>
+          <span className="gicon">{sc.items[id].icon}</span>
+          <span className="gt">証拠入手!「{sc.items[id].name}」(タップで詳細)</span>
+        </div>
+      ))}
+      {duel.deep && <DeepBox title={duel.deep.title} body={duel.deep.body}/>}
+      <button className="btn primary block" onClick={()=>setMode("topics")}>質問一覧へもどる</button>
+    </div>);
+  }
+  if(mode==="aftersd" && sd){
+    return (<div>
+      <TopBar onBack={()=>go("map")} label="絵図へ"/>
+      <div className="eyebrow">対決勝利 ── 記録</div>
+      <div className="get-banner" style={{borderColor:"var(--hi)", background:"rgba(196,58,42,.1)"}}>
+        <span className="gicon">⚖️</span>
+        <span className="gt">絵図の【推理】が解放された!</span>
+      </div>
+      {sd.deep && <DeepBox title={sd.deep.title} body={sd.deep.body}/>}
+      <button className="btn primary block" onClick={()=>go("map")}>絵図へもどる</button>
     </div>);
   }
   if(mode==="dialog" && topic){
     return (<div>
       <TopBar onBack={()=>setMode("topics")} label="← 質問一覧へ"/>
-      <Dialogue script={topic.script} fxObj={topic.fx? sc.items[topic.fx] : null} onEnd={()=>setMode("after")}/>
+      <Dialogue script={topic.script} onEnd={()=>setMode("after")}/>
     </div>);
   }
   if(mode==="after" && topic){
     return (<div>
-      <TopBar onBack={()=>go("loc", null, backLocId)} label="場所へ"/>
+      <TopBar onBack={()=>go("loc", null, backLocId)} label="場所へ" onBag={openInv}/>
       <div className="eyebrow">{topic.label} ── 記録</div>
       {topic.gives && (
         <div className="get-banner" onClick={()=>openItem(topic.gives)}>
@@ -1265,19 +1598,16 @@ function TalkScreen({sc, personId, backLocId, go, items, addItem, talked, markTa
           <span className="gt">証拠入手!「{sc.items[topic.gives].name}」(タップで詳細)</span>
         </div>
       )}
-      {topic.confess && (
-        <div className="get-banner" style={{borderColor:"var(--hi)", background:"rgba(196,58,42,.1)"}}>
-          <span className="gicon">⚖️</span>
-          <span className="gt">捜査完了! 絵図の【推理】が解放された</span>
-        </div>
-      )}
       {topic.deep && <DeepBox title={topic.deep.title} body={topic.deep.body}/>}
       <button className="btn primary block" onClick={()=>setMode("topics")}>質問一覧へもどる</button>
     </div>);
   }
+  /* topics */
+  const keyCount = sd? sd.startNeeds.filter(has).length : 0;
+  const sdReady = sd && keyCount===sd.startNeeds.length;
   return (
     <div>
-      <TopBar onBack={()=>go("loc", null, backLocId)} label="← 場所へ"/>
+      <TopBar onBack={()=>go("loc", null, backLocId)} label="← 場所へ" onBag={openInv}/>
       <div style={{display:"flex", alignItems:"center", gap:10, marginBottom:8}}>
         <Portrait id={personId} expr="normal" size={78}/>
         <div>
@@ -1291,20 +1621,40 @@ function TalkScreen({sc, personId, backLocId, go, items, addItem, talked, markTa
         const done = talked[personId+":"+tp.id];
         return (
           <button key={tp.id}
-            className={"topic"+(locked?" locked":"")+(done?" done":"")+(tp.fx&&!locked?" tsuki":"")}
+            className={"topic"+(locked?" locked":"")+(done?" done":"")}
             onClick={()=>{
               if(locked) return;
               if(tp.gives) addItem(tp.gives);
-              if(tp.confess) setConfessed(true);
               markTalk(personId, tp.id);
               setTopic(tp); setMode("dialog");
             }}>
-            <span>{done?"✓ ":""}{tp.fx?"⚡ ":""}{tp.label}
+            <span>{done?"✓ ":""}{tp.label}
               {locked && <span className="lockhint">🔒 必要な証拠: {tp.needs.map(n=>sc.items[n].name).join("、")}</span>}
             </span>
           </button>
         );
       })}
+      {duel && (()=>{
+        const dKey=duel.startNeeds.filter(has).length;
+        const dReady=dKey===duel.startNeeds.length;
+        const dDone=talked[personId+":duel"];
+        return (
+          <button className={"topic tsuki"+(dReady?"":" locked")}
+            onClick={()=>{ if(dReady) setMode("duel"); }}>
+            <span>⚡ {dDone? "✓ 対決(もう一度挑む)":"対決して聞き出す"}
+              {!dReady && <span className="lockhint">🔒 鍵の証拠 {dKey}/{duel.startNeeds.length} ── どれが鍵かは、集めて考えろ!</span>}
+            </span>
+          </button>
+        );
+      })()}
+      {sd && (
+        <button className={"topic tsuki"+(sdReady?"":" locked")}
+          onClick={()=>{ if(sdReady) setMode("showdown"); }}>
+          <span>⚡ {confessed? "✓ 対決(もう一度挑む)":"最終対決を始める"}
+            {!sdReady && <span className="lockhint">🔒 鍵の証拠 {keyCount}/{sd.startNeeds.length} ── どれが鍵かは、集めて考えろ!</span>}
+          </span>
+        </button>
+      )}
     </div>
   );
 }
@@ -1505,13 +1855,14 @@ function Guide({go}){
   return (
     <div>
       <TopBar onBack={()=>go("home")} label="事件簿一覧へ"/>
-      <div className="eyebrow">先生用ガイド(v4 時代選択版)</div>
+      <div className="eyebrow">先生用ガイド(v6 対決版)</div>
       <div className="paper">
         <div className="meta">全体のしくみ</div>
         <h3 className="mincho">時代ごとに独立した事件簿</h3>
         <ul>
-          <li>各事件簿に「探索マップ・一問一答道場・年表」が独立してあります。授業進度に合った時代を選んでください。</li>
-          <li>事件簿・壱(旧石器)は約15分、弐(戦国)は約20〜30分で1周できます。</li>
+          <li>各事件簿に「探索マップ・最終対決・一問一答道場・年表」が独立してあります。授業進度に合った時代を選んでください。</li>
+          <li>対決は、生徒が<b>自分で証拠を選んで</b>つきつける形式です。道中に2箇所のミニ対決(気力3)、最後に最終対決(気力5)。まちがえると気力が1減り、0で敗北→再挑戦できます。</li>
+          <li>敗北はペナルティではなく学びの入口です。「証拠調書(赤枠)を読み直してから再挑戦」の流れが、そのまま解き直しの習慣になります。</li>
           <li>赤枠=定期テストレベル、青枠「発展」=高校入試・資料集レベルです。</li>
         </ul>
       </div>
@@ -1521,7 +1872,7 @@ function Guide({go}){
         <ul>
           <li>導入3分:開幕ムービーをみんなで見て「結末はどうなる?」と予想を立てさせてから探索へ。</li>
           <li>探索15分:2人1組。証拠を1つ入手するたびに、相方に赤枠の内容を自分の言葉で説明。説明できたら記録用紙に◯、あやしければ△。</li>
-          <li>探索順は生徒に決めさせてください。自分で選ぶと集中が生まれます。</li>
+          <li>最終対決は「どの証拠をつきつけるか」を<b>ペアで相談してから</b>選ばせてください。「なぜその証拠?」と理由を言わせると、対話の質が一気に上がります。</li>
           <li>チェック:道場(壱は10問・弐は20問)。8割を合格ラインの目安に、△✕は解説と語呂を読み直してその場で解き直しを。</li>
         </ul>
       </div>
@@ -1529,8 +1880,9 @@ function Guide({go}){
         <div className="meta">自習・宿題で使う場合</div>
         <h3 className="mincho">生徒ひとりでやるパターン</h3>
         <ul>
-          <li>1周目:絵図を探索して証拠をコンプリート。2周目:道場→まちがい直し→もう1周。</li>
-          <li>仕上げ:年表を紙に書き出せたら合格。テスト前は「年表→道場」で1セット10分の復習に。</li>
+          <li>1周目:絵図を探索して証拠をコンプリート→最終対決(負けたら証拠を読み直して再挑戦)。</li>
+          <li>2周目:道場→まちがい直し→もう1周。仕上げに年表を紙に書き出せたら合格。</li>
+          <li>テスト前は「年表→道場」で1セット10分の復習に。</li>
         </ul>
       </div>
       <button className="btn block" onClick={()=>go("home")}>事件簿一覧へもどる</button>
@@ -1557,7 +1909,6 @@ function App(){
     if(newScId) setScId(newScId);
     if(s==="loc" && newLocId) setLocId(newLocId);
     if(s==="talk" && newPersonId) setPersonId(newPersonId);
-    if(s==="cover" && newScId===undefined && scId===null) s="home";
     setScreen(s); window.scrollTo(0,0);
   };
   const upd=fn=>setProg(v=>({...v, [sc.id]: fn(v[sc.id])}));
@@ -1569,7 +1920,9 @@ function App(){
     if(!cur) return false;
     const spotsOk=L.spots.every(sp=>cur.spots[L.id+":"+sp.id]);
     const personOk=!L.person || sc.people[L.person].topics.every(tp=>cur.talked[L.person+":"+tp.id] || (tp.needs && !tp.needs.every(n=>cur.items[n])));
-    return spotsOk && personOk && (L.spots.length>0 || L.person);
+    const sdOk = !(sc.showdown && sc.showdown.person===L.person) || cur.confessed;
+    const duelOk = !(L.person && sc.people[L.person].duel) || cur.talked[L.person+":duel"];
+    return spotsOk && personOk && sdOk && duelOk && (L.spots.length>0 || L.person);
   };
   const progressOf=s=>{
     const p=prog[s.id];
@@ -1583,9 +1936,9 @@ function App(){
       {screen==="guide" && <Guide go={go}/>}
       {screen==="cover" && sc && <ScCover sc={sc} go={go}/>}
       {screen==="opening" && sc && <Opening sc={sc} go={go}/>}
-      {screen==="map" && sc && <MapScreen sc={sc} go={go} items={cur.items} confessed={cur.confessed} openInv={()=>setInvOpen(true)} locDone={locDone}/>}
-      {screen==="loc" && sc && loc && <LocationScreen sc={sc} loc={loc} go={go} items={cur.items} addItem={addItem} spotsDone={cur.spots} markSpot={markSpot} openItem={id=>setItemModal(id)}/>}
-      {screen==="talk" && sc && personId && <TalkScreen sc={sc} personId={personId} backLocId={locId} go={go} items={cur.items} addItem={addItem} talked={cur.talked} markTalk={markTalk} openItem={id=>setItemModal(id)} setConfessed={setConfessed}/>}
+      {screen==="map" && sc && <MapScreen sc={sc} go={go} items={cur.items} confessed={cur.confessed} openInv={()=>setInvOpen(true)} openItem={id=>setItemModal(id)} locDone={locDone}/>}
+      {screen==="loc" && sc && loc && <LocationScreen sc={sc} loc={loc} go={go} items={cur.items} addItem={addItem} spotsDone={cur.spots} markSpot={markSpot} openItem={id=>setItemModal(id)} openInv={()=>setInvOpen(true)}/>}
+      {screen==="talk" && sc && personId && <TalkScreen sc={sc} personId={personId} backLocId={locId} go={go} items={cur.items} addItem={addItem} talked={cur.talked} markTalk={markTalk} openItem={id=>setItemModal(id)} openInv={()=>setInvOpen(true)} setConfessed={setConfessed} confessed={cur.confessed}/>}
       {screen==="deduction" && sc && <Deduction sc={sc} go={go}/>}
       {screen==="truth" && sc && <Truth sc={sc} go={go}/>}
       {screen==="dojo" && sc && <Dojo sc={sc} go={go}/>}
