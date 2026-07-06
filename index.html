@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>歴史探偵事件簿 v6 | 歴史探索アドベンチャー</title>
+<title>歴史探偵事件簿 v7 | 歴史探索アドベンチャー</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -202,10 +202,10 @@
 const {useState, useEffect} = React;
 
 /* =====================================================
-   歴史探偵事件簿 v6 ── 道中ミニ対決追加版
+   歴史探偵事件簿 v7 ── 対決クラッシュ修正版
    壱:旧石器時代「消えた祖先事件」 / 弐:戦国「本能寺の変」
    ===================================================== */
-const APP_VERSION = "v6";
+const APP_VERSION = "v7";
 const MAX_HP = 5;
 
 /* ---------- キャラクター設定 ---------- */
@@ -1113,8 +1113,15 @@ function Dialogue({script, fxObj, onEnd}){
   const [idx,setIdx]=useState(0);
   const [chars,setChars]=useState(0);
   const [fxDone,setFxDone]=useState(!fxObj);
-  const line=script[idx];
-  const full=line.t;
+
+  /* 台本(script)が差し替わったら、行番号・タイピング・演出を必ずリセット
+     (v6バグ修正: 導入3行→ラウンド2行でidxが持ち越され、存在しない行を読んで落ちていた) */
+  useEffect(()=>{
+    setIdx(0); setChars(0); setFxDone(!fxObj);
+  },[script]);
+
+  const line=script[Math.min(idx, script.length-1)];
+  const full=line ? line.t : ""; /* 保険: 万一空の台本でも落とさない */
   const typing = chars < full.length;
 
   useEffect(()=>{
@@ -1127,7 +1134,7 @@ function Dialogue({script, fxObj, onEnd}){
       });
     }, 28);
     return ()=>clearInterval(iv);
-  },[idx, fxDone]);
+  },[idx, fxDone, script]);
 
   const tap=()=>{
     if(typing){ setChars(full.length); return; }
@@ -1135,6 +1142,8 @@ function Dialogue({script, fxObj, onEnd}){
     else onEnd();
   };
 
+
+  if(!line) return null;
   const isShock = line.e==="shock" || line.e==="angry";
   if(!fxDone){
     return (
@@ -1193,13 +1202,13 @@ function Showdown({sc, sd, items, onWin, onExit, openItem}){
   };
 
   if(phase==="intro"){
-    return <Dialogue script={sd.intro} onEnd={()=>setPhase("st")}/>;
+    return <Dialogue key="intro" script={sd.intro} onEnd={()=>setPhase("st")}/>;
   }
   if(phase==="st"){
-    return <Dialogue script={r.st} onEnd={()=>setPhase("choose")}/>;
+    return <Dialogue key={"st"+round} script={r.st} onEnd={()=>setPhase("choose")}/>;
   }
   if(phase==="okfx"){
-    return <Dialogue script={r.ok} fxObj={sc.items[lastPick]}
+    return <Dialogue key={"ok"+round} script={r.ok} fxObj={sc.items[lastPick]}
       onEnd={()=>{
         if(round+1<sd.rounds.length){ setRound(round+1); setPhase("st"); }
         else setPhase("win");
@@ -1207,7 +1216,7 @@ function Showdown({sc, sd, items, onWin, onExit, openItem}){
   }
   if(phase==="taunt"){
     const taunt=sd.taunts[wrongCnt % sd.taunts.length];
-    return <Dialogue script={taunt}
+    return <Dialogue key={"taunt"+wrongCnt} script={taunt}
       onEnd={()=>{
         setWrongCnt(wrongCnt+1);
         if(hp<=0) setPhase("gameover");
@@ -1215,12 +1224,12 @@ function Showdown({sc, sd, items, onWin, onExit, openItem}){
       }}/>;
   }
   if(phase==="win"){
-    return <Dialogue script={sd.win} onEnd={()=>onWin()}/>;
+    return <Dialogue key="win" script={sd.win} onEnd={()=>onWin()}/>;
   }
   if(phase==="gameover"){
     return (
       <div>
-        <Dialogue script={sd.goLine} onEnd={()=>{}}/>
+        <Dialogue key="goldine" script={sd.goLine} onEnd={()=>{}}/>
         <div className="go-stage" style={{marginTop:12}}>
           <div className="go-word mincho">敗 北</div>
           <p className="note" style={{color:"#d8b0a8"}}>気力がつきた……。捜査バッグで証拠調書を読み直して、再挑戦だ!</p>
@@ -1855,7 +1864,7 @@ function Guide({go}){
   return (
     <div>
       <TopBar onBack={()=>go("home")} label="事件簿一覧へ"/>
-      <div className="eyebrow">先生用ガイド(v6 対決版)</div>
+      <div className="eyebrow">先生用ガイド(v7 対決版)</div>
       <div className="paper">
         <div className="meta">全体のしくみ</div>
         <h3 className="mincho">時代ごとに独立した事件簿</h3>
