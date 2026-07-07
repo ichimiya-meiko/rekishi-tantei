@@ -17,7 +17,10 @@ window.SCENARIO_LIST=[
   {id:"asuka1", no:"五・上", era:"飛鳥時代(聖徳太子編)", title:"日出づる手紙のナゾ",
    lead:"島国が大帝国に「対等」の手紙を──なぜ皇帝は怒り、なぜ使者は帰されたのか?",
    icon:"🛕", face:"shotoku", itemTotal:10, file:"scenarios/asuka1.js"},
-  {id:"asuka2", soon:true, no:"五・下", era:"飛鳥時代(大化の改新編)", title:"続巻 準備中", icon:"⚡"},
+  {id:"asuka2", no:"五・下", era:"飛鳥時代(大化の改新編)", title:"大極殿の刃のナゾ",
+   lead:"白昼の宮中で、大臣が斬られた──国を変えたのは「剣」か、それとも「知」か?",
+   icon:"⚡", face:"naka", itemTotal:11, file:"scenarios/asuka2.js"},
+  {id:"nara", soon:true, no:"六", era:"奈良時代", title:"続巻 準備中", icon:"🕍"},
   {id:"sengoku", no:"十", era:"戦国時代", title:"本能寺の変",
    lead:"信長が燃える寺に消えた。犯人に証拠をつきつけろ!",
    icon:"🏯", face:"mitsuhide", itemTotal:11, file:"scenarios/sengoku.js"}
