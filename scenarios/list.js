@@ -11,7 +11,10 @@ window.SCENARIO_LIST=[
   {id:"yayoi", no:"参", era:"弥生時代", title:"戦うムラのナゾ",
    lead:"1万年の平和は、なぜ終わったのか──女王・卑弥呼が、君を試す。",
    icon:"🌾", face:"himiko", itemTotal:11, file:"scenarios/yayoi.js"},
-  {id:"kofun", soon:true, no:"四", era:"古墳時代", title:"続巻 準備中", icon:"⛰️"},
+  {id:"kofun", no:"四", era:"古墳時代", title:"二本の剣のナゾ",
+   lead:"埼玉と熊本、900km離れた古墳から同じ大王の名が──巨大な墓は何を語る?",
+   icon:"⛰️", face:"ookimi", itemTotal:10, file:"scenarios/kofun.js"},
+  {id:"asuka", soon:true, no:"五", era:"飛鳥時代", title:"続巻 準備中", icon:"🛕"},
   {id:"sengoku", no:"十", era:"戦国時代", title:"本能寺の変",
    lead:"信長が燃える寺に消えた。犯人に証拠をつきつけろ!",
    icon:"🏯", face:"mitsuhide", itemTotal:11, file:"scenarios/sengoku.js"}
